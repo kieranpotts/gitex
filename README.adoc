@@ -19,7 +19,9 @@ For Windows, a Linux emulator like Git Bash or a virtual machine like WSL2 is re
 
 All the Git aliases are implemented as shell scripts in the `bin` directory.
 
-To install, all you need to do is clone this repository to your computer, then add this repository's `bin` directory to your system's `PATH` environment variable. You might do this automatically, eg. in your `~/.bashrc` file, as follows:
+To install, all you need to do is clone this repository to your computer, then add this repository's `bin` directory to your system's `PATH` environment variable.
+
+You might do this automatically, eg. in your `~/.bashrc` file, as follows:
 
 [source,bash]
 ----
@@ -28,7 +30,7 @@ if [ -d "$HOME/dev/gitex/bin" ] ; then
 fi
 ----
 
-In addition, the scripts MUST have executable privileges. You can set this up by running the following command in your terminal:
+Your user MUST have executable permissions on the shell scripts. You can set this up by running the following command in your terminal:
 
 [source,bash]
 ----
@@ -37,4 +39,19 @@ chmod -R u+x gitex/bin
 
 == Usage
 
-To see what aliases are available, run the command `git aliases` – itself an alias! – in your terminal.
+// To see what aliases are available, run the command `git aliases` – itself an alias! – in your terminal.
+
+The following commands are added to Git:
+
+* link:#git-whoami[`git whoami`]
+
+=== `git whoami`
+
+Show the currently configured Git user.
+
+[source]
+----
+$ git whoami
+name:  Kieran Potts
+email: kieranpotts@users.noreply.github.com
+----
