@@ -9,6 +9,12 @@ These aliases extend Git's built-in operations, providing shortcuts for common G
 Some of the operations enabled via the Git aliases are potentially destructive. For example, some Git aliases rewrite commit histories. You use these Git extensions at your own risk.
 ======
 
+== Requirements
+
+The Bash aliases are implemented as POSIX-compliant shell scripts. Therefore, they are expected to run in all Unix shells.
+
+For Windows, a Linux emulator like Git Bash or a virtual machine like WSL2 is required.
+
 == Installation
 
 All the Git aliases are implemented as shell scripts in the `bin` directory.
