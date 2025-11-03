@@ -1,4 +1,34 @@
 = GitEx
 
-Git extensions.
+This project provides an extensive suite of *Git extensions* – useful Git aliases implemented as shell scripts, eg. `git sync`, `git amend`, `git squash`, `git fixup`, `git undo`.
 
+These aliases extend Git's built-in operations, providing shortcuts for common Git workflows. 
+
+[WARNING]
+======
+Some of the operations enabled via the Git aliases are potentially destructive. For example, some Git aliases rewrite commit histories. You use these Git extensions at your own risk.
+======
+
+== Installation
+
+All the Git aliases are implemented as shell scripts in the `bin` directory.
+
+To install, all you need to do is clone this repository to your computer, then add this repository's `bin` directory to your system's `PATH` environment variable. You might do this automatically, eg. in your `~/.bashrc` file, as follows:
+
+[source,bash]
+----
+if [ -d "$HOME/dev/gitex/bin" ] ; then
+  PATH="$PATH:$HOME/dev/gitex/bin"
+fi
+----
+
+In addition, the scripts MUST have executable privileges. You can set this up by running the following command in your terminal:
+
+[source,bash]
+----
+chmod -R u+x gitex/bin
+----
+
+== Usage
+
+To see what aliases are available, run the command `git aliases` – itself an alias! – in your terminal.
