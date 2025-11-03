@@ -9,6 +9,8 @@ These aliases extend Git's built-in operations, providing shortcuts for common G
 Some of the operations enabled via the Git aliases are potentially destructive. For example, some Git aliases rewrite commit histories. You use these Git extensions at your own risk.
 ======
 
+// TODO: Acknowledgements (git-extra)
+
 == Requirements
 
 The Bash aliases are implemented as POSIX-compliant shell scripts. Therefore, they are expected to run in all Unix shells.
@@ -55,3 +57,53 @@ $ git whoami
 name:  Kieran Potts
 email: kieranpotts@users.noreply.github.com
 ----
+
+== Tests
+
+=== Static analysis
+
+ShellCheck is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
+
+[source]
+----
+sudo apt-get install -y shellcheck
+----
+
+To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of the repository:
+
+[source]
+----
+$ shellcheck bin/git-*
+----
+
+=== Runtime tests
+
+Execution of the runtime tests requires the following dependencies:
+
+* Python >= 3.12
+* Poetry >= 2.2
+
+Run `poetry install` in the root directory of the repository to install the dependencies, which include `pytest` and are managed by Poetry.
+
+To run the tests:
+
+[source]
+----
+$ poetry run pytest
+----
+
+Or, for more verbose output:
+
+[source]
+----
+$ poetry run pytest -v
+----
+
+The tests use temporary Git repositories, ensuring isolation and no interference with your local Git configuration.
+
+.References
+****
+* https://github.com/python-poetry/poetry[Poetry]
+* https://github.com/pytest-dev/pytest/[pytest]
+* https://github.com/gitpython-developers/GitPython[Git Python]
+****
