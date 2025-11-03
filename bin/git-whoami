@@ -1,0 +1,24 @@
+#!/bin/env sh
+
+#
+# git-whoami - Show the currently configured Git user
+#
+# Usage: git whoami
+#
+
+_git_whoami() {
+  name="[not set]"
+  mail="[not set]"
+
+  name=$(git config --get user.name 2>/dev/null)
+  email=$(git config --get user.email 2>/dev/null)
+
+  echo "name:  ${name}"
+  echo "email: ${email}"
+}
+
+main() {
+  _git_whoami
+}
+
+main
