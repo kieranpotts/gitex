@@ -8,9 +8,9 @@ from helper import TempRepo
 
 @pytest.fixture(scope="function")
 def temp_repo():
-    """Create a temporary Git repository that is reset for each test 
+    """Create a temporary Git repository that is reset for each test
     function call."""
 
     repo = TempRepo()
-    
+
     return repo
