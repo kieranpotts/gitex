@@ -1,0 +1,5 @@
+= Requirements
+
+The Bash aliases are implemented as POSIX-compliant shell scripts. Therefore, they are expected to run in all modern Unix shells: Bash, Zsh, Dash, etc.
+
+For Windows, a Linux emulator like https://gitforwindows.org/[Git Bash] or a virtual machine like WSL2 is required.

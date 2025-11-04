@@ -4,113 +4,17 @@ GitEx is a suite of useful Git extensions – things like `git sync`, `git amend
 
 The extensions are implemented as POSIX-compliant Unix shell scripts. To install the extensions, all you need to do is add the scripts to your operating system's `PATH` environment variable. Git will automatically integrate the scripts as https://git-scm.com/book/ms/v2/Git-Basics-Git-Aliases[Git aliases].
 
+GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras]. But GitEx is not a fork and it is not designed to be compatible with, or a drop-in replacement for, Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. For example, GitEx's `git feature` doesn't behave in exactly the same way as Git Extras's `git feature`. It is not recommended to try to install both GitEx and Git Extras side-by-side – you should choose one or the other.
+
 WARNING: You use these Git extensions at your own risk. Some operations enabled via these extensions are potentially destructive. For example, some of the extensions will rewrite the commit histories of your Git repositories.
 
-GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras], but it is not a fork and is not designed to be compatible with, or a drop-in replacement for, Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. GitEx's `git feature`, for example, behaves differently to Git Extras's `git feature`. It is not recommended to try to install both GitEx and Git Extras side-by-side – you should choose one or the other.
+== Documentation
 
-== Requirements
+* link:./docs/requirements.adoc[*Requirements*]
+* link:./docs/installation.adoc[*Installation*]
+* link:./docs/usage/README.adoc[*Usage*]
+* link:./docs/testing.adoc[*Testing*]
 
-The Bash aliases are implemented as POSIX-compliant shell scripts. Therefore, they are expected to run in all Unix shells.
+''''
 
-For Windows, a Linux emulator like Git Bash or a virtual machine like WSL2 is required.
-
-== Installation
-
-All the Git aliases are implemented as shell scripts in the `bin` directory.
-
-To install, all you need to do is clone this repository to your computer, then add this repository's `bin` directory to your system's `PATH` environment variable.
-
-You might do this automatically, eg. in your `~/.bashrc` file, as follows:
-
-[source,bash]
-----
-if [ -d "$HOME/dev/gitex/bin" ] ; then
-  PATH="$PATH:$HOME/dev/gitex/bin"
-fi
-----
-
-Your user MUST have executable permissions on the shell scripts. You can set this up by running the following command in your terminal:
-
-[source,bash]
-----
-chmod -R u+x gitex/bin
-----
-
-== Usage
-
-// To see what aliases are available, run the command `git aliases` – itself an alias! – in your terminal.
-
-The following commands are added to Git:
-
-* link:#git-whoami[`git whoami`]
-
-=== `git whoami`
-
-Show the currently configured Git user.
-
-[source]
-----
-$ git whoami
-name:  Kieran Potts
-email: kieranpotts@users.noreply.github.com
-----
-
-== Tests
-
-=== Runtime tests
-
-Execution of the runtime tests requires the following dependencies:
-
-* Python >= 3.12
-* Poetry >= 2.2
-
-Run `poetry install` in the root directory of the repository to install the dependencies in a virtual environment.
-
-The tests are run by pytest. To execute the tests, run the following command from the root directory of the repository:
-
-[source]
-----
-$ poetry run pytest
-----
-
-Or, for more verbose output:
-
-[source]
-----
-$ poetry run pytest -v
-----
-
-The tests use temporary Git repositories, and they do not change any global, system-level, or user-level Git configuration, ensuring isolation and no interference with your own Git configuration.
-
-.References
-****
-* https://github.com/python-poetry/poetry[Poetry]
-* https://github.com/pytest-dev/pytest/[pytest]
-* https://github.com/gitpython-developers/GitPython[Git Python]
-****
-
-=== Static analysis
-
-ShellCheck is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
-
-[source]
-----
-sudo apt-get install -y shellcheck
-----
-
-To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of the repository:
-
-[source]
-----
-$ shellcheck --severity=error bin/* lib/*
-----
-
-Ruff is used to lint and format the Python code used in the runtime tests. Installation of Ruff is managed by Poetry (see above). To run Ruff, use the following commands from the root directory of the repository:
-
-[source]
-----
-$ poetry run ruff check test/
-$ poetry run ruff format test/
-----
-
-The formatter should be run before committing any changes to the Python test files.
+Copyright © 2020-present Kieran Potts, link:./LICENSE.txt[MIT license]

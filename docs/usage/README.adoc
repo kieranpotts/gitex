@@ -1,0 +1,5 @@
+= Usage
+
+GitEx adds the following commands to Git:
+
+* link:./git-whoami.adoc[`git whoami`]

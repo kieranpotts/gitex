@@ -1,0 +1,10 @@
+= `git whoami`
+
+Show the currently configured Git user.
+
+[source]
+----
+$ git whoami
+name:  Kieran Potts
+email: kieranpotts@users.noreply.github.com
+----
