@@ -1,15 +1,12 @@
 = GitEx image:https://img.shields.io/github/actions/workflow/status/kieranpotts/gitex/integration.yaml?branch=dev&style=flat-square&label=tests&labelColor=%23333333&color=%23008800&cacheSeconds=86400[Integration tests passing]
 
-This project provides an extensive suite of *Git extensions* – useful Git aliases implemented as shell scripts, eg. `git sync`, `git amend`, `git squash`, `git fixup`, `git undo`.
+GitEx is an extensive suite of Git extensions – things like `git sync`, `git amend`, `git squash`, `git fixup`, and `git undo`.
 
-These aliases extend Git's built-in operations, providing shortcuts for common Git workflows. 
+The extensions are implemented as POSIX-compliant Unix shell scripts. To install the extensions, all you need to do is add the scripts to your operating system's `PATH` environment variable. Git will automatically integrate the scripts as https://git-scm.com/book/ms/v2/Git-Basics-Git-Aliases[Git aliases].
 
-[WARNING]
-======
-Some of the operations enabled via the Git aliases are potentially destructive. For example, some Git aliases rewrite commit histories. You use these Git extensions at your own risk.
-======
+GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras], but it is not a fork and is designed and built from scratch. GitEx is not a drop-in replacement for Git Extras; although some of the GitEx extensions have similar APIs to those in Git Extras, such as `git squash` and `git fixup`, the behaviors and implementations are different. GitEx is not designed to be compatible with Git Extras, either. For this reason, it is not recommended to install both libraries side-by-side. Choose one or the other.
 
-// TODO: Acknowledgements (git-extra)
+WARNING: You use these Git extensions at your own risk. Some operations enabled via these extensions are potentially destructive. For example, some of the extensions will rewrite the commit histories of your Git repositories.
 
 == Requirements
 
