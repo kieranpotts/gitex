@@ -13,7 +13,8 @@ WARNING: You use these Git extensions at your own risk. Some operations enabled 
 * link:./docs/requirements.adoc[*Requirements*]
 * link:./docs/installation.adoc[*Installation*]
 * link:./docs/usage/README.adoc[*Usage*]
-* link:./docs/testing.adoc[*Testing*]
+* link:./docs/runtime-tests.adoc[*Runtime tests*]
+* link:./docs/static-analysis.adoc[*Static analysis*]
 
 ''''
 

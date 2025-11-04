@@ -1,0 +1,27 @@
+= Static analysis
+
+https://github.com/koalaman/shellcheck[ShellCheck] is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
+
+[source]
+----
+sudo apt-get install -y shellcheck
+----
+
+To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of this repository:
+
+[source]
+----
+$ shellcheck --severity=error bin/* lib/*
+----
+
+https://github.com/astral-sh/ruff[Ruff] is used to lint and format the Python code used in the runtime tests. Installation of Ruff is managed by Poetry – see link:./runtime-tests.adoc[Runtime tests] for details. 
+
+To run Ruff, use the following commands from the root directory of this repository:
+
+[source]
+----
+$ poetry run ruff check test/
+$ poetry run ruff format test/
+----
+
+The formatter should be run before committing any changes to the Python test files.

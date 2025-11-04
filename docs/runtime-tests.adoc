@@ -1,0 +1,24 @@
+= Runtime tests
+
+Execution of the runtime tests requires the following dependencies to be installed on your machine:
+
+* Python >= 3.12
+* Poetry >= 2.2
+
+https://github.com/python-poetry/poetry[Poetry] is used to manage the Python development dependencies for the GitEx project. Run `poetry install` in the root directory of this repository to install pytest and other dependencies in a virtual environment.
+
+The tests are run by https://github.com/pytest-dev/pytest/[pytest]. To execute the tests, run the following command from the root directory of this repository:
+
+[source]
+----
+$ poetry run pytest
+----
+
+Or, for more verbose output:
+
+[source]
+----
+$ poetry run pytest -v
+----
+
+The tests use https://github.com/gitpython-developers/GitPython[Git Python] to dynamically create temporary Git repositories, and the tests do not change any global, system-level, or user-level Git configuration, ensuring isolation and no interference with your own Git configuration.
