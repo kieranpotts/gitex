@@ -46,5 +46,4 @@ jobs:
           poetry install --only dev
       - name: Run unit tests
         run: |
-          cd tests
           poetry run pytest
