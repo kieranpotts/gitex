@@ -21,10 +21,10 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
 
-  /* Disable auto-formatting by default. */
-  "editor.formatOnPaste": false,
-  "editor.formatOnSave": false,
-  "editor.formatOnType": false,
+  /* Enable auto-formatting by default. */
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
 
   /* Disable auto-fixes by default. */
   "editor.codeActionsOnSave": {
