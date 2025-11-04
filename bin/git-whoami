@@ -1,17 +1,28 @@
 #!/bin/env sh
 
 #
-# git-whoami - Show the currently configured Git user
+# git-whoami - Show the currently configured Git user.
+#
+# Local repository and global configuration are considered.
+# If no user is configured, "[not set]" is shown.
 #
 # Usage: git whoami
 #
+# TODO:
+#   - Show if GnuPG key exists
+#
 
 _git_whoami() {
-  name="[not set]"
-  mail="[not set]"
-
   name=$(git config --get user.name 2>/dev/null)
   email=$(git config --get user.email 2>/dev/null)
+
+  if [ -z "${name}" ]; then
+    name="[not set]"
+  fi
+
+  if [ -z "${email}" ]; then
+    email="[not set]"
+  fi
 
   echo "name:  ${name}"
   echo "email: ${email}"

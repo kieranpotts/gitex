@@ -73,7 +73,7 @@ To run the linter on all the shell scripts in the `bin` directory, run the follo
 
 [source]
 ----
-$ shellcheck bin/git-*
+$ shellcheck bin/* lib/*
 ----
 
 === Runtime tests
@@ -83,9 +83,9 @@ Execution of the runtime tests requires the following dependencies:
 * Python >= 3.12
 * Poetry >= 2.2
 
-Run `poetry install` in the root directory of the repository to install the dependencies, which include `pytest` and are managed by Poetry.
+Run `poetry install` in the root directory of the repository to install the dependencies in a virtual environment.
 
-To run the tests:
+The tests are run by pytest. To execute the tests, run the following command from the root directory of the repository:
 
 [source]
 ----
@@ -99,7 +99,7 @@ Or, for more verbose output:
 $ poetry run pytest -v
 ----
 
-The tests use temporary Git repositories, ensuring isolation and no interference with your local Git configuration.
+The tests use temporary Git repositories, and they do not change any global, system-level, or user-level Git configuration, ensuring isolation and no interference with your own Git configuration.
 
 .References
 ****
