@@ -12,22 +12,39 @@ jobs:
   lint:
     name: Run static analysis checks
     runs-on: ubuntu-latest
-
     steps:
-
       # Checkout the repository and fetch its full log history.
       # https://github.com/actions/checkout?tab=readme-ov-file#fetch-all-history-for-all-tags-and-branches
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Shellcheck
         run: shellcheck --severity=error bin/* lib/*
-
       # https://github.com/astral-sh/ruff-action
       - name: Lint Python with Ruff
         uses: astral-sh/ruff-action@v3
         with:
           src: "./test"
           # version: "latest" # Defined in pyproject.toml
+
+  lint:
+    name: Run dynamic tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pip install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          cache: 'poetry'
+          cache-dependency-path: "pyproject.toml"
+          python-version-file: "pyproject.toml"
+      - name: Install dependencies
+        run: |
+          poetry install --only test
+      - name: Run unit tests
+        run: |
+          cd tests
+          poetry run pytest

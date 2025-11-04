@@ -92,7 +92,6 @@ The tests use temporary Git repositories, and they do not change any global, sys
 * https://github.com/gitpython-developers/GitPython[Git Python]
 ****
 
-
 === Static analysis
 
 ShellCheck is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
