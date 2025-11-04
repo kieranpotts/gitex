@@ -28,7 +28,7 @@ jobs:
           src: "./test"
           # version: "latest" # Defined in pyproject.toml
 
-  lint:
+  test:
     name: Run dynamic tests
     runs-on: ubuntu-latest
     steps:
