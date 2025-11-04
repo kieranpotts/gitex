@@ -8,7 +8,7 @@ GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extra
 
 It is not recommended to install both GitEx and Git Extras side-by-side. GitEx is not designed to be compatible with Git Extras, and so there may be conflicts between the two libraries. You should choose to install one or the other.
 
-GitEx behaves differently to Git Extras. It is not a drop-in replacement for Git Extras. Although some GitEx extensions – like `git squash` and `git fixup` – have similar APIs to those in Git Extras, their behaviors are different.
+GitEx behaves differently to Git Extras. It is not a drop-in replacement for Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. GitEx's `git feature`, for example, behaves differently to Git Extras's `git feature`.
 
 WARNING: You use these Git extensions at your own risk. Some operations enabled via these extensions are potentially destructive. For example, some of the extensions will rewrite the commit histories of your Git repositories.
 
