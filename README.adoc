@@ -60,22 +60,6 @@ email: kieranpotts@users.noreply.github.com
 
 == Tests
 
-=== Static analysis
-
-ShellCheck is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
-
-[source]
-----
-sudo apt-get install -y shellcheck
-----
-
-To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of the repository:
-
-[source]
-----
-$ shellcheck --severity=error bin/* lib/*
-----
-
 === Runtime tests
 
 Execution of the runtime tests requires the following dependencies:
@@ -107,3 +91,30 @@ The tests use temporary Git repositories, and they do not change any global, sys
 * https://github.com/pytest-dev/pytest/[pytest]
 * https://github.com/gitpython-developers/GitPython[Git Python]
 ****
+
+
+=== Static analysis
+
+ShellCheck is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
+
+[source]
+----
+sudo apt-get install -y shellcheck
+----
+
+To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of the repository:
+
+[source]
+----
+$ shellcheck --severity=error bin/* lib/*
+----
+
+Ruff is used to lint and format the Python code used in the runtime tests. Installation of Ruff is managed by Poetry (see above). To run Ruff, use the following commands from the root directory of the repository:
+
+[source]
+----
+$ poetry run ruff check test/
+$ poetry run ruff format test/
+----
+
+The formatter should be run before committing any changes to the Python test files.
