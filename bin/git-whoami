@@ -12,10 +12,6 @@ set -eu
 #
 # Usage: git whoami
 #
-# TODO:
-#   - Show if GnuPG key exists
-#
-
 _git_whoami() {
   name=$(git config --get user.name 2>/dev/null)
   email=$(git config --get user.email 2>/dev/null)
