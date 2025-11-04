@@ -1,6 +1,6 @@
 = GitEx
 
-https://img.shields.io/github/actions/workflow/status/kieranpotts/gitex/integration.yaml?branch=dev&style=flat-square&label=tests&labelColor=%23333333&color=%23008800&cacheSeconds=86400[Integration tests passing]
+image::https://img.shields.io/github/actions/workflow/status/kieranpotts/gitex/integration.yaml?branch=dev&style=flat-square&label=tests&labelColor=%23333333&color=%23008800&cacheSeconds=86400[Integration tests passing]
 
 This project provides an extensive suite of *Git extensions* – useful Git aliases implemented as shell scripts, eg. `git sync`, `git amend`, `git squash`, `git fixup`, `git undo`.
 
