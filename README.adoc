@@ -4,13 +4,9 @@ GitEx is a suite of useful Git extensions – things like `git sync`, `git amend
 
 The extensions are implemented as POSIX-compliant Unix shell scripts. To install the extensions, all you need to do is add the scripts to your operating system's `PATH` environment variable. Git will automatically integrate the scripts as https://git-scm.com/book/ms/v2/Git-Basics-Git-Aliases[Git aliases].
 
-GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras], but it is not a fork. This is a new software project, created from scratch.
-
-It is not recommended to install both GitEx and Git Extras side-by-side. GitEx is not designed to be compatible with Git Extras, and so there may be conflicts between the two libraries. You should choose to install one or the other.
-
-GitEx behaves differently to Git Extras. It is not a drop-in replacement for Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. GitEx's `git feature`, for example, behaves differently to Git Extras's `git feature`.
-
 WARNING: You use these Git extensions at your own risk. Some operations enabled via these extensions are potentially destructive. For example, some of the extensions will rewrite the commit histories of your Git repositories.
+
+GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras], but it is not a fork and is not designed to be compatible with, or a drop-in replacement for, Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. GitEx's `git feature`, for example, behaves differently to Git Extras's `git feature`. It is not recommended to try to install both GitEx and Git Extras side-by-side – you should choose one or the other.
 
 == Requirements
 
