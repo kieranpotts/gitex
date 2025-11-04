@@ -73,7 +73,7 @@ To run the linter on all the shell scripts in the `bin` directory, run the follo
 
 [source]
 ----
-$ shellcheck bin/* lib/*
+$ shellcheck --severity=error bin/* lib/*
 ----
 
 === Runtime tests
