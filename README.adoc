@@ -1,5 +1,7 @@
 = GitEx
 
+link:https://img.shields.io/github/actions/workflow/status/kieranpotts/gitex/integration.ayml?branch=dev&style=flat-square&label=tests&labelColor=%23333333&color=%23008800[Integration tests passing]
+
 This project provides an extensive suite of *Git extensions* – useful Git aliases implemented as shell scripts, eg. `git sync`, `git amend`, `git squash`, `git fixup`, `git undo`.
 
 These aliases extend Git's built-in operations, providing shortcuts for common Git workflows. 
