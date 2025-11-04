@@ -1,5 +1,9 @@
 #!/bin/env sh
 
+# Strict mode: exit from script on errors (non-zero exit codes) from any
+# command, and when unset variables are encountered.
+set -eu
+
 #
 # git-whoami - Show the currently configured Git user.
 #
