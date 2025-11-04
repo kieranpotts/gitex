@@ -1,7 +1,4 @@
 #!/bin/env sh
-
-# Strict mode: exit from script on errors (non-zero exit codes) from any
-# command, and when unset variables are encountered.
 set -eu
 
 #
@@ -10,9 +7,13 @@ set -eu
 # Local repository and global configuration are considered.
 # If no user is configured, "[not set]" is shown.
 #
-# Usage: git whoami
+# Usage:
+#   $ git whoami
 #
-_git_whoami() {
+# Dependencies: None
+#
+
+main() {
   name=$(git config --get user.name 2>/dev/null)
   email=$(git config --get user.email 2>/dev/null)
 
@@ -26,10 +27,6 @@ _git_whoami() {
 
   echo "name:  ${name}"
   echo "email: ${email}"
-}
-
-main() {
-  _git_whoami
 }
 
 main
