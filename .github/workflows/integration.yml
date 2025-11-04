@@ -25,5 +25,9 @@ jobs:
       - name: Shellcheck
         run: shellcheck --severity=error bin/* lib/*
 
+      # https://github.com/astral-sh/ruff-action
       - name: Lint Python with Ruff
         uses: astral-sh/ruff-action@v3
+        with:
+          src: "./test"
+          # version: "latest" # Defined in pyproject.toml
