@@ -2,6 +2,8 @@
 
 Shows information about the configured Git user.
 
+This command does not accept any arguments.
+
 ----
 $ git whoami
 name:  Kieran Potts

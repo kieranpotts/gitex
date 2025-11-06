@@ -113,3 +113,28 @@ class TestGitWhoami:
         assert result.returncode == 0
         assert "name:  José García-Pérez" in result.stdout
         assert "email: jose@example.com" in result.stdout
+
+    def test_rejects_single_argument(self, temp_repo, test_script):
+        """Test that the command rejects arguments"""
+
+        result = subprocess.run(
+            [test_script, "--help"], cwd=temp_repo.cwd(), capture_output=True, text=True
+        )
+
+        assert result.returncode == 1
+        assert "error: git-whoami does not accept any arguments" in result.stderr
+        assert "usage: git whoami" in result.stderr
+
+    def test_rejects_multiple_arguments(self, temp_repo, test_script):
+        """Test that the command rejects multiple arguments"""
+
+        result = subprocess.run(
+            [test_script, "arg1", "arg2"],
+            cwd=temp_repo.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        assert result.returncode == 1
+        assert "error: git-whoami does not accept any arguments" in result.stderr
+        assert "usage: git whoami" in result.stderr
