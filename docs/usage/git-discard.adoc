@@ -1,0 +1,3 @@
+= `git discard [paths...]`
+
+Discard working changes to one or more files.

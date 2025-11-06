@@ -1,0 +1,19 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-changes - Show the changes introduced in a specified commit, or
+# introduced to the working directory plus staging index since the
+# last commit.
+#
+# Usage:
+#   $ git changes ([ref])
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

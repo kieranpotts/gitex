@@ -1,0 +1,5 @@
+= `git wip ('[msg]')`
+
+Save work-in-progress. Creates a commit, with the contents of the staging area plus working tree, with the specified message (or "WIP" if no message is provided).
+
+Continue where you left off tomorrow with `git resume`.

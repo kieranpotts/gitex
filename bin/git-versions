@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-versions - List tags prefixed with the lowercase letter "v",
+# sorted numerically.
+#
+# Usage:
+#   $ git versions
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

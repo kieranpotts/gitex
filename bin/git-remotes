@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-remotes - List the URLs of all remotes.
+#
+# Usage:
+#   $ git remotes
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

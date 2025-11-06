@@ -1,0 +1,3 @@
+= `gitex`
+
+Get help with GitEx commands, plus GitEx configuration and version information.

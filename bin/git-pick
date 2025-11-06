@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-pick - Shortcut for `git cherry-pick`. Parameters are forwarded.
+#
+# Usage:
+#   $ git pick ([params...\])
+#
+# Dependencies: None
+#
+
+main() {
+  # git cherry-pick "$@"
+}
+
+main "$@"

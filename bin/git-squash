@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-squash - Perform a `git merge --squash` operation.
+#
+# Usage:
+#   $ git squash
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

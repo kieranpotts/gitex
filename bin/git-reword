@@ -1,0 +1,19 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-reword - Change the message of the most recent commit or an
+# earlier specified commit. Anything staged will get added to the
+# newly recreated commit, too.
+#
+# Usage:
+#   $ git reword ([ref])
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

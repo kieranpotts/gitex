@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-branches - List all branches by order of last commit.
+#
+# Usage:
+#   $ git branches
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

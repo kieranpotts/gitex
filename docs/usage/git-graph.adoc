@@ -1,0 +1,3 @@
+= `git graph`
+
+Show a detailed graphical representation of the commit history; alternative to `git log`.

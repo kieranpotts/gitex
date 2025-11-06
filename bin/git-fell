@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-fell - Delete any branches that have already been merged into
+# the default branch or the specified branch.
+#
+# Usage:
+#   $ git fell ([branch])
+#
+# Dependencies: None
+#
+
+main() {
+  # git branch --merged "${1:-$(git default)}" | grep -vE '^\*|master|main|dev' | xargs -r git branch -d
+}
+
+main

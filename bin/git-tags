@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-tags - List all tags, sorted by commit date.
+#
+# Usage:
+#   $ git tags
+#
+# Dependencies: None
+#
+
+main() {
+  # git tag --sort=-creatordate
+}
+
+main

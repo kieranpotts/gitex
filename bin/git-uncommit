@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-uncommit - Undo the last commit, returning the changes
+# introduced in the commit to the staging index.
+#
+# Usage:
+#   $ git uncommit
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

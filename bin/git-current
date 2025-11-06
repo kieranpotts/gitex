@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-current - Show the name of the current branch.
+#
+# Usage:
+#   $ git current
+#
+# Dependencies: None
+#
+
+main() {
+  # git rev-parse --abbrev-ref HEAD
+}
+
+main

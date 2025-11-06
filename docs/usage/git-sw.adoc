@@ -1,0 +1,3 @@
+= `git sw ([params...])`
+
+Alias for `git switch`. Parameters are forwarded.

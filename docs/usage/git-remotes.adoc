@@ -1,0 +1,3 @@
+= `git remotes`
+
+List the URLs of all remotes.

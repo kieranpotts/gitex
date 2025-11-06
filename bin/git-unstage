@@ -1,0 +1,19 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-unstage - Alias for `git reset --mixed HEAD`, which just
+# removes everything from the staging index, returning those
+# changes to the working directory.
+#
+# Usage:
+#   $ git unstage
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

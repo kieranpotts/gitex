@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-configure - Open `~/.gitconfig` in your default text editor.
+#
+# Usage:
+#   $ git configure
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

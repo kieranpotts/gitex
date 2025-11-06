@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-working - List all changed files in the working directory.
+#
+# Usage:
+#   $ git working
+#
+# Dependencies: None
+#
+
+main() {
+  # git diff --name-only
+}
+
+main

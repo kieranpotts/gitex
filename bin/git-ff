@@ -1,0 +1,20 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-ff - Perform a fast-forward merge.
+#
+# Usage:
+#   $ git ff ([branch])
+#
+# Dependencies: None
+#
+
+main() {
+  # branch=${1:-main}
+
+  # git checkout "$branch"
+  # git pull --ff-only
+}
+
+main

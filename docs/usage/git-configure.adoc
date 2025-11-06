@@ -1,0 +1,3 @@
+= `git configure`
+
+Open `~/.gitconfig` in your default text editor.

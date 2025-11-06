@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-history - Clean `git log`, paginated.
+#
+# Usage:
+#   $ git history
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

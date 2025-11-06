@@ -1,0 +1,3 @@
+= `git cl ([params...])`
+
+Shortcut for `git clone`. Parameters are forwarded.

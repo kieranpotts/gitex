@@ -1,0 +1,3 @@
+= `git pick ([params...])`
+
+Shortcut for `git cherry-pick`. Parameters are forwarded.

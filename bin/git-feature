@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-feature - Create a new feature branch.
+#
+# Usage:
+#   $ git feature
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

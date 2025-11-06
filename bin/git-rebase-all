@@ -1,0 +1,19 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-rebase-all - Rebase all local branches on the trunk branch. Defaults
+# to using the `main` branch as the target base branch, unless otherwise
+# specified.
+#
+# Usage:
+#   $ git rebase-all ([trunk])
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

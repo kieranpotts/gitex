@@ -1,0 +1,3 @@
+= `git author ([ref])`
+
+Change the author of the last commit or an earlier specified commit.

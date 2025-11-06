@@ -1,0 +1,3 @@
+= `git ff ([branch])`
+
+Perform a fast-forward merge.

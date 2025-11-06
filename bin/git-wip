@@ -1,0 +1,22 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-wip - Save work-in-progress.
+#
+# Creates a commit, with the contents of the staging index plus
+# working directory, with the specified message (or "WIP" if no
+# message is provided). Continue where you left off tomorrow
+# with `git resume`.
+#
+# Usage:
+#   $ git wip ('[msg]')
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

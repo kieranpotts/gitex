@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-staged - List files with changes staged for committing.
+#
+# Usage:
+#   $ git staged
+#
+# Dependencies: None
+#
+
+main() {
+  # git diff --name-only --cached
+}
+
+main

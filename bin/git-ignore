@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-ignore - Ignore changes made to the specified file.
+#
+# Usage:
+#   $ git ignore [path]
+#
+# Dependencies: None
+#
+
+main() {
+  # path=${1:-.}
+  # git update-index --assume-unchanged "$path"
+}
+
+main

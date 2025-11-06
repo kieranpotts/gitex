@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-fetched - List the commits added by the last `git fetch` operation.
+#
+# Usage:
+#   $ git fetched
+#
+# Dependencies: None
+#
+
+main() {
+  # git log --oneline --no-decorate --no-merges @{upstream}..HEAD
+}
+
+main

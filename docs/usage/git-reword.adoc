@@ -1,0 +1,3 @@
+= `git reword ([ref])`
+
+Change the message of the most recent commit or an earlier specified commit. Anything staged will get added to the newly recreated commit, too.

@@ -1,0 +1,3 @@
+= `git co ([params...])`
+
+Shortcut for `git checkout`. Parameters are forwarded.

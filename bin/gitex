@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# gitex - Get help with GitEx commands.
+#
+# Usage:
+#   $ gitex
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

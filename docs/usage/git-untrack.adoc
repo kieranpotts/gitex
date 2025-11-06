@@ -1,0 +1,3 @@
+= `git untrack [path]`
+
+Untrack a specified file.

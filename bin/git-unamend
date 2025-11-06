@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-unamend - Undo the prior `git amend` or `git commit --amend` operation.
+#
+# Usage:
+#   $ git unamend
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

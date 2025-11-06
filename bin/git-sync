@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-sync - Sync the local checked-out branch with its tracked
+# upstream branch, maintaining linear history.
+#
+# Usage:
+#   $ git sync
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

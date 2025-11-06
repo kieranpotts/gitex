@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-upstream - Show the name of the tracked upstream repository.
+#
+# Usage:
+#   $ git upstream
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

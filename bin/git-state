@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-state - Concise view of `git status`.
+#
+# Usage:
+#   $ git state
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-co - Shortcut for `git checkout`. Parameters are forwarded.
+#
+# Usage:
+#   $ git co ([params...])
+#
+# Dependencies: None
+#
+
+main() {
+  # git checkout "$@"
+}
+
+main "$@"

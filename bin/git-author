@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-author - Change the author of the last commit or an earlier
+# specified commit.
+#
+# Usage:
+#   $ git author ([ref])
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

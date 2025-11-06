@@ -1,0 +1,19 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-undo - Reset to the last commit, undoing all staged and
+# working changes. A save-point commit is made, so the work
+# will be recoverable using `git reflog`.
+#
+# Usage:
+#   $ git undo
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

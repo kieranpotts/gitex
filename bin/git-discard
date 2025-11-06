@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-discard - Discard working changes to one or more files. Changes
+# made will be lost indefinitely.
+#
+# Usage:
+#   $ git discard [paths...]
+#
+# Dependencies: None
+#
+
+main() {
+  # git checkout -- "$@"
+}
+
+main "$@"

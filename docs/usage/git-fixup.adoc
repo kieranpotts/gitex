@@ -1,0 +1,3 @@
+= `git fixup ([ref\])`
+
+Fix something in the most recent commit or an earlier specified commit. Rewrites history.

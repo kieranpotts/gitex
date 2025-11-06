@@ -1,0 +1,20 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-cm - Shortcut for `git add . && git commit`. Stage and commit all
+# changes in the working directory, including new (untracked) files. If
+# a message is provided, it is used as the commit message; otherwise,
+# the user will be prompted to input a message.
+#
+# Usage:
+#   $ git cm ('[msg]')
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

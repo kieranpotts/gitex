@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-ignored - List all ignored files.
+#
+# Usage:
+#   $ git ignored
+#
+# Dependencies: None
+#
+
+main() {
+  # git ls-files --ignored --exclude-standard
+}
+
+main

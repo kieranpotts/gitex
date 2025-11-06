@@ -1,0 +1,3 @@
+= `git amend`
+
+Add all working changes to last commit, including new (untracked) files.

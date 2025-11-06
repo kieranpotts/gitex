@@ -1,0 +1,7 @@
+= `git up (--force)`
+
+Push new commits up to the tracked upstream branch (else to a new branch of the same name, if tracking is not yet established).
+
+Pushes tags and sets up tracking, too.
+
+Add the `--force` option to remove commits from the upstream branch that do not exist in the local branch – unless those commits were introduced by someone else.

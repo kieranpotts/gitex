@@ -1,0 +1,3 @@
+= `git branches`
+
+List all branches by order of last commit.

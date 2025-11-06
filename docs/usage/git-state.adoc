@@ -1,0 +1,3 @@
+= `git state`
+
+Concise view of `git status`.

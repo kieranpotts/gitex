@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-amend - Add all working changes to last commit, including new
+# (untracked) files.
+#
+# Usage:
+#   $ git amend
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

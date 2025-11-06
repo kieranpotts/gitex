@@ -1,0 +1,3 @@
+= `git history`
+
+Clean `git log`, paginated.

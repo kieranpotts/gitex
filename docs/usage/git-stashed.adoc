@@ -1,0 +1,3 @@
+= `git stashed`
+
+Show the current number of stash entries.

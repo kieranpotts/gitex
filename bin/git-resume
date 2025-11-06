@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-resume - Resume work-in-progress committed via the last
+# `git wip` operation.
+#
+# Usage:
+#   $ git resume
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

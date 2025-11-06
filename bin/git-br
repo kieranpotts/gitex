@@ -1,0 +1,18 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-br - Branch from current position, switch to it, and push upstream
+# to setup tracking.
+#
+# Usage:
+#   $ git br ([branch])
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

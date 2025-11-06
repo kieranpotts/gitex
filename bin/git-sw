@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-sw - Alias for `git switch`. Parameters are forwarded.
+#
+# Usage:
+#   $ git sw ([params...])
+#
+# Dependencies: None
+#
+
+main() {
+  # git switch "$@"
+}
+
+main "$@"

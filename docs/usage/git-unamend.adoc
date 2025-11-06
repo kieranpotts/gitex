@@ -1,0 +1,3 @@
+= `git unamend`
+
+Undo the prior `git amend` or `git commit --amend` operation.

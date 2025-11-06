@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-stashed - Show the current number of stash entries.
+#
+# Usage:
+#   $ git stashed
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

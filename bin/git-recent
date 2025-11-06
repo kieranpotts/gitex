@@ -1,0 +1,17 @@
+#!/bin/env sh
+set -eu
+
+#
+# git-recent - Clean `git log`, last 25 entries only.
+#
+# Usage:
+#   $ git recent
+#
+# Dependencies: None
+#
+
+main() {
+  # ...
+}
+
+main

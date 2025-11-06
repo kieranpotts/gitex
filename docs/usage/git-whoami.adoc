@@ -1,8 +1,7 @@
 = `git whoami`
 
-Show the currently configured Git user.
+Shows information about the configured Git user.
 
-[source]
 ----
 $ git whoami
 name:  Kieran Potts

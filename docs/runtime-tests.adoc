@@ -9,14 +9,12 @@ https://github.com/python-poetry/poetry[Poetry] is used to manage the Python dev
 
 The tests are run by https://github.com/pytest-dev/pytest/[pytest]. To execute the tests, run the following command from the root directory of this repository:
 
-[source]
 ----
 $ poetry run pytest
 ----
 
 Or, for more verbose output:
 
-[source]
 ----
 $ poetry run pytest -v
 ----

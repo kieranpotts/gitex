@@ -1,0 +1,3 @@
+= `git last`
+
+Show detailed information on the changes in the last commit.

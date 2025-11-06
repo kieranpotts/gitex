@@ -1,0 +1,3 @@
+= `git br ([branch])`
+
+Branch from current position, switch to it, and push upstream to setup tracking.

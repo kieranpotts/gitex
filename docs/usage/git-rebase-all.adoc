@@ -1,0 +1,3 @@
+= `git rebase-all ([trunk])`
+
+Rebase all local branches on the trunk branch – defaults to "main" unless otherwise specified.

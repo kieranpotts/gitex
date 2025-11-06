@@ -1,0 +1,3 @@
+= `git unignore [path]`
+
+Stop ignoring changes made to a file.
