@@ -10,7 +10,7 @@ import pytest
 
 @pytest.fixture
 def test_script():
-    """Get the path to the git-whoami script"""
+    """Get the path to the git-whoami script."""
 
     repo_dir = Path(__file__).parent.parent
     script_path = repo_dir / "bin" / "git-whoami"
@@ -21,15 +21,16 @@ def test_script():
 
 
 class TestGitWhoami:
-    """Test cases for git-whoami command"""
+    """Test cases for git-whoami command."""
 
     def test_with_name_and_email_set(self, temp_repo, test_script):
-        """Test when both user.name and user.email are configured"""
+        """Test when both user.name and user.email are configured."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "John Doe")
         git.config("--local", "user.email", "john.doe@example.com")
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -39,12 +40,13 @@ class TestGitWhoami:
         assert "email: john.doe@example.com" in result.stdout
 
     def test_with_neither_name_nor_email_set(self, temp_repo, test_script):
-        """Test when neither user.name nor user.email are configured"""
+        """Test when neither user.name nor user.email are configured."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "")
         git.config("--local", "user.email", "")
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -54,12 +56,13 @@ class TestGitWhoami:
         assert "email: [not set]" in result.stdout
 
     def test_with_only_name_set(self, temp_repo, test_script):
-        """Test when only user.name is configured"""
+        """Test when only user.name is configured."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "Jane Doe")
         git.config("--local", "user.email", "")
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -69,12 +72,13 @@ class TestGitWhoami:
         assert "email: [not set]" in result.stdout
 
     def test_with_only_email_set(self, temp_repo, test_script):
-        """Test when only user.email is configured"""
+        """Test when only user.email is configured."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "")
         git.config("--local", "user.email", "jane.doe@example.com")
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -84,12 +88,13 @@ class TestGitWhoami:
         assert "email: jane.doe@example.com" in result.stdout
 
     def test_output_format(self, temp_repo, test_script):
-        """Test that the output follows the expected format"""
+        """Test that the output follows the expected format."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "John Doe")
         git.config("--local", "user.email", "john.doe@example.com")
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -100,12 +105,13 @@ class TestGitWhoami:
         assert lines[1].startswith("email: ")
 
     def test_with_special_characters_in_name(self, temp_repo, test_script):
-        """Test with special characters in username"""
+        """Test with special characters in username."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "José García-Pérez")
         git.config("--local", "user.email", "jose@example.com")
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -115,8 +121,9 @@ class TestGitWhoami:
         assert "email: jose@example.com" in result.stdout
 
     def test_rejects_single_argument(self, temp_repo, test_script):
-        """Test that the command rejects arguments"""
+        """Test that the command rejects arguments."""
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script, "--help"], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
@@ -125,8 +132,9 @@ class TestGitWhoami:
         assert "error: git-whoami does not accept any arguments" in result.stderr
 
     def test_rejects_multiple_arguments(self, temp_repo, test_script):
-        """Test that the command rejects multiple arguments"""
+        """Test that the command rejects multiple arguments."""
 
+        # Run git-whoami.
         result = subprocess.run(
             [test_script, "arg1", "arg2"],
             cwd=temp_repo.cwd(),
