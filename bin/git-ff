@@ -11,10 +11,15 @@ set -eu
 #
 
 main() {
+  if [ $# -gt 0 ]; then
+    echo "error: git-whoami does not accept any arguments" >&2
+    return 1
+  fi
+
   # branch=${1:-main}
 
   # git checkout "$branch"
   # git pull --ff-only
 }
 
-main
+main "$@"

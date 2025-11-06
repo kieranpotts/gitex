@@ -11,8 +11,13 @@ set -eu
 #
 
 main() {
+  if [ $# -gt 0 ]; then
+    echo "error: git-whoami does not accept any arguments" >&2
+    return 1
+  fi
+
   # path=${1:-.}
   # git update-index --assume-unchanged "$path"
 }
 
-main
+main "$@"
