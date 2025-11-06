@@ -13,11 +13,21 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-whoami does not accept any arguments" >&2
+    echo "error: git-amend does not accept any arguments" >&2
     return 1
   fi
 
-  # ...
+  # Check if there's a previous commit to amend.
+  if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+    echo "error: no commits exist to amend" >&2
+    return 1
+  fi
+
+  # Add all changes including untracked files.
+  git add -A
+
+  # Amend the last commit without editing the message.
+  git commit --amend --no-edit
 }
 
 main "$@"

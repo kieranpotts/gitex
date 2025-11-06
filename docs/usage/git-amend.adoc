@@ -1,3 +1,75 @@
 = `git amend`
 
-Add all working changes to last commit, including new (untracked) files.
+Add all working changes to the last commit, including new (untracked) files.
+
+This command stages all changes in your working directory (both tracked and untracked files) and amends them into the most recent commit without changing the commit message. It's a convenient shortcut when you've forgotten to include changes in your last commit or need to make quick fixes.
+
+This command does not accept any arguments.
+
+CAUTION: This command rewrites commit history. Avoid using it on commits that have already been pushed to a shared repository.
+
+== Usage
+
+----
+$ git amend
+----
+
+== Examples
+
+=== Adding forgotten files to the last commit
+
+You made a commit but forgot to include a new file:
+
+----
+$ git commit -m "add user authentication"
+[main 1a2b3c4] add user authentication
+ 2 files changed, 45 insertions(+)
+
+$ # Oops! Forgot to add the config file
+$ touch config/auth.json
+$ git amend
+[main 5d6e7f8] add user authentication
+ 3 files changed, 52 insertions(+)
+----
+
+=== Fixing a typo in the last commit
+
+You noticed a typo right after committing:
+
+----
+$ git commit -m "implement search functionality"
+[main 9a8b7c6] implement search functionality
+ 1 file changed, 20 insertions(+)
+
+$ # Fix the typo
+$ vim search.js
+$ git amend
+[main 4d3e2f1] implement search functionality
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+----
+
+=== Adding multiple types of changes
+
+You have staged, unstaged, and untracked changes to include:
+
+----
+$ git status
+Changes to be committed:
+  modified:   file1.js
+
+Changes not staged for commit:
+  modified:   file2.js
+
+Untracked files:
+  file3.js
+
+$ git amend
+[main 7f8e9d0] previous commit message
+ 3 files changed, 15 insertions(+)
+----
+
+== See also
+
+- `git commit --amend` - Git's built-in amend command, which allows editing of the commit message.
+- `git uncommit` - Undo the last commit but keep the changes.
+- `git unamend` - Undo the last amend operation.
