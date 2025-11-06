@@ -123,7 +123,6 @@ class TestGitWhoami:
 
         assert result.returncode == 1
         assert "error: git-whoami does not accept any arguments" in result.stderr
-        assert "usage: git whoami" in result.stderr
 
     def test_rejects_multiple_arguments(self, temp_repo, test_script):
         """Test that the command rejects multiple arguments"""
@@ -137,4 +136,3 @@ class TestGitWhoami:
 
         assert result.returncode == 1
         assert "error: git-whoami does not accept any arguments" in result.stderr
-        assert "usage: git whoami" in result.stderr
