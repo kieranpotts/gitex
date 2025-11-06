@@ -12,7 +12,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-whoami does not accept any arguments" >&2
+    echo "error: git-co does not accept any arguments" >&2
     return 1
   fi
 
