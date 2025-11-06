@@ -42,7 +42,7 @@
     ],
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 100,
-    
+
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
@@ -97,5 +97,16 @@
   rather than the default Asciidoc style. This ensures the colors of the
   preview are consistent with the enabled VS Code theme. */
   "asciidoc.preview.useEditorStyle": true,
+
+  /*
+  Python extension.
+  https://marketplace.visualstudio.com/items?itemName=ms-python.python
+  */
+
+  /* Disable some of Pylance's intensive features – which can crash WSL on
+  resource-limited systems. */
+  "python.languageServer": "Pylance",
+  "python.analysis.indexing": false,
+  "python.analysis.packageIndexDepths": [],
 
 }
