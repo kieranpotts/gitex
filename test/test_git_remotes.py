@@ -2,7 +2,7 @@
 Test suite for git-remotes command.
 """
 
-import subprocess
+# import subprocess
 from pathlib import Path
 
 import pytest

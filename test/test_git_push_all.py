@@ -2,7 +2,7 @@
 Test suite for git-push-all command.
 """
 
-import subprocess
+# import subprocess
 from pathlib import Path
 
 import pytest

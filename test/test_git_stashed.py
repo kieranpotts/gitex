@@ -2,7 +2,7 @@
 Test suite for git-stashed command.
 """
 
-import subprocess
+# import subprocess
 from pathlib import Path
 
 import pytest

@@ -100,7 +100,7 @@ class TestGitWhoami:
         assert lines[1].startswith("email: ")
 
     def test_with_special_characters_in_name(self, temp_repo, test_script):
-        """Test with special characters in user name"""
+        """Test with special characters in username"""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "José García-Pérez")

@@ -2,7 +2,7 @@
 Test suite for git-ignore command.
 """
 
-import subprocess
+# import subprocess
 from pathlib import Path
 
 import pytest

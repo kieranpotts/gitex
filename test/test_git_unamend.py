@@ -2,7 +2,7 @@
 Test suite for git-unamend command.
 """
 
-import subprocess
+# import subprocess
 from pathlib import Path
 
 import pytest
