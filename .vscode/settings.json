@@ -28,7 +28,8 @@
 
   /* Disable auto-fixes by default. */
   "editor.codeActionsOnSave": {
-    "source.fixAll": "never"
+    "source.fixAll": "never",
+    "source.fixAll.shellcheck": "explicit",
   },
 
   /*
@@ -41,6 +42,10 @@
     ],
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 100,
+    
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
   },
 
   "[json]": {
