@@ -10,7 +10,9 @@ This command is a shortcut for `git commit --amend`, but with slightly differing
 
 * If your working tree is *clean*, a message is displayed and no changes are made.
 
-The commit message is not changed, only the contents of the commit. To amend the previous commit message you can use link:./git-reword.adoc[`git reword`].
+The commit message is not changed (`--no-edit`). Only the contents of the previous commit are changed. To amend the previous commit message you can use link:./git-reword.adoc[`git reword`].
+
+See also link:./git-unamend.adoc[`git unamend`], which is capable of undoing this operation and returning the commit to its previous state.
 
 CAUTION: This command rewrites commit history. Avoid using it on commits that have already been pushed to a shared repository.
 
@@ -38,5 +40,7 @@ $ git amend
 ----
 
 * link:./git-reword.adoc[`git reword`] — Amend the message of the last commit.
+* link:./git-unamend.adoc[`git unamend`] — Undo the last `git amend` operation.
+* link:./git-fixup.adoc[`git fixup`] — Another way of changing prior commits.
 * link:./git-uncommit.adoc[`git uncommit`] — Undo the last commit but keep the changes.
-* link:./git-unamend.adoc[`git unamend`] — Undo the last amend operation.
+
