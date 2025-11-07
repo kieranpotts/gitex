@@ -43,17 +43,18 @@ class TestGitAmend:
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
 
+        # Verify success exit code.
         assert result.returncode == 0
 
         # Verify there's still only one commit.
         log_output = git.log("--oneline")
         assert log_output.count("\n") == 0
 
-        # Verify the file content in the commit.
+        # Verify the new file content exists in the commit.
         show_output = git.show("HEAD:file1.txt")
         assert "Modified content" in show_output
 
-        # Verify commit message unchanged.
+        # Verify the original commit message is unchanged.
         commit_msg = git.log("-1", "--format=%s")
         assert commit_msg == "initial commit"
 
@@ -77,6 +78,7 @@ class TestGitAmend:
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
 
+        # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the new file was added to the commit.
@@ -109,22 +111,23 @@ class TestGitAmend:
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
 
+        # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the changes were added to the last commit.
         show_output = git.show("HEAD:file1.txt")
         assert "Staged content" in show_output
 
-    def test_amend_with_mixed_changes(self, temp_repo, test_script):
-        """Test amending with staged, unstaged, and untracked files."""
+    def test_amend_with_staged_changes_only_when_mixed(self, temp_repo, test_script):
+        """Test that only staged changes are amended when there are both staged and working changes."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "John Doe")
         git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Content 1")
-        Path(temp_repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(temp_repo.cwd(), "file1.txt").write_text("Initial file 1 content")
+        Path(temp_repo.cwd(), "file2.txt").write_text("Initial file 2 content")
         git.add(".")
         git.commit("-m", "initial commit")
 
@@ -136,82 +139,70 @@ class TestGitAmend:
         Path(temp_repo.cwd(), "file2.txt").write_text("Unstaged content")
 
         # Untracked file.
-        Path(temp_repo.cwd(), "file3.txt").write_text("New file")
+        Path(temp_repo.cwd(), "file3.txt").write_text("Untracked file")
 
         # Run git-amend.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
 
+        # Verify success exit code.
         assert result.returncode == 0
 
-        # Verify all changes were included.
+        # Verify only staged changes were included.
         assert "Staged content" in git.show("HEAD:file1.txt")
-        assert "Unstaged content" in git.show("HEAD:file2.txt")
-        assert "New file" in git.show("HEAD:file3.txt")
+
+        # Verify unstaged changes were NOT included.
+        # For file 2, only the original committed content should be committed.
+        assert "Initial file 2 content" in git.show("HEAD:file2.txt")
+
+        # Verify untracked file was NOT included.
+        ls_tree = git.ls_tree("-r", "--name-only", "HEAD")
+        assert "file3.txt" not in ls_tree
 
         # Verify still only one commit.
         log_output = git.log("--oneline")
         assert log_output.count("\n") == 0
 
-    def test_error_no_commits_exist(self, temp_repo, test_script):
-        """Test error when there are no commits to amend."""
+        # Verify unstaged and untracked changes still exist in working tree.
+        status = git.status("--short")
+        assert "M file2.txt" in status or " M file2.txt" in status
+        assert "?? file3.txt" in status
+
+    def test_amend_with_only_unstaged_and_untracked(self, temp_repo, test_script):
+        """Test that all working changes are staged when there are no staged changes."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "John Doe")
         git.config("--local", "user.email", "john.doe@example.com")
 
-        # Create a file but don't commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
+        # Create initial commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Initial file 1 content")
+        Path(temp_repo.cwd(), "file2.txt").write_text("Initial file 2 content")
+        git.add(".")
+        git.commit("-m", "initial commit")
+
+        # Unstaged change (no staging).
+        Path(temp_repo.cwd(), "file1.txt").write_text("Unstaged content")
+
+        # Untracked file (no staging).
+        Path(temp_repo.cwd(), "file3.txt").write_text("Untracked file")
 
         # Run git-amend.
         result = subprocess.run(
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
 
-        assert result.returncode == 1
-        assert "error: no commits exist to amend" in result.stderr
+        # Verify success exit code.
+        assert result.returncode == 0
 
-    def test_rejects_single_argument(self, temp_repo, test_script):
-        """Test that the command rejects arguments."""
+        # Verify all working changes were included.
+        assert "Unstaged content" in git.show("HEAD:file1.txt")
+        assert "Untracked file" in git.show("HEAD:file3.txt")
 
-        git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
-
-        # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
-
-        result = subprocess.run(
-            [test_script, "--help"], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
-
-        assert result.returncode == 1
-        assert "error: git-amend does not accept any arguments" in result.stderr
-
-    def test_rejects_multiple_arguments(self, temp_repo, test_script):
-        """Test that the command rejects multiple arguments."""
-
-        git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
-
-        # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
-
-        result = subprocess.run(
-            [test_script, "arg1", "arg2"],
-            cwd=temp_repo.cwd(),
-            capture_output=True,
-            text=True,
-        )
-
-        assert result.returncode == 1
-        assert "error: git-amend does not accept any arguments" in result.stderr
+        # Verify still only one commit.
+        log_output = git.log("--oneline")
+        assert log_output.count("\n") == 0
 
     def test_commit_message_preserved(self, temp_repo, test_script):
         """Test that the commit message is preserved when amending."""
@@ -233,8 +224,106 @@ class TestGitAmend:
             [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
         )
 
+        # Verify success exit code.
         assert result.returncode == 0
 
         # Verify commit message is unchanged.
         commit_msg = git.log("-1", "--format=%s")
         assert commit_msg == "my custom commit message"
+
+    def test_no_changes_to_amend(self, temp_repo, test_script):
+        """Test that a message is printed when there are no changes to amend."""
+
+        git = temp_repo.git()
+        git.config("--local", "user.name", "John Doe")
+        git.config("--local", "user.email", "john.doe@example.com")
+
+        # Create initial commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
+        git.add("file1.txt")
+        git.commit("-m", "initial commit")
+
+        # Run git-amend with no changes.
+        result = subprocess.run(
+            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
+        )
+
+        # Verify success exit code.
+        assert result.returncode == 0
+
+        # Verify output message.
+        assert "nothing to amend, working tree clean" in result.stdout
+
+        # Verify the commit hasn't changed.
+        log_output = git.log("--oneline")
+        commit_msg = git.log("-1", "--format=%s")
+        assert log_output.count("\n") == 0
+        assert commit_msg == "initial commit"
+
+    def test_error_no_commits_exist(self, temp_repo, test_script):
+        """Test error when there are no commits to amend."""
+
+        git = temp_repo.git()
+        git.config("--local", "user.name", "John Doe")
+        git.config("--local", "user.email", "john.doe@example.com")
+
+        # Create a file but don't commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
+
+        # Run git-amend.
+        result = subprocess.run(
+            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
+        )
+
+        # Verify error exit code.
+        assert result.returncode == 1
+
+        # Verify error message.
+        assert "error: no commits exist to amend" in result.stderr
+
+    def test_rejects_single_argument(self, temp_repo, test_script):
+        """Test that the command rejects arguments."""
+
+        git = temp_repo.git()
+        git.config("--local", "user.name", "John Doe")
+        git.config("--local", "user.email", "john.doe@example.com")
+
+        # Create initial commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
+        git.add("file1.txt")
+        git.commit("-m", "initial commit")
+
+        result = subprocess.run(
+            [test_script, "--help"], cwd=temp_repo.cwd(), capture_output=True, text=True
+        )
+
+        # Verify error exit code.
+        assert result.returncode == 1
+
+        # Verify error message.
+        assert "error: git-amend does not accept any arguments" in result.stderr
+
+    def test_rejects_multiple_arguments(self, temp_repo, test_script):
+        """Test that the command rejects multiple arguments."""
+
+        git = temp_repo.git()
+        git.config("--local", "user.name", "John Doe")
+        git.config("--local", "user.email", "john.doe@example.com")
+
+        # Create initial commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Content")
+        git.add("file1.txt")
+        git.commit("-m", "initial commit")
+
+        result = subprocess.run(
+            [test_script, "arg1", "arg2"],
+            cwd=temp_repo.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        # Verify error exit code.
+        assert result.returncode == 1
+
+        # Verify error message.
+        assert "error: git-amend does not accept any arguments" in result.stderr

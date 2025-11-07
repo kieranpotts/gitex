@@ -87,8 +87,8 @@ class TestGitWhoami:
         assert "name:  [not set]" in result.stdout
         assert "email: jane.doe@example.com" in result.stdout
 
-    def test_output_format(self, temp_repo, test_script):
-        """Test that the output follows the expected format."""
+    def test_output_line_count(self, temp_repo, test_script):
+        """Test that the output does not exceed the expected number of lines."""
 
         git = temp_repo.git()
         git.config("--local", "user.name", "John Doe")

@@ -2,8 +2,11 @@
 set -eu
 
 #
-# git-amend - Add all working changes to last commit, including new
-# (untracked) files.
+# git-amend - Modify the last commit with new changes.
+#
+# If there are staged changes, amend the last commit with those changes but
+# leave the working tree as it is. If nothing is staged, stage all working
+# changes (including new untracked files) and add those to the last commit.
 #
 # Usage:
 #   $ git amend
@@ -23,11 +26,38 @@ main() {
     return 1
   fi
 
-  # Add all changes including untracked files.
-  git add -A
+  # Check if there are staged changes. If there are, amend the
+  # last commit with those changes only; leave other changes in
+  # the working directory. Return the exit code of the commit
+  # operation.
+  if ! git diff --cached --quiet 2>/dev/null; then
+    git commit --amend --no-edit
+    return $?
+  fi
 
-  # Amend the last commit without editing the message.
-  git commit --amend --no-edit
+  # No staged changes, check for working changes.
+  has_unstaged=false
+  has_untracked=false
+
+  if ! git diff --quiet 2>/dev/null; then
+    has_unstaged=true
+  fi
+
+  if [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]; then
+    has_untracked=true
+  fi
+
+  # If there are working changes, stage all and amend. Return
+  # the exit code of the commit operation.
+  if [ "$has_unstaged" = true ] || [ "$has_untracked" = true ]; then
+    git add -A
+    git commit --amend --no-edit
+    return $?
+  fi
+
+  # No changes to amend.
+  echo "nothing to amend, working tree clean"
+  return 0
 }
 
 main "$@"
