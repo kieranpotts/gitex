@@ -3,6 +3,7 @@ Helper functions for tests.
 """
 
 import os
+import subprocess
 import tempfile
 
 # https://github.com/gitpython-developers/GitPython
@@ -36,3 +37,22 @@ class TempRepo:
 
     def git(self):
         return self._repo.git
+
+    def run(self, script_path, *args):
+        """
+        Run a git extension script and return the subprocess result.
+
+        Args:
+            script_path: Path to the script to run.
+            *args: Optional arguments to pass to the script.
+
+        Returns:
+            subprocess.CompletedProcess with returncode, stdout, stderr
+        """
+
+        return subprocess.run(
+            [script_path, *args],
+            cwd=self._cwd,
+            capture_output=True,
+            text=True,
+        )

@@ -2,33 +2,16 @@
 Test suite for git-amend command.
 """
 
-import subprocess
 from pathlib import Path
-
-import pytest
-
-
-@pytest.fixture
-def test_script():
-    """Get the path to the git-amend script."""
-
-    repo_dir = Path(__file__).parent.parent
-    script_path = repo_dir / "bin" / "git-amend"
-
-    assert script_path.exists(), f"git-amend script not found at {script_path}"
-
-    return str(script_path)
 
 
 class TestGitAmend:
     """Test cases for git-amend command."""
 
-    def test_amend_with_unstaged_changes(self, temp_repo, test_script):
+    def test_amend_with_unstaged_changes(self, temp_repo, script_path):
         """Test amending with unstaged changes."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
@@ -38,10 +21,7 @@ class TestGitAmend:
         # Make unstaged changes.
         Path(temp_repo.cwd(), "file1.txt").write_text("Modified content")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -58,12 +38,10 @@ class TestGitAmend:
         commit_msg = git.log("-1", "--format=%s")
         assert commit_msg == "initial commit"
 
-    def test_amend_with_untracked_files(self, temp_repo, test_script):
+    def test_amend_with_untracked_files(self, temp_repo, script_path):
         """Test amending with new untracked files."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
@@ -73,10 +51,7 @@ class TestGitAmend:
         # Create untracked file.
         Path(temp_repo.cwd(), "file2.txt").write_text("New file")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -90,12 +65,10 @@ class TestGitAmend:
         log_output = git.log("--oneline")
         assert log_output.count("\n") == 0
 
-    def test_amend_with_staged_changes(self, temp_repo, test_script):
+    def test_amend_with_staged_changes(self, temp_repo, script_path):
         """Test amending with already staged changes."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
@@ -106,10 +79,7 @@ class TestGitAmend:
         Path(temp_repo.cwd(), "file1.txt").write_text("Staged content")
         git.add("file1.txt")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -118,12 +88,10 @@ class TestGitAmend:
         show_output = git.show("HEAD:file1.txt")
         assert "Staged content" in show_output
 
-    def test_amend_with_staged_changes_only_when_mixed(self, temp_repo, test_script):
+    def test_amend_with_staged_changes_only_when_mixed(self, temp_repo, script_path):
         """Test that only staged changes are amended when there are both staged and working changes."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial file 1 content")
@@ -141,10 +109,7 @@ class TestGitAmend:
         # Untracked file.
         Path(temp_repo.cwd(), "file3.txt").write_text("Untracked file")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -169,12 +134,10 @@ class TestGitAmend:
         assert "M file2.txt" in status or " M file2.txt" in status
         assert "?? file3.txt" in status
 
-    def test_amend_with_only_unstaged_and_untracked(self, temp_repo, test_script):
+    def test_amend_with_only_unstaged_and_untracked(self, temp_repo, script_path):
         """Test that all working changes are staged when there are no staged changes."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial file 1 content")
@@ -188,10 +151,7 @@ class TestGitAmend:
         # Untracked file (no staging).
         Path(temp_repo.cwd(), "file3.txt").write_text("Untracked file")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -204,12 +164,10 @@ class TestGitAmend:
         log_output = git.log("--oneline")
         assert log_output.count("\n") == 0
 
-    def test_commit_message_preserved(self, temp_repo, test_script):
+    def test_commit_message_preserved(self, temp_repo, script_path):
         """Test that the commit message is preserved when amending."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit with specific message.
         Path(temp_repo.cwd(), "file1.txt").write_text("Content")
@@ -219,10 +177,7 @@ class TestGitAmend:
         # Make changes.
         Path(temp_repo.cwd(), "file1.txt").write_text("Modified")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -231,22 +186,17 @@ class TestGitAmend:
         commit_msg = git.log("-1", "--format=%s")
         assert commit_msg == "my custom commit message"
 
-    def test_no_changes_to_amend(self, temp_repo, test_script):
+    def test_no_changes_to_amend(self, temp_repo, script_path):
         """Test that a message is printed when there are no changes to amend."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Content")
         git.add("file1.txt")
         git.commit("-m", "initial commit")
 
-        # Run git-amend with no changes.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -260,20 +210,13 @@ class TestGitAmend:
         assert log_output.count("\n") == 0
         assert commit_msg == "initial commit"
 
-    def test_error_no_commits_exist(self, temp_repo, test_script):
+    def test_error_no_commits_exist(self, temp_repo, script_path):
         """Test error when there are no commits to amend."""
-
-        git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create a file but don't commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Content")
 
-        # Run git-amend.
-        result = subprocess.run(
-            [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path)
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -281,21 +224,17 @@ class TestGitAmend:
         # Verify error message.
         assert "error: no commits exist to amend" in result.stderr
 
-    def test_rejects_single_argument(self, temp_repo, test_script):
+    def test_rejects_single_argument(self, temp_repo, script_path):
         """Test that the command rejects arguments."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Content")
         git.add("file1.txt")
         git.commit("-m", "initial commit")
 
-        result = subprocess.run(
-            [test_script, "--help"], cwd=temp_repo.cwd(), capture_output=True, text=True
-        )
+        result = temp_repo.run(script_path, "--help")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -303,24 +242,17 @@ class TestGitAmend:
         # Verify error message.
         assert "error: git-amend does not accept any arguments" in result.stderr
 
-    def test_rejects_multiple_arguments(self, temp_repo, test_script):
+    def test_rejects_multiple_arguments(self, temp_repo, script_path):
         """Test that the command rejects multiple arguments."""
 
         git = temp_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
 
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Content")
         git.add("file1.txt")
         git.commit("-m", "initial commit")
 
-        result = subprocess.run(
-            [test_script, "arg1", "arg2"],
-            cwd=temp_repo.cwd(),
-            capture_output=True,
-            text=True,
-        )
+        result = temp_repo.run(script_path, "arg1", "arg2")
 
         # Verify error exit code.
         assert result.returncode == 1
