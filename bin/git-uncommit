@@ -2,8 +2,11 @@
 set -eu
 
 #
-# git-uncommit - Undo the last commit, returning the changes
-# introduced in the commit to the staging index.
+# git-uncommit - Undo the last commit, returning the changes introduced in the
+# commit to the staging index, ready to be re-committed.
+#
+# Combine with `git undo` to fully delete the changes. Running both commands,
+# `git uncommit && git undo`, is equivalent to doing `git reset HEAD~1 --hard`.
 #
 # Usage:
 #   $ git uncommit
@@ -13,11 +16,11 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-uncomment does not accept any arguments" >&2
+    echo "error: git-uncommit does not accept any arguments" >&2
     return 1
   fi
 
-  # ...
+  git reset HEAD~1 --soft
 }
 
 main "$@"
