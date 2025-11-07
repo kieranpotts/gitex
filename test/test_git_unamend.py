@@ -182,6 +182,17 @@ class TestGitUnamend:
         assert result.returncode == 1
         assert "error: the last operation was not a 'git commit --amend'" in result.stderr
 
+    def test_fails_with_no_commits(self, temp_repo, script_path):
+        """Test that unamend fails when there are no commits in the repository."""
+
+        result = temp_repo.run(script_path)
+
+        # Verify error exit code.
+        assert result.returncode != 0
+
+        # Git will produce an error about the branch not having commits.
+        assert "fatal:" in result.stderr
+
     def test_rejects_single_argument(self, temp_repo, script_path):
         """Test that the command rejects arguments."""
 
