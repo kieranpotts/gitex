@@ -4,6 +4,9 @@ set -eu
 #
 # git-unamend - Undo the prior `git amend` or `git commit --amend` operation.
 #
+# Changes amended to the last commit will be returned to the staging index.
+# This command will fail if the previous operation was not an amend.
+#
 # Usage:
 #   $ git unamend
 #
@@ -12,11 +15,28 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-amend does not accept any arguments" >&2
+    echo "error: git-unamend does not accept any arguments" >&2
     return 1
   fi
 
-  # ...
+  # `HEAD@{1}` refers to the previous state in the reflog. So, when you run
+  # `git reset "HEAD@{1}"` twice, the second time `HEAD@{1}` will refer to
+  # the first `git reset` operation. We want this alias, `git unamend`, to
+  # work only when `HEAD@{1}` is a `git commit --amend` operation.
+  #
+  # We can check if the last operation was a `commit --amend` by examining
+  # the reflog. When a commit is amended, the reflog message contains the
+  # text "commit (amend)".
+
+  last_reflog_msg=$(git reflog -1 --format="%gs")
+
+  if ! echo "$last_reflog_msg" | grep -q "commit (amend)"; then
+    echo "error: the last operation was not a 'git commit --amend'" >&2
+    echo "hint: use 'git uncommit' to undo a regular commit" >&2
+    return 1
+  fi
+
+  git reset "HEAD@{1}" --soft
 }
 
 main "$@"

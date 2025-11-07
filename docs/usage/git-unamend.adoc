@@ -1,3 +1,68 @@
 = `git unamend`
 
 Undo the prior `git amend` or `git commit --amend` operation.
+
+This command reverts the repository to the state before the last amend operation. Changes that were added to the commit by the amend operation are returned to the staging index, ready to be committed again – after further modification, if required.
+
+This command will fail with an error if the last Git operation was not a built-in `git commit --amend` or GitEx link:./git-amend.adoc[`git amend`]. This safety check ensures you're only undoing amend operations, not regular commits. To undo a regular commit, use link:./git-uncommit.adoc[`git uncommit`] instead.
+
+Under the hood, this command checks the reflog to verify the last operation was an amend, then uses `git reset "HEAD@{1}" --soft` to restore the previous state.
+
+CAUTION: This command relies on Git's reflog, which tracks changes to HEAD. If the reflog has been pruned, this command may not work as expected.
+
+== Usage
+
+----
+$ git unamend
+----
+
+This command does not accept any arguments.
+
+== Examples
+
+You amended a commit but realized you wanted to keep the changes separate:
+
+----
+$ git commit -m "add authentication"
+[main 1a2b3c4] add authentication
+ 2 files changed, 30 insertions(+)
+
+$ touch config/auth.json
+$ git amend
+[main 5d6e7f8] add authentication
+ 3 files changed, 45 insertions(+)
+
+$ git unamend
+Unstaged changes after reset:
+M       config/auth.json
+
+$ git log --oneline -1
+1a2b3c4 add authentication
+
+$ git status --short
+M  config/auth.json
+----
+
+The changes from the amend operation are now back in the staging area, and the commit has been restored to its pre-amend state.
+
+=== Attempting to use after a regular commit
+
+If the last operation was a regular commit (not an amend), `git unamend` will fail with a helpful error:
+
+----
+$ git commit -m "add feature"
+[main 9a8b7c6] add feature
+ 1 file changed, 10 insertions(+)
+
+$ git unamend
+error: the last operation was not a 'git commit --amend'
+hint: use 'git uncommit' to undo a regular commit
+----
+
+This safety check prevents accidentally undoing the wrong operation. Use link:./git-uncommit.adoc[`git uncommit`] to undo regular commits.
+
+== See also
+
+* link:./git-amend.adoc[`git amend`] — Amend the last commit with new changes.
+* link:./git-uncommit.adoc[`git uncommit`] — Undo the last commit.
+* link:./git-undo.adoc[`git undo`] — Discard uncommitted changes.
