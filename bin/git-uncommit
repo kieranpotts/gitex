@@ -14,9 +14,12 @@ set -eu
 # Dependencies: None
 #
 
+# shellcheck source=lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-uncommit does not accept any arguments" >&2
+    print_error "git-uncommit does not accept any arguments"
     return 1
   fi
 

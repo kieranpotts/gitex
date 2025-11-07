@@ -14,15 +14,18 @@ set -eu
 # Dependencies: None
 #
 
+# shellcheck source=lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-amend does not accept any arguments" >&2
+    print_error "git-amend does not accept any arguments"
     return 1
   fi
 
   # Check if there's a previous commit to amend.
   if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-    echo "error: no commits exist to amend" >&2
+    print_error "no commits exist to amend"
     return 1
   fi
 
@@ -56,7 +59,7 @@ main() {
   fi
 
   # No changes to amend.
-  echo "nothing to amend, working tree clean"
+  print_info "nothing to amend, working tree clean"
   return 0
 }
 

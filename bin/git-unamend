@@ -13,9 +13,12 @@ set -eu
 # Dependencies: None
 #
 
+# shellcheck source=lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-unamend does not accept any arguments" >&2
+    print_error "git-unamend does not accept any arguments"
     return 1
   fi
 
@@ -31,8 +34,8 @@ main() {
   last_reflog_msg=$(git reflog -1 --format="%gs")
 
   if ! echo "$last_reflog_msg" | grep -q "commit (amend)"; then
-    echo "error: the last operation was not a 'git commit --amend'" >&2
-    echo "hint: use 'git uncommit' to undo a regular commit" >&2
+    print_error "the last operation was not a 'git commit --amend'"
+    print_hint "use 'git uncommit' to undo a regular commit"
     return 1
   fi
 

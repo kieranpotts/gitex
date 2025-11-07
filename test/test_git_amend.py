@@ -222,7 +222,7 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: no commits exist to amend" in result.stderr
+        assert "no commits exist to amend" in result.stderr
 
     def test_rejects_single_argument(self, temp_repo, script_path):
         """Test that the command rejects arguments."""
@@ -240,7 +240,7 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: git-amend does not accept any arguments" in result.stderr
+        assert "git-amend does not accept any arguments" in result.stderr
 
     def test_rejects_multiple_arguments(self, temp_repo, script_path):
         """Test that the command rejects multiple arguments."""
@@ -258,4 +258,4 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: git-amend does not accept any arguments" in result.stderr
+        assert "git-amend does not accept any arguments" in result.stderr

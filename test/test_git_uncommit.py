@@ -271,7 +271,7 @@ class TestGitUncommit:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: git-uncommit does not accept any arguments" in result.stderr
+        assert "git-uncommit does not accept any arguments" in result.stderr
 
     def test_rejects_multiple_arguments(self, temp_repo, script_path):
         """Test that the command rejects multiple arguments."""
@@ -289,4 +289,4 @@ class TestGitUncommit:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: git-uncommit does not accept any arguments" in result.stderr
+        assert "git-uncommit does not accept any arguments" in result.stderr
