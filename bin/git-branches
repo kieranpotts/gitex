@@ -4,6 +4,10 @@ set -eu
 #
 # git-branches - List all branches by order of last commit.
 #
+# This is an alternative to `git branch`. It has nicer formatting and the
+# ordering is more useful. The most-recently revised branches are at the
+# bottom of the list.
+#
 # Usage:
 #   $ git branches
 #
@@ -16,7 +20,9 @@ main() {
     return 1
   fi
 
-  # ...
+  # # Sort by last commit date, newest first.
+  # git for-each-ref --sort='-authordate:iso8601' --format='  %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
+
 }
 
 main "$@"

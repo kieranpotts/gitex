@@ -4,6 +4,11 @@ set -eu
 #
 # git-upstream - Show the name of the tracked upstream repository.
 #
+# Silences fatal "no upstream configured" errors in scenarios where no upstream
+# repository is configured.
+#
+# Use `git tracking` to list all tracked branches.
+#
 # Usage:
 #   $ git upstream
 #
@@ -16,7 +21,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" 2> /dev/null
 }
 
 main "$@"

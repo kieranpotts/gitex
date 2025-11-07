@@ -2,11 +2,18 @@
 set -eu
 
 #
-# git-track - Start tracking a new file. This is an alias for
+# git-track - Start tracking one or more new files. This is an alias for
 # `git add` and the opposite of the `git untrack` alias.
 #
 # Usage:
-#   $ git track [path]
+#   # Add all changes in whole working tree.
+#   git track (--all|-A)
+#
+#   # Add all changes in current path.
+#   git track .
+#
+#   # Add one or more specific files.
+#   git track path/to/file.ext
 #
 # Dependencies: None
 #
@@ -17,7 +24,13 @@ main() {
     return 1
   fi
 
-  # ...
+  # path="${1}"
+
+  # if [ -z "${path}" ]; then
+  #   git add --all
+  # else
+  #   git add "${path}"
+  # fi
 }
 
 main "$@"

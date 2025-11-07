@@ -5,6 +5,12 @@ set -eu
 # git-down - Shortcut for `git pull` with the rebase merge strategy
 # (ie. `git pull --rebase`).
 #
+# Any WIP is stashed and will be returned to the working tree after the `pull`
+# operation. Cleans up references to non-existent remote branches (`--prune`).
+#
+# See also the `git up` alias, which mirrors this, and `git sync`, which
+# combines the two into a single operation.
+#
 # Usage:
 #   $ git down
 #
@@ -17,7 +23,15 @@ main() {
     return 1
   fi
 
-  # ...
+  # initialStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+  # git stash push --include-untracked
+
+  # git pull --rebase --prune
+
+  # newStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+  # if [ "${newStashCount:-0}" != "${initialStashCount:-0}" ]; then
+  #   git stash pop
+  # fi
 }
 
 main "$@"

@@ -4,6 +4,9 @@ set -eu
 #
 # git-current - Show the name of the current branch.
 #
+# See also the `git upstream` alias, which returns the name of the tracked
+# upstream branch.
+#
 # Usage:
 #   $ git current
 #
@@ -16,7 +19,12 @@ main() {
     return 1
   fi
 
+  # Git < 2.22
   # git rev-parse --abbrev-ref HEAD
+
+  # Git >= 2.22
+  git branch --show-current
+
 }
 
 main "$@"

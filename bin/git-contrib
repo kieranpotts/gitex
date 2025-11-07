@@ -4,6 +4,10 @@ set -eu
 #
 # git-contrib - List all contributors, ordered by their total commit count.
 #
+# This alias is configured to show email addresses (`--email`) and total
+# commit counts (`--summary`). The contributors are ordered by their commit
+# count (`--numbered`) – the biggest committers first.
+#
 # Usage:
 #   $ git contrib
 #
@@ -16,7 +20,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git shortlog --email --summary --numbered
 }
 
 main "$@"

@@ -9,10 +9,28 @@ set -eu
 # remove commits from the upstream branch that do not exist in the
 # local branch – unless those commits were introduced by someone else.
 #
+# The `--force` flag should never be used against shared branches. The similar
+# `--force-with-lease` option is a little bit safer – it _partially_ protects
+# against destructive pushes. What it does is check that the downstream
+# branch has all the commits that exist in the upstream one, and therefore
+# we can be more confident that we will not overwrite work that other people
+# have committed there. But it is not a perfect failsafe. For example,
+# `--force-with-lease` will delete upstream commits when the downstream
+# repository has been updated with `git fetch` and not a subsequent `git merge`
+# (or a `git pull`, which combines both operations). See the following
+# Atlassian article for more bakcground to the dangers of force pushing:
+# - https://blog.developer.atlassian.com/force-with-lease/
+#
+# See also the `git down` alias, with mirrors this one, and `git sync`,
+# which combines the two into a single operation.
+#
 # Usage:
 #   $ git up (--force)
 #
 # Dependencies: None
+#
+# Acknowledgments
+#   - https://pbassiner.github.io/blog/git_aliases_to_the_rescue.html
 #
 
 main() {
@@ -21,7 +39,18 @@ main() {
     return 1
   fi
 
-  # ...
+  # # Get tracked upstream branch.
+  # upstreamBranch=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}")
+
+  # # Check if the upstream branch is already set.
+  # if [ -n "$upstreamBranch" ]; then
+  #   git push --follow-tags
+  # else
+  #   git push --set-upstream origin HEAD --follow-tags
+  # fi
+
+  # Force:
+  # git push --set-upstream origin HEAD --follow-tags --force-with-lease
 }
 
 main "$@"

@@ -17,7 +17,16 @@ main() {
     return 1
   fi
 
-  # ...
+  # branch="${1}"
+
+  # # Default to current branch
+  # if [ -z "${branch}" ]; then
+  #   branch=$(git branch --show-current)
+  # fi
+
+  # git branch "backup/${branch}" "${branch}"
+  # echo "Created branch 'backup/${branch}'"
+
 }
 
 main "$@"

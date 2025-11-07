@@ -2,8 +2,8 @@
 set -eu
 
 #
-# git-author - Change the author of the last commit or an earlier
-# specified commit.
+# git-author - Change the name and email of the author of the last commit, or
+# an earlier specified commit in the checked-out branch's history.
 #
 # Usage:
 #   $ git author ([ref])
@@ -17,7 +17,80 @@ main() {
     return 1
   fi
 
-  # ...
+  # # Absolute path to the repository, thus `/path/to/dotfiles`.
+  # REPO_PATH=$(dirname "$(dirname "$(readlink -f "$0")")")
+
+  # # Source ANSI code variables.
+  # . "${REPO_PATH}/lib/ansi-codes.sh"
+
+  # # If there's an environment variable called `X_GIT_COMMIT_VERIFY` and its value
+  # # is `0`, then we apply the `--no-verify` flag to the `git commit` operation.
+  # VERIFY="${X_GIT_COMMIT_VERIFY:-1}"
+
+  # # Get the name of the current branch.
+  # branch=$(git branch --show-current)
+
+  # # Target revision.
+  # REV=$(git rev-parse "${1:-HEAD}")
+
+  # # Checkout the target commit. Git repo enters a "detached HEAD" state.
+  # git checkout "${REV}"
+
+  # echo ""
+  # printf "%bAuthor's name (leave empty to use your default user.name config):%b\n" "${BLUE}" "${RESET}"
+
+  # # Bash-compatible code:
+  # #read -p "> " name
+
+  # # Posix-compatible code:
+  # printf "> " >&2
+  # read -r name
+
+  # echo ""
+
+  # if [ -z "${name}" ]; then
+
+  #   if [ "$VERIFY" -eq "0" ]; then
+  #     git commit --quiet --no-verify --amend --reset-author
+  #   else
+  #     git commit --quiet --amend --reset-author
+  #   fi
+
+  # else
+
+  #   printf "%bAuthor's email address:%b\n" "${BLUE}" "${RESET}"
+
+  #   # Bash-compatible code:
+  #   #read -p "> " email
+
+  #   # Posix-compatible code:
+  #   printf "> " >&2
+  #   read -r email
+
+  #   echo ""
+
+  #   if [ -z "${email}" ]; then
+  #     printf "%b%b Email not provided, exiting. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+  #     exit 1
+  #   fi
+
+  #   if [ "$VERIFY" -eq "0" ]; then
+  #     git commit --quiet --no-verify --amend --author "${name} <${email}>"
+  #   else
+  #     git commit --quiet --amend --author "${name} <${email}>"
+  #   fi
+
+  # fi
+
+  # # New commit.
+  # NEW_REV=$(git rev-parse HEAD)
+  # echo "${NEW_REV}"
+
+  # # Switch back to the previous branch then give the user the opportunity
+  # # to rebase the branch on the new revision.
+  # git switch "${branch}"
+  # git rebase --interactive "${NEW_REV}"
+
 }
 
 main "$@"

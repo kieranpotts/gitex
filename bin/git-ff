@@ -4,6 +4,10 @@ set -eu
 #
 # git-ff - Perform a fast-forward merge.
 #
+# This operation fails if there is divergent work in the current (source) branch
+# that is not in the target branch. In this situation, the current branch must
+# be rebased on the target branch beforehand.
+#
 # Usage:
 #   $ git ff ([branch])
 #
@@ -17,9 +21,24 @@ main() {
   fi
 
   # branch=${1:-main}
+  # branch="${1}"
 
-  # git checkout "$branch"
-  # git pull --ff-only
+  # if [ -z "${branch}" ]; then
+  #   # Bash-compatible code:
+  #   #read -p "Type a branch name: " branch
+
+  #   # Posix-compatible code:
+  #   printf "Type a branch name: " >&2
+  #   read -r branch
+  # fi
+
+  # if [ -z "${branch}" ]; then
+  #   echo "Require branch name" >&2
+  #   exit 1
+  # fi
+
+  # git merge --ff-only "${branch}"
+
 }
 
 main "$@"

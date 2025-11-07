@@ -5,6 +5,9 @@ set -eu
 # git-tracking - Same as `git branches` but also shows the names of
 # the tracked upstream branches.
 #
+# Use `git upstream` to get only the name of the upstream branch that is
+# tracked by the current checked-out downstream branch.
+#
 # Usage:
 #   $ git tracking
 #
@@ -17,7 +20,8 @@ main() {
     return 1
   fi
 
-  # ...
+  # # Sort by last commit date, newest first.
+  # git for-each-ref --sort='-authordate:iso8601' --format='  %(color:green)%(authordate:relative)%09%(color:white)%(refname:short) %(color:cyan)➔ %(upstream:short)' refs/heads
 }
 
 main "$@"

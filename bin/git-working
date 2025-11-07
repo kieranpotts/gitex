@@ -2,7 +2,12 @@
 set -eu
 
 #
-# git-working - List all changed files in the working directory.
+# git-working - List all files with changes in the working tree.
+#
+# Excludes files with all changes staged.
+#
+# See also `git-staged`, which shows the changes staged for committing, and
+# `git changes`, which shows staged plus unstaged working changes.
 #
 # Usage:
 #   $ git working
@@ -16,7 +21,9 @@ main() {
     return 1
   fi
 
+  # One of these:
   # git diff --name-only
+  # git diff --stat
 }
 
 main "$@"

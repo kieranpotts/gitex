@@ -4,6 +4,9 @@ set -eu
 #
 # git-tags - List all tags, sorted by commit date.
 #
+# Use `git download` to download all tags, as well as branches, from the
+# upstream repository.
+#
 # Usage:
 #   $ git tags
 #
@@ -16,7 +19,7 @@ main() {
     return 1
   fi
 
-  # git tag --sort=-creatordate
+  # git tag --list --sort=committerdate
 }
 
 main "$@"

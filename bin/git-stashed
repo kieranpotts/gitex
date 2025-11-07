@@ -2,7 +2,7 @@
 set -eu
 
 #
-# git-stashed - Show the current number of stash entries.
+# git-stashed - Show the current number of entries in the stash.
 #
 # Usage:
 #   $ git stashed
@@ -16,7 +16,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git status --show-stash
 }
 
 main "$@"

@@ -3,7 +3,10 @@ set -eu
 
 #
 # git-br - Branch from current position, switch to it, and push upstream
-# to setup tracking.
+# immediately, establishing remote tracking from the start of the branch's
+# existence.
+#
+# This operation fails with an error if the branch name is already taken.
 #
 # Usage:
 #   $ git br ([branch])
@@ -17,7 +20,29 @@ main() {
     return 1
   fi
 
-  # ...
+  # branch="${1}"
+
+  # if [ -z "${branch}" ]; then
+  #   # Bash-compatible code:
+  #   #read -p "Type a branch name: " branch
+
+  #   # Posix-compatible code:
+  #   printf "> " >&2
+  #   read -r branch
+  # fi
+
+  # if [ -z "${branch}" ]; then
+  #   printf "%b%b Require branch name. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+  #   exit 1
+  # fi
+
+  # git branch ${branch} && git checkout ${branch}
+
+  # # Don't pus"h tempora"ry branches.
+  # if [ "${branch}" != "tmp" ]; then
+  #   git push --set-upstream origin HEAD
+  # fi
+
 }
 
 main "$@"

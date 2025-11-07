@@ -17,7 +17,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git log --oneline --decorate --graph --all
 }
 
 main "$@"

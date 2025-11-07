@@ -4,6 +4,9 @@ set -eu
 #
 # git-state - Concise view of `git status`.
 #
+# Provides a short-format view of the working tree's current state, with
+# branch and tracking information added.
+#
 # Usage:
 #   $ git state
 #
@@ -16,7 +19,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git status --short --branch
 }
 
 main "$@"

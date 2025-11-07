@@ -3,8 +3,16 @@ set -eu
 
 #
 # git-changes - Show the changes introduced in a specified commit, or
-# introduced to the working directory plus staging index since the
-# last commit.
+# introduced to the working directory (including untracked files) plus
+# staging index since the last commit.
+#
+# See also `git-staged`, which lists only staged changes, and `git-working`,
+# which lists only unstaged/working changes.
+#
+# If a commit hash is provided as an input parameter, this command will instead
+# list all the files that were committed with changes in the given commit. See
+# also `git-last`, which is a shortcut for showing the changes introduced in
+# the last commit.
 #
 # Usage:
 #   $ git changes ([ref])
@@ -18,7 +26,12 @@ main() {
     return 1
   fi
 
-  # ...
+  # if [ -z "${1}" ]; then
+  #   git diff --stat HEAD
+  # else
+  #   git diff --stat "$1^".."$1"
+  # fi
+
 }
 
 main "$@"

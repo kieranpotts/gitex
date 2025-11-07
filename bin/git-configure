@@ -16,7 +16,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git config --global --edit
 }
 
 main "$@"

@@ -4,10 +4,16 @@ set -eu
 #
 # git-wip - Save work-in-progress.
 #
-# Creates a commit, with the contents of the staging index plus
-# working directory, with the specified message (or "WIP" if no
-# message is provided). Continue where you left off tomorrow
-# with `git resume`.
+# Creates a commit, with the contents of the staging index plus working directory, and with the specified message suffixed with " - WIP". If no
+# comment is provided, the commit message will be "WIP".
+#
+# Continue where you left off tomorrow with `git resume`.
+#
+# The purpose of this alias is to allow quick saving and backing up (to a
+# remote repository) of work-in-progress. WIP commits are expected to be
+# reset and their contents restored to the working tree the next time the
+# developer continues to work from the current branch. The `git restore`
+# alias provides a shortcut for doing exactly this.
 #
 # Usage:
 #   $ git wip ('[msg]')
@@ -21,7 +27,8 @@ main() {
     return 1
   fi
 
-  # ...
+  # git add --all
+  # git commit --quiet --message "${1:-wip}${1+ - wip}"
 }
 
 main "$@"

@@ -5,6 +5,12 @@ set -eu
 # git-download - Improved `git fetch`: download and prune local objects,
 # tags, and branches to match all remotes.
 #
+# This command also removes any refs from the local repository that no longer
+# exist in any remote, including tags. Careful, any tags newly-created in the
+# downstream repository will be deleted unless they have been already pushed
+# upstream. Local branches will not be deleted, however – only references to
+# branches in the upstream repository are deleted.
+#
 # Usage:
 #   $ git download
 #
@@ -17,7 +23,10 @@ main() {
     return 1
   fi
 
-  # ...
+  # git fetch --all --tags --prune --prune-tags
+
+  # # TODO: Extend this to fetch all branches, too
+  # # https://stackoverflow.com/questions/18891794/git-pull-all-branches-from-remote-repository
 }
 
 main "$@"

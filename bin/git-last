@@ -16,7 +16,8 @@ main() {
     return 1
   fi
 
-  # ...
+  # git log -1 HEAD --stat
+
 }
 
 main "$@"

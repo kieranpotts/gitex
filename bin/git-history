@@ -4,6 +4,8 @@ set -eu
 #
 # git-history - Clean `git log`, paginated.
 #
+# See also `git recent`, which limits the output to the last 25 log entries.
+#
 # Usage:
 #   $ git history
 #
@@ -16,7 +18,7 @@ main() {
     return 1
   fi
 
-  # ...
+  # git log --graph --pretty=format:'%C(red)%h%C(reset)  %<(60,trunc)%s  %C(green)%<(14)%ar  %C(blue)%an %C(yellow)%d%C(reset)' --abbrev-commit
 }
 
 main "$@"

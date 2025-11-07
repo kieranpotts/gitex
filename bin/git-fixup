@@ -5,10 +5,38 @@ set -eu
 # git-fixup - Fix something in the most recent commit or an earlier
 # specified commit. Rewrites history.
 #
+# Fixup workflows are used to fix mistakes made in prior commits.
+#
+# Creates a "fixup!" commit from the staging index + working tree, and
+# immediately rebases to squash the changes into the target commit. The
+# original commit message is preserved.
+#
+# Additional parameters will be forwarded to the `commit` command.
+#
 # Usage:
-#   $ git fixup ([ref])
+#   $ git fixup         # Fix the last commit.
+#   $ git fixup HEAD    # Fix the last commit.
+#   $ git fixup HEAD^   # Fix the last-but-one commit.
+#   $ git fixup [sha]   # Fix a prior commit.
+#   $ git fixup :/foo   # Fix the most recent commit with "foo" in the message.
+#
+# Note: The outcome of `git fixup (HEAD)` will be identical to `git amend`.
 #
 # Dependencies: None
+#
+# Acknowledgments
+#   - https://gist.github.com/simonwagner/9552064
+#   - https://gist.github.com/peschee/6e8f490167037cb2a3489052501ae0bb
+#   - https://words.filippo.io/git-fixup-amending-an-older-commit/
+#   - https://medium.com/quick-code/useful-git-alias-926f27a27f92
+#   - http://stackoverflow.com/a/21148981/460564
+#   - https://stackoverflow.com/a/65305169
+#
+# References:
+#   - https://greich.com/2021/10/08/git-fixup-clean-history/
+#   - https://dev.to/koffeinfrei/the-git-fixup-workflow-386d
+#   - https://stackoverflow.com/questions/3103589/
+#   - https://git-scm.com/docs/git-rev-parse
 #
 
 main() {
@@ -17,7 +45,25 @@ main() {
     return 1
   fi
 
-  # ...
+  # REV=$(git rev-parse "${1:-HEAD}")
+  # git add --all
+
+  # # If there's an environment variable called `X_GIT_COMMIT_VERIFY` and its value
+  # # is `0`, then we apply the `--no-verify` flag to the `git commit` operation.
+  # VERIFY=${X_GIT_COMMIT_VERIFY:-1}
+
+  # if [ "$VERIFY" -eq "0" ]; then
+  #   # In Bash, we can forward additional parameters to the `git commit` command.
+  #   # This is not so easy in POSIX shell.
+  #   #git commit --no-verify --quiet --fixup="${REV}" "${@:2}"
+  #   git commit --no-verify --quiet --fixup="${REV}"
+  # else
+  #   #git commit --quiet --fixup="${REV}" "${@:2}"
+  #   git commit --quiet --fixup="${REV}"
+  # fi
+
+  # git rebase --interactive --autosquash "${REV}~1"
+
 }
 
 main "$@"

@@ -4,6 +4,8 @@ set -eu
 #
 # git-untrack - Untrack a specified file.
 #
+# See also `git ignore`, which permanently removes the file from the index.
+#
 # Usage:
 #   $ git untrack [path]
 #
@@ -16,7 +18,20 @@ main() {
     return 1
   fi
 
-  # ...
+  # file="${1}"
+
+  # if [ -z "${file}" ]; then
+  #   echo "Require a file path" >&2
+  #   exit 1
+  # fi
+
+  # The `rm` command combined with the `--cache` option removes a file from the
+  # staging index but maintains the file in the working tree. When the next
+  # commit is made, the untracked file(s) will be removed from the repository,
+  # but not deleted from the local filesystem.
+  # Reference: https://git-scm.com/docs/git-rm
+
+  # git rm --cached -- "${file}"
 }
 
 main "$@"

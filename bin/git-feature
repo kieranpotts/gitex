@@ -2,7 +2,7 @@
 set -eu
 
 #
-# git-feature - Create a new feature branch.
+# git-feature - Commit functional changes.
 #
 # Usage:
 #   $ git feature
@@ -10,13 +10,37 @@ set -eu
 # Dependencies: None
 #
 
+# TODO: Consider integrating this with the `cm` alias.
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-feature does not accept any arguments" >&2
     return 1
   fi
 
-  # ...
+  # msg="${1}"
+
+  # if [ -z "${msg}" ]; then
+  #   read -p "Type a short commit message: " msg
+  # fi
+
+  # if [ -z "${msg}" ]; then
+  #   echo "Require commit message" >&2
+  #   exit 1
+  # fi
+
+  # git add --all
+
+  # # If there's an environment variable called `X_GIT_COMMIT_VERIFY` and its value
+  # # is `0`, then we apply the `--no-verify` flag to the `git commit` operation.
+  # VERIFY=${X_GIT_COMMIT_VERIFY:-1}
+
+  # if [ "$VERIFY" -eq "0" ]; then
+  #   git commit --quiet --no-verify --message "${msg} [feature]"
+  # else
+  #   git commit --quiet --message "${msg} [feature]"
+  # fi
+
 }
 
 main "$@"

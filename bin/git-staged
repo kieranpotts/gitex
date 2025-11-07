@@ -2,7 +2,11 @@
 set -eu
 
 #
-# git-staged - List files with changes staged for committing.
+# git-staged - List files that have changes staged for committing.
+#
+# See also the `git-working` script, which lists files with unstaged changes in
+# the repository's working tree, and `git-changes`, which lists all files
+# changed since the last commit, whether or not those changes have been staged.
 #
 # Usage:
 #   $ git staged
@@ -16,7 +20,7 @@ main() {
     return 1
   fi
 
-  # git diff --name-only --cached
+  # git diff --stat --staged HEAD
 }
 
 main "$@"

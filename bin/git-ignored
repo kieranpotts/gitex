@@ -2,7 +2,12 @@
 set -eu
 
 #
-# git-ignored - List all ignored files.
+# git-ignored - Print a list of file paths, changes to which cannot be
+# added to Git's staging index because Git will ignore them.
+#
+#
+# Use `git ignore [path]` to add a file path to this list, or
+# `git unignore [path]` to remove one.
 #
 # Usage:
 #   $ git ignored
@@ -17,6 +22,11 @@ main() {
   fi
 
   # git ls-files --ignored --exclude-standard
+
+  # Or:
+
+  # printf "%bChanges to the following files will not be available to add to the staging index:%b" "${BRIGHT_BLUE}" "${RESET}"
+  # git ls-files -v | grep "^[[:lower:]]"
 }
 
 main "$@"
