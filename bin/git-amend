@@ -52,7 +52,7 @@ main() {
 
   # If there are working changes, stage all and amend. Return
   # the exit code of the commit operation.
-  if [ "$has_unstaged" = true ] || [ "$has_untracked" = true ]; then
+  if [ "${has_unstaged}" = true ] || [ "${has_untracked}" = true ]; then
     git add --all
     git commit --amend --no-edit
     return $?

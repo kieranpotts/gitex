@@ -39,10 +39,10 @@ EOF
 _print_version() {
   # Extract version from pyproject.toml.
   version=$(grep '^version = ' "$(dirname "$0")/../pyproject.toml" | sed 's/version = "\(.*\)"/\1/')
-  if [ -z "$version" ]; then
+  if [ -z "${version}" ]; then
     version="unknown"
   fi
-  echo "GitEx v$version"
+  echo "GitEx v${version}"
 }
 
 _print_commands() {

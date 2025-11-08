@@ -44,7 +44,7 @@ main() {
         return 1
         ;;
       *)
-        if [ -z "$ref" ]; then
+        if [ -z "${ref}" ]; then
           ref="$1"
         else
           print_error "unexpected argument '$1'"
@@ -56,7 +56,7 @@ main() {
   done
 
   # Prompt for author name if not provided.
-  if [ -z "$author_name" ]; then
+  if [ -z "${author_name}" ]; then
     print_prompt "Author's name:"
     read -r author_name
     echo ""
@@ -69,7 +69,7 @@ main() {
   fi
 
   # Prompt for email if not provided.
-  if [ -z "$author_email" ]; then
+  if [ -z "${author_email}" ]; then
     print_prompt "Author's email address:"
     read -r author_email
     echo ""
@@ -90,7 +90,7 @@ main() {
   # Check if we're modifying HEAD directly.
   head_rev=$(git rev-parse HEAD)
 
-  if [ "$rev" = "$head_rev" ]; then
+  if [ "${rev}" = "${head_rev}" ]; then
     # Simple case: modifying the current HEAD commit.
     # No need to checkout or rebase.
 
