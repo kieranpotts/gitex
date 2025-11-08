@@ -45,7 +45,7 @@ class TestGitAuthor:
         assert author == "Jane Smith <jane@example.com>"
 
     def test_with_only_name_flag_prompts_for_email(self, temp_repo, script_path):
-        """Test that providing only --name requires --email or interactive input."""
+        """Test that providing only --name, prompts for email."""
 
         git = temp_repo.git()
 
@@ -71,7 +71,7 @@ class TestGitAuthor:
         assert author == "Jane Smith <jane@example.com>"
 
     def test_with_only_email_flag_prompts_for_name(self, temp_repo, script_path):
-        """Test that providing only --email requires --name or interactive input."""
+        """Test that providing only --email, prompts for name."""
 
         git = temp_repo.git()
 
@@ -95,6 +95,68 @@ class TestGitAuthor:
         # Verify the author was changed.
         author = git.log("-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
+
+    def test_with_no_flags_prompts_for_both(self, temp_repo, script_path):
+        """Test that providing no flags prompts for both name and email."""
+
+        git = temp_repo.git()
+
+        # Initial config values.
+        git.config("--local", "user.name", "John Doe")
+        git.config("--local", "user.email", "john.doe@example.com")
+
+        # Create an initial commit.
+        temp_repo.write("test.txt", "initial content")
+        git.add("test.txt")
+        git.commit("-m", "initial commit")
+
+        # Provide no flags and supply name and email via stdin.
+        result = temp_repo.run(script_path, input="Jane Smith\njane@example.com\n")
+
+        # Verify success exit code.
+        assert result.returncode == 0
+
+        # Verify the author was changed.
+        author = git.log("-1", "--pretty=format:%an <%ae>").strip()
+        assert author == "Jane Smith <jane@example.com>"
+
+    def test_rejects_empty_name_from_prompt(self, temp_repo, script_path):
+        """Test that empty name from prompt is rejected."""
+
+        git = temp_repo.git()
+
+        # Create an initial commit.
+        temp_repo.write("test.txt", "initial content")
+        git.add("test.txt")
+        git.commit("-m", "initial commit")
+
+        # Provide empty name via stdin.
+        result = temp_repo.run(script_path, input="\n")
+
+        # Verify error exit code.
+        assert result.returncode == 1
+
+        # Verify error message.
+        assert "Name is required" in result.stderr
+
+    def test_rejects_empty_email_from_prompt(self, temp_repo, script_path):
+        """Test that empty email from prompt is rejected."""
+
+        git = temp_repo.git()
+
+        # Create an initial commit.
+        temp_repo.write("test.txt", "initial content")
+        git.add("test.txt")
+        git.commit("-m", "initial commit")
+
+        # Provide name but empty email via stdin.
+        result = temp_repo.run(script_path, input="Jane Smith\n\n")
+
+        # Verify error exit code.
+        assert result.returncode == 1
+
+        # Verify error message.
+        assert "Email is required" in result.stderr
 
     # Note: Testing with ref parameter is challenging because it requires
     # an interactive rebase which cannot be automated in tests.

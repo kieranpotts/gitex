@@ -57,6 +57,32 @@ main() {
     esac
   done
 
+  # Prompt for author name if not provided.
+  if [ -z "$author_name" ]; then
+    print_prompt "Author's name:"
+    read -r author_name
+    echo ""
+  fi
+
+  # Name is required.
+  if [ -z "${author_name}" ]; then
+    print_error "Name is required."
+    exit 1
+  fi
+
+  # Prompt for email if not provided.
+  if [ -z "$author_email" ]; then
+    print_prompt "Author's email address:"
+    read -r author_email
+    echo ""
+  fi
+
+  # Email is required.
+  if [ -z "${author_email}" ]; then
+    print_error "Email is required."
+    exit 1
+  fi
+
   # Get the name of the current branch.
   branch=$(git branch --show-current)
 
@@ -70,33 +96,8 @@ main() {
     # Simple case: modifying the current HEAD commit.
     # No need to checkout or rebase.
 
-    # Prompt for author name if not provided.
-    if [ -z "$author_name" ]; then
-      print_prompt "Author's name (leave empty to use your default user.name config):"
-      read -r author_name
-      echo ""
-    fi
-
-    # If name is empty, use --reset-author to apply default config.
-    if [ -z "${author_name}" ]; then
-      git commit --quiet --amend --reset-author --no-edit
-    else
-      # Prompt for email if not provided.
-      if [ -z "$author_email" ]; then
-        print_prompt "Author's email address:"
-        read -r author_email
-        echo ""
-      fi
-
-      # Email is required when name is provided.
-      if [ -z "${author_email}" ]; then
-        print_error "Email not provided, exiting."
-        exit 1
-      fi
-
-      # Amend commit with new author.
-      git commit --quiet --amend --author "${author_name} <${author_email}>" --no-edit
-    fi
+    # Amend commit with new author.
+    git commit --quiet --amend --author "${author_name} <${author_email}>" --no-edit
 
     # Output the new commit hash.
     print_info "New commit hash is $(git rev-parse HEAD)."
@@ -108,33 +109,8 @@ main() {
     # Checkout the target commit. Git repo enters a "detached HEAD" state.
     git checkout --quiet "${rev}"
 
-    # Prompt for author name if not provided.
-    if [ -z "$author_name" ]; then
-      print_prompt "Author's name (leave empty to use your default user.name config):"
-      read -r author_name
-      echo ""
-    fi
-
-    # If name is empty, use --reset-author to apply default config.
-    if [ -z "${author_name}" ]; then
-      git commit --quiet --amend --reset-author --no-edit
-    else
-      # Prompt for email if not provided.
-      if [ -z "$author_email" ]; then
-        print_prompt "Author's email address:"
-        read -r author_email
-        echo ""
-      fi
-
-      # Email is required when name is provided.
-      if [ -z "${author_email}" ]; then
-        print_error "Email not provided, exiting."
-        exit 1
-      fi
-
-      # Amend commit with new author.
-      git commit --quiet --amend --author "${author_name} <${author_email}>" --no-edit
-    fi
+    # Amend commit with new author.
+    git commit --quiet --amend --author "${author_name} <${author_email}>" --no-edit
 
     # New commit hash.
     new_rev=$(git rev-parse HEAD)
