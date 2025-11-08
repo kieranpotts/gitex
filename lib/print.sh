@@ -45,3 +45,10 @@ print_success() {
 print_warning() {
   printf "%bwarning:%b %s\n" "${BOLD}${YELLOW}" "${RESET}" "$1" >&2
 }
+
+# Print a user input prompt in blue.
+# Usage: print_prompt "prompt message"
+print_prompt() {
+  printf "\n%b%s%b\n" "${BLUE}" "$1" "${RESET}"
+  printf "> " >&2
+}

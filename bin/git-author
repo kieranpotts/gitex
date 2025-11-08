@@ -72,9 +72,7 @@ main() {
 
     # Prompt for author name if not provided.
     if [ -z "$author_name" ]; then
-      echo ""
-      printf "%bAuthor's name (leave empty to use your default user.name config):%b\n" "${BLUE}" "${RESET}"
-      printf "> " >&2
+      print_prompt "Author's name (leave empty to use your default user.name config):"
       read -r author_name
       echo ""
     fi
@@ -85,15 +83,14 @@ main() {
     else
       # Prompt for email if not provided.
       if [ -z "$author_email" ]; then
-        printf "%bAuthor's email address:%b\n" "${BLUE}" "${RESET}"
-        printf "> " >&2
+        print_prompt "Author's email address:"
         read -r author_email
         echo ""
       fi
 
       # Email is required when name is provided.
       if [ -z "${author_email}" ]; then
-        printf "%b%b Email not provided, exiting. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+        print_error "Email not provided, exiting."
         exit 1
       fi
 
@@ -113,9 +110,7 @@ main() {
 
     # Prompt for author name if not provided.
     if [ -z "$author_name" ]; then
-      echo ""
-      printf "%bAuthor's name (leave empty to use your default user.name config):%b\n" "${BLUE}" "${RESET}"
-      printf "> " >&2
+      print_prompt "Author's name (leave empty to use your default user.name config):"
       read -r author_name
       echo ""
     fi
@@ -124,17 +119,16 @@ main() {
     if [ -z "${author_name}" ]; then
       git commit --quiet --amend --reset-author --no-edit
     else
-      # Prompt for email if not provided
+      # Prompt for email if not provided.
       if [ -z "$author_email" ]; then
-        printf "%bAuthor's email address:%b\n" "${BLUE}" "${RESET}"
-        printf "> " >&2
+        print_prompt "Author's email address:"
         read -r author_email
         echo ""
       fi
 
       # Email is required when name is provided.
       if [ -z "${author_email}" ]; then
-        printf "%b%b Email not provided, exiting. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+        print_error "Email not provided, exiting."
         exit 1
       fi
 
