@@ -158,8 +158,114 @@ class TestGitAuthor:
         # Verify error message.
         assert "Email is required" in result.stderr
 
-    # Note: Testing with ref parameter is challenging because it requires
-    # an interactive rebase which cannot be automated in tests.
+    def test_modifying_earlier_commit_with_flags(self, temp_repo, script_path):
+        """Test changing author of an earlier commit using flags."""
+
+        git = temp_repo.git()
+
+        # Create multiple commits.
+        temp_repo.write("file1.txt", "content 1")
+        git.add("file1.txt")
+        git.commit("-m", "first commit")
+
+        temp_repo.write("file2.txt", "content 2")
+        git.add("file2.txt")
+        git.commit("-m", "second commit")
+
+        temp_repo.write("file3.txt", "content 3")
+        git.add("file3.txt")
+        git.commit("-m", "third commit")
+
+        # Get the hash of the first commit (HEAD~2).
+        first_commit_before = git.rev_parse("HEAD~2")
+
+        # Change the author of the first commit.
+        result = temp_repo.run(
+            script_path,
+            "HEAD~2",
+            "--name",
+            "Jane Smith",
+            "--email",
+            "jane@example.com",
+        )
+
+        # Verify success exit code.
+        assert result.returncode == 0
+
+        # Verify output contains new commit hash.
+        assert "New commit hash is" in result.stdout
+
+        # Get the hash of the first commit after the change.
+        first_commit_after = git.rev_parse("HEAD~2")
+
+        # The commit hash should have changed.
+        assert first_commit_after != first_commit_before
+
+        # Verify the author was changed on the first commit.
+        author = git.log("HEAD~2", "-1", "--pretty=format:%an <%ae>").strip()
+        assert author == "Jane Smith <jane@example.com>"
+
+        # Verify all three commits still exist.
+        log_count = len(git.log("--oneline").strip().split("\n"))
+        assert log_count == 3
+
+    def test_modifying_earlier_commit_with_prompts(self, temp_repo, script_path):
+        """Test changing author of an earlier commit using prompts."""
+
+        git = temp_repo.git()
+
+        # Create multiple commits.
+        temp_repo.write("file1.txt", "content 1")
+        git.add("file1.txt")
+        git.commit("-m", "first commit")
+
+        temp_repo.write("file2.txt", "content 2")
+        git.add("file2.txt")
+        git.commit("-m", "second commit")
+
+        # Change the author of the first commit via prompts.
+        result = temp_repo.run(
+            script_path, "HEAD~1", input="Jane Smith\njane@example.com\n"
+        )
+
+        # Verify success exit code.
+        assert result.returncode == 0
+
+        # Verify the author was changed.
+        author = git.log("HEAD~1", "-1", "--pretty=format:%an <%ae>").strip()
+        assert author == "Jane Smith <jane@example.com>"
+
+    def test_modifying_earlier_commit_by_sha(self, temp_repo, script_path):
+        """Test changing author using a commit SHA instead of relative ref."""
+
+        git = temp_repo.git()
+
+        # Create multiple commits.
+        temp_repo.write("file1.txt", "content 1")
+        git.add("file1.txt")
+        git.commit("-m", "first commit")
+        first_commit_sha = git.rev_parse("HEAD")
+
+        temp_repo.write("file2.txt", "content 2")
+        git.add("file2.txt")
+        git.commit("-m", "second commit")
+
+        # Change the author using the SHA.
+        result = temp_repo.run(
+            script_path,
+            first_commit_sha,
+            "--name",
+            "Jane Smith",
+            "--email",
+            "jane@example.com",
+        )
+
+        # Verify success exit code.
+        assert result.returncode == 0
+
+        # Verify the author was changed.
+        author = git.log("HEAD~1", "-1", "--pretty=format:%an <%ae>").strip()
+        assert author == "Jane Smith <jane@example.com>"
 
     def test_rejects_name_without_value(self, temp_repo, script_path):
         """Test that --name flag requires a value."""
