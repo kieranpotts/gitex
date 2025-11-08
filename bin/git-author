@@ -99,7 +99,7 @@ main() {
     fi
 
     # Output the new commit hash.
-    git rev-parse HEAD
+    print_info "New commit hash is $(git rev-parse HEAD)."
 
   else
     # Complex case: modifying an earlier commit.
@@ -138,6 +138,7 @@ main() {
 
     # New commit hash.
     new_rev=$(git rev-parse HEAD)
+    print_info "New commit hash is ${new_rev}."
 
     # Switch back to the previous branch then rebase on the new revision.
     git switch --quiet "${branch}"

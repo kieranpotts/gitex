@@ -36,7 +36,8 @@ class TestGitAuthor:
 
         # The command returns the new commit hash.
         # It should differ from the original hash – it's a new commit object.
-        assert len(result.stdout.strip()) == 40  # SHA-1 hash length.
+        assert "New commit hash is" in result.stdout
+        assert commit_after_amend in result.stdout
         assert commit_after_amend != commit_before_amend
 
         # Verify the author was changed.
