@@ -38,13 +38,14 @@ class TempRepo:
     def git(self):
         return self._repo.git
 
-    def run(self, script_path, *args):
+    def run(self, script_path, *args, input=None):
         """
         Run a git extension script and return the subprocess result.
 
         Args:
             script_path: Path to the script to run.
             *args: Optional arguments to pass to the script.
+            input: Optional input to pass to the script via stdin.
 
         Returns:
             subprocess.CompletedProcess with returncode, stdout, stderr
@@ -55,4 +56,19 @@ class TempRepo:
             cwd=self._cwd,
             capture_output=True,
             text=True,
+            input=input,
         )
+
+    def write(self, filename, content):
+        """
+        Write content to a file in the temporary repository.
+
+        Args:
+            filename: Name of the file to write.
+            content: Content to write to the file.
+        """
+
+        file_path = os.path.join(self._cwd, filename)
+        with open(file_path, "w") as f:
+            f.write(content)
+        self._files.append(filename)

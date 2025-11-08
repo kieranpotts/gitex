@@ -6,91 +6,148 @@ set -eu
 # an earlier specified commit in the checked-out branch's history.
 #
 # Usage:
-#   $ git author ([ref])
+#   $ git author ([ref]) (--name [name]) (--email [email])
 #
 # Dependencies: None
 #
 
 main() {
-  if [ $# -gt 0 ]; then
-    echo "error: git-author does not accept any arguments" >&2
-    return 1
+  # Parse arguments.
+  ref=""
+  author_name=""
+  author_email=""
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --name)
+        if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
+          echo "error: --name requires a value" >&2
+          return 1
+        fi
+        author_name="$2"
+        shift 2
+        ;;
+      --email)
+        if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
+          echo "error: --email requires a value" >&2
+          return 1
+        fi
+        author_email="$2"
+        shift 2
+        ;;
+      -*)
+        echo "error: unknown option '$1'" >&2
+        return 1
+        ;;
+      *)
+        if [ -z "$ref" ]; then
+          ref="$1"
+        else
+          echo "error: unexpected argument '$1'" >&2
+          return 1
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  # Source ANSI code variables.
+  # shellcheck source=lib/ansi-codes.sh
+  . "$(dirname "$0")/../lib/ansi-codes.sh"
+
+  # Get the name of the current branch.
+  branch=$(git branch --show-current)
+
+  # Target revision (defaults to HEAD if not specified).
+  rev=$(git rev-parse "${ref:-HEAD}")
+
+  # Check if we're modifying HEAD directly.
+  head_rev=$(git rev-parse HEAD)
+
+  if [ "$rev" = "$head_rev" ]; then
+    # Simple case: modifying the current HEAD commit.
+    # No need to checkout or rebase.
+
+    # Prompt for author name if not provided.
+    if [ -z "$author_name" ]; then
+      echo ""
+      printf "%bAuthor's name (leave empty to use your default user.name config):%b\n" "${BLUE}" "${RESET}"
+      printf "> " >&2
+      read -r author_name
+      echo ""
+    fi
+
+    # If name is empty, use --reset-author to apply default config.
+    if [ -z "${author_name}" ]; then
+      git commit --quiet --amend --reset-author --no-edit
+    else
+      # Prompt for email if not provided.
+      if [ -z "$author_email" ]; then
+        printf "%bAuthor's email address:%b\n" "${BLUE}" "${RESET}"
+        printf "> " >&2
+        read -r author_email
+        echo ""
+      fi
+
+      # Email is required when name is provided.
+      if [ -z "${author_email}" ]; then
+        printf "%b%b Email not provided, exiting. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+        exit 1
+      fi
+
+      # Amend commit with new author.
+      git commit --quiet --amend --author "${author_name} <${author_email}>" --no-edit
+    fi
+
+    # Output the new commit hash.
+    git rev-parse HEAD
+
+  else
+    # Complex case: modifying an earlier commit.
+    # Need to checkout, amend, and rebase.
+
+    # Checkout the target commit. Git repo enters a "detached HEAD" state.
+    git checkout --quiet "${rev}"
+
+    # Prompt for author name if not provided.
+    if [ -z "$author_name" ]; then
+      echo ""
+      printf "%bAuthor's name (leave empty to use your default user.name config):%b\n" "${BLUE}" "${RESET}"
+      printf "> " >&2
+      read -r author_name
+      echo ""
+    fi
+
+    # If name is empty, use --reset-author to apply default config.
+    if [ -z "${author_name}" ]; then
+      git commit --quiet --amend --reset-author --no-edit
+    else
+      # Prompt for email if not provided
+      if [ -z "$author_email" ]; then
+        printf "%bAuthor's email address:%b\n" "${BLUE}" "${RESET}"
+        printf "> " >&2
+        read -r author_email
+        echo ""
+      fi
+
+      # Email is required when name is provided.
+      if [ -z "${author_email}" ]; then
+        printf "%b%b Email not provided, exiting. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+        exit 1
+      fi
+
+      # Amend commit with new author.
+      git commit --quiet --amend --author "${author_name} <${author_email}>" --no-edit
+    fi
+
+    # New commit hash.
+    new_rev=$(git rev-parse HEAD)
+    echo "${new_rev}"
+
+    # Switch back to the previous branch then rebase on the new revision.
+    git switch --quiet "${branch}"
+    git rebase "${new_rev}"
   fi
-
-  # # Absolute path to the repository, thus `/path/to/dotfiles`.
-  # REPO_PATH=$(dirname "$(dirname "$(readlink -f "$0")")")
-
-  # # Source ANSI code variables.
-  # . "${REPO_PATH}/lib/ansi-codes.sh"
-
-  # # If there's an environment variable called `X_GIT_COMMIT_VERIFY` and its value
-  # # is `0`, then we apply the `--no-verify` flag to the `git commit` operation.
-  # VERIFY="${X_GIT_COMMIT_VERIFY:-1}"
-
-  # # Get the name of the current branch.
-  # branch=$(git branch --show-current)
-
-  # # Target revision.
-  # REV=$(git rev-parse "${1:-HEAD}")
-
-  # # Checkout the target commit. Git repo enters a "detached HEAD" state.
-  # git checkout "${REV}"
-
-  # echo ""
-  # printf "%bAuthor's name (leave empty to use your default user.name config):%b\n" "${BLUE}" "${RESET}"
-
-  # # Bash-compatible code:
-  # #read -p "> " name
-
-  # # Posix-compatible code:
-  # printf "> " >&2
-  # read -r name
-
-  # echo ""
-
-  # if [ -z "${name}" ]; then
-
-  #   if [ "$VERIFY" -eq "0" ]; then
-  #     git commit --quiet --no-verify --amend --reset-author
-  #   else
-  #     git commit --quiet --amend --reset-author
-  #   fi
-
-  # else
-
-  #   printf "%bAuthor's email address:%b\n" "${BLUE}" "${RESET}"
-
-  #   # Bash-compatible code:
-  #   #read -p "> " email
-
-  #   # Posix-compatible code:
-  #   printf "> " >&2
-  #   read -r email
-
-  #   echo ""
-
-  #   if [ -z "${email}" ]; then
-  #     printf "%b%b Email not provided, exiting. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
-  #     exit 1
-  #   fi
-
-  #   if [ "$VERIFY" -eq "0" ]; then
-  #     git commit --quiet --no-verify --amend --author "${name} <${email}>"
-  #   else
-  #     git commit --quiet --amend --author "${name} <${email}>"
-  #   fi
-
-  # fi
-
-  # # New commit.
-  # NEW_REV=$(git rev-parse HEAD)
-  # echo "${NEW_REV}"
-
-  # # Switch back to the previous branch then give the user the opportunity
-  # # to rebase the branch on the new revision.
-  # git switch "${branch}"
-  # git rebase --interactive "${NEW_REV}"
-
 }
 
 main "$@"
