@@ -6,7 +6,7 @@ The extensions are intended to offer a slightly higher level of abstraction for 
 
 The extensions are implemented as POSIX-compliant Unix shell scripts. To install the extensions, all you need to do is add the scripts to your operating system's `PATH` environment variable. Git will automatically integrate the scripts as https://git-scm.com/book/ms/v2/Git-Basics-Git-Aliases[Git aliases].
 
-GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras]. But GitEx is not a fork and it is not designed to be compatible with, or a drop-in replacement for, Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. For example, GitEx's `git feature` doesn't behave in exactly the same way as Git Extras's `git feature`. It is not recommended to try to install both GitEx and Git Extras side-by-side – you should choose one or the other.
+GitEx is inspired by TJ Holowaychuk's https://github.com/tj/git-extras[Git Extras]. But GitEx is not a fork and it is not designed to be compatible with, or a drop-in replacement for, Git Extras. Although some GitEx extensions have similar APIs to those in Git Extras, their behaviors are different. For this reason, it is not recommended to try to install both GitEx and Git Extras side-by-side – you should choose one or the other.
 
 WARNING: You use these Git extensions at your own risk. Some operations enabled via these extensions are potentially destructive. For example, some of the extensions will rewrite the commit histories of your Git repositories.
 
@@ -33,7 +33,6 @@ WARNING: You use these Git extensions at your own risk. Some operations enabled 
   ** link:./docs/usage/git-discard.adoc[`git discard`]
   ** link:./docs/usage/git-down.adoc[`git down`]
   ** link:./docs/usage/git-download.adoc[`git download`]
-  ** link:./docs/usage/git-feature.adoc[`git feature`]
   ** link:./docs/usage/git-fell.adoc[`git fell`]
   ** link:./docs/usage/git-fetched.adoc[`git fetched`]
   ** link:./docs/usage/git-ff.adoc[`git ff`]

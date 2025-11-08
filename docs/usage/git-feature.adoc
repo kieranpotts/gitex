@@ -1,3 +1,0 @@
-= `git feature`
-
-Create a new feature branch.

@@ -15,9 +15,6 @@ Shortcut for `git clone`. Parameters are forwarded.
 * link:./git-br.adoc[`git br ([branch\])`] +
 Branch from current position, switch to it, and push upstream to setup tracking.
 
-* link:./git-feature.adoc[`git feature`] +
-Create a new feature branch.
-
 * link:./git-orphan.adoc[`git orphan [branch\] (--fresh)`] +
 Create an orphaned branch and switch to it. Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working directory will be cleared –
 careful, you may lose work-in-progress.
