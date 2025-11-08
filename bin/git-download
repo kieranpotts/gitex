@@ -22,7 +22,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-download does not accept any arguments" >&2
+    print_error "git-download does not accept any arguments"
     return 1
   fi
 

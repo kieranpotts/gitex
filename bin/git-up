@@ -38,7 +38,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    echo "error: git-up does not accept any arguments" >&2
+    print_error "git-up does not accept any arguments"
     return 1
   fi
 
