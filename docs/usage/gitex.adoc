@@ -1,3 +1,93 @@
 = `gitex`
 
-Get help with GitEx commands, plus GitEx configuration and version information.
+Get help with using GitEx.
+
+This is the main help command for GitEx. It provides quick access to version information, lists currently implemented GitEx commands with descriptions, and shows usage instructions.
+
+This command does not require a Git repository to run. You can use `gitex --version` or `gitex --commands` from any directory.
+
+== Usage
+
+----
+$ gitex [options]
+----
+
+=== Options
+
+`-v, --version`::
+  Display the currently installed GitEx version number (read from `pyproject.toml`).
+
+`-c, --commands`::
+  List the implemented GitEx commands with brief descriptions.
+
+`-h, --help`::
+  Show usage instructions for the `gitex` command.
+
+== Examples
+
+Display version information:
+
+----
+$ gitex --version
+GitEx version [major].[minor].[patch]
+----
+
+List currently implemented GitEx commands:
+
+----
+$ gitex --commands
+
+GitEx commands:
+
+  git amend
+    Add all working changes to last commit, including new (untracked) files.
+
+  git author [ref]
+    Change the author of the last commit or an earlier specified commit.
+
+  git unamend
+    Undo the prior git amend or git commit operation.
+
+  git uncommit
+    Undo the last commit, return the changes to the staging index.
+
+  git whoami
+    Show the currently configured Git user.
+----
+
+Show help:
+
+----
+$ gitex --help
+Usage: gitex [options]
+
+Get help with GitEx.
+
+Options:
+  -v, --version   Show installed GitEx version number
+  -c, --commands  List available GitEx aliases
+  -h, --help      Show usage instructions
+
+Examples:
+  $ git gitex --version
+  $ git gitex --commands
+  $ git -h
+----
+
+When run without any arguments, `gitex` displays help information:
+
+----
+$ gitex
+Usage: gitex [options]
+
+Get help with GitEx.
+...
+----
+
+== See also
+
+* link:./git-amend.adoc[`git amend`] — Modify the last commit with new changes.
+* link:./git-author.adoc[`git author`] — Change commit authorship information.
+* link:./git-unamend.adoc[`git unamend`] — Undo the last amend or commit operation.
+* link:./git-uncommit.adoc[`git uncommit`] — Undo the last commit.
+* link:./git-whoami.adoc[`git whoami`] — Display configured Git user identity.
