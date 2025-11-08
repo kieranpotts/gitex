@@ -34,6 +34,7 @@ main() {
   if [ -z "${1}" ]; then
     git diff --stat HEAD
   else
+    # shellcheck disable=SC2140
     git diff --stat "$1^".."$1"
   fi
 }
