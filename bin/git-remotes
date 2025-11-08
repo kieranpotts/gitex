@@ -19,7 +19,9 @@ main() {
     return 1
   fi
 
-  # git remote -v
+  # TODO: Review draft implementation, below.
+
+  git remote -v
 }
 
 main "$@"

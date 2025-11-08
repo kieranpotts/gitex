@@ -26,7 +26,7 @@ set -eu
 #
 # (NOTE: Prior to Git v1.8, the above command could set the `origin/HEAD` ref
 # incorrectly, due to potential ambiguity over what is the default branch when
-# the upstream `HEAD` referenes a commit SHA that is at the tip of more than
+# the upstream `HEAD` references a commit SHA that is at the tip of more than
 # one branch. This issue is now resolved in Git and we can rely on `git clone`
 # and the above command setting `origin/HEAD` correctly in clones.)
 #
@@ -51,11 +51,12 @@ main() {
     return 1
   fi
 
-  # git rev-parse --abbrev-ref --symbolic-full-name origin/HEAD | sed 's@^origin/@@'
+  # TODO: Review draft implementation, below.
+
+  git rev-parse --abbrev-ref --symbolic-full-name origin/HEAD | sed 's@^origin/@@'
 
   # git remote set-head origin --auto > /dev/null
   # git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
-
 }
 
 main "$@"

@@ -20,7 +20,9 @@ main() {
     return 1
   fi
 
-  # git log --oneline --decorate --graph --all
+  # TODO: Review draft implementation, below.
+
+  git log --oneline --decorate --graph --all
 }
 
 main "$@"

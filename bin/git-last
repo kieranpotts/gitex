@@ -19,7 +19,9 @@ main() {
     return 1
   fi
 
-  # git log -1 HEAD --stat
+  # TODO: Review draft implementation, below.
+
+  git log -1 HEAD --stat
 
 }
 

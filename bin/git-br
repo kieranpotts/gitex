@@ -23,29 +23,31 @@ main() {
     return 1
   fi
 
-  # branch="${1}"
+  # TODO: Review draft implementation, below.
 
-  # if [ -z "${branch}" ]; then
-  #   # Bash-compatible code:
-  #   #read -p "Type a branch name: " branch
+  branch="${1}"
 
-  #   # Posix-compatible code:
-  #   printf "> " >&2
-  #   read -r branch
-  # fi
+  if [ -z "${branch}" ]; then
+    # Bash-compatible code:
+    #read -p "Type a branch name: " branch
 
-  # if [ -z "${branch}" ]; then
-  #   printf "%b%b Require branch name. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
-  #   exit 1
-  # fi
+    # Posix-compatible code:
+    printf "> " >&2
+    read -r branch
+  fi
 
-  # git branch ${branch} && git checkout ${branch}
+  if [ -z "${branch}" ]; then
+    printf "%b%b Require branch name. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
+    exit 1
+  fi
 
-  # # Don't pus"h tempora"ry branches.
-  # if [ "${branch}" != "tmp" ]; then
-  #   git push --set-upstream origin HEAD
-  # fi
+  git branch "${branch}" && git checkout "${branch}"
 
+  # Don't push temporary branches.
+  # TODO: Allow this to be customized through environment variables.
+  if [ "${branch}" != "tmp" ]; then
+    git push --set-upstream origin HEAD
+  fi
 }
 
 main "$@"

@@ -19,24 +19,25 @@ main() {
     return 1
   fi
 
-  # file="${1}"
+  # TODO: Review draft implementation, below.
 
-  # if [ -z "${file}" ]; then
-  #   # Bash-compatible code:
-  #   #read -p "Type a file path: " file
+  file="${1}"
 
-  #   # Posix-compatible code:
-  #   printf "Type a file path: " >&2
-  #   read -r file
-  # fi
+  if [ -z "${file}" ]; then
+    # Bash-compatible code:
+    #read -p "Type a file path: " file
 
-  # if [ -z "${file}" ]; then
-  #   echo "Require a file path" >&2
-  #   exit 1
-  # fi
+    # Posix-compatible code:
+    printf "Type a file path: " >&2
+    read -r file
+  fi
 
-  # git log --graph --pretty=format:'%C(red)%h%C(reset)  %<(60,trunc)%s  %C(green)%<(14)%ar  %C(blue)%an %C(yellow)%d%C(reset)' --abbrev-commit -- "${file}"
+  if [ -z "${file}" ]; then
+    echo "Require a file path" >&2
+    exit 1
+  fi
 
+  git log --graph --pretty=format:'%C(red)%h%C(reset)  %<(60,trunc)%s  %C(green)%<(14)%ar  %C(blue)%an %C(yellow)%d%C(reset)' --abbrev-commit -- "${file}"
 }
 
 main "$@"

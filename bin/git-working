@@ -24,9 +24,9 @@ main() {
     return 1
   fi
 
-  # One of these:
-  # git diff --name-only
-  # git diff --stat
+  # TODO: Review draft implementation, below.
+
+  git diff --stat
 }
 
 main "$@"

@@ -23,7 +23,9 @@ main() {
     return 1
   fi
 
-  # git shortlog --email --summary --numbered
+  # TODO: Review draft implementation, below.
+
+  git shortlog --email --summary --numbered
 }
 
 main "$@"

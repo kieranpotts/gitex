@@ -20,16 +20,17 @@ main() {
     return 1
   fi
 
-  # branch="${1}"
+  # TODO: Review draft implementation, below.
 
-  # # Default to current branch
-  # if [ -z "${branch}" ]; then
-  #   branch=$(git branch --show-current)
-  # fi
+  branch="${1}"
 
-  # git branch "backup/${branch}" "${branch}"
-  # echo "Created branch 'backup/${branch}'"
+  # Default to the current branch.
+  if [ -z "${branch}" ]; then
+    branch=$(git branch --show-current)
+  fi
 
+  git branch "backup/${branch}" "${branch}"
+  print_info "Created branch 'backup/${branch}'"
 }
 
 main "$@"

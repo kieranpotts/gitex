@@ -29,12 +29,13 @@ main() {
     return 1
   fi
 
-  # if [ -z "${1}" ]; then
-  #   git diff --stat HEAD
-  # else
-  #   git diff --stat "$1^".."$1"
-  # fi
+  # TODO: Review draft implementation, below.
 
+  if [ -z "${1}" ]; then
+    git diff --stat HEAD
+  else
+    git diff --stat "$1^".."$1"
+  fi
 }
 
 main "$@"

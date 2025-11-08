@@ -23,25 +23,26 @@ main() {
     return 1
   fi
 
-  # branch=${1:-main}
-  # branch="${1}"
+  # TODO: Review draft implementation, below.
 
-  # if [ -z "${branch}" ]; then
-  #   # Bash-compatible code:
-  #   #read -p "Type a branch name: " branch
+  branch=${1:-main}
+  #branch="${1}"
 
-  #   # Posix-compatible code:
-  #   printf "Type a branch name: " >&2
-  #   read -r branch
-  # fi
+  if [ -z "${branch}" ]; then
+    # Bash-compatible code:
+    #read -p "Type a branch name: " branch
 
-  # if [ -z "${branch}" ]; then
-  #   echo "Require branch name" >&2
-  #   exit 1
-  # fi
+    # Posix-compatible code:
+    printf "Type a branch name: " >&2
+    read -r branch
+  fi
 
-  # git merge --ff-only "${branch}"
+  if [ -z "${branch}" ]; then
+    echo "Require branch name" >&2
+    exit 1
+  fi
 
+  git merge --ff-only "${branch}"
 }
 
 main "$@"
