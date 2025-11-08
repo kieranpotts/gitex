@@ -1,0 +1,14 @@
+#!/bin/env sh
+set -e
+
+#
+# fix - Run all automated fixes.
+#
+# Usage:
+#   $ ./fix
+#
+# Dependencies: None
+#
+
+echo "Running Ruff formatter..."
+poetry run ruff format test/

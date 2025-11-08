@@ -1,0 +1,22 @@
+#!/bin/env sh
+set -e
+
+#
+# check - Run all the static and runtime tests.
+#
+# Usage:
+#   $ ./check
+#
+# Dependencies: None
+#
+
+echo "Running ShellCheck..."
+shellcheck --severity=error bin/* lib/*
+
+echo ""
+echo "Running Ruff linter..."
+poetry run ruff check test/
+
+echo ""
+echo "Running pytest..."
+poetry run pytest -v
