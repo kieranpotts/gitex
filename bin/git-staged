@@ -23,7 +23,9 @@ main() {
     return 1
   fi
 
-  # git diff --stat --staged HEAD
+  # TODO: Review draft implementation, below.
+
+  git diff --stat --staged HEAD
 }
 
 main "$@"

@@ -19,7 +19,9 @@ main() {
     return 1
   fi
 
-  # git status --show-stash
+  # TODO: Review draft implementation, below.
+
+  git status --show-stash
 }
 
 main "$@"

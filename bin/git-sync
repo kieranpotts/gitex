@@ -45,24 +45,25 @@ main() {
     return 1
   fi
 
-  # initialStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
-  # git stash push --include-untracked
+  # TODO: Review draft implementation, below.
 
-  # # Get tracked upstream branch (see `upstream` alias for an explanation).
-  # upstreamBranch=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}")
+  initialStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+  git stash push --include-untracked
 
-  # if [ -n "$upstreamBranch" ]; then
-  #   git pull --rebase --prune
-  #   git push --follow-tags
-  # else
-  #   git push --set-upstream origin HEAD --follow-tags
-  # fi
+  # Get tracked upstream branch (see `upstream` alias for an explanation).
+  upstreamBranch=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}")
 
-  # newStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
-  # if [ "${newStashCount:-0}" != "${initialStashCount:-0}" ]; then
-  #   git stash pop
-  # fi
+  if [ -n "${upstreamBranch}" ]; then
+    git pull --rebase --prune
+    git push --follow-tags
+  else
+    git push --set-upstream origin HEAD --follow-tags
+  fi
 
+  newStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)
+  if [ "${newStashCount:-0}" != "${initialStashCount:-0}" ]; then
+    git stash pop
+  fi
 }
 
 main "$@"

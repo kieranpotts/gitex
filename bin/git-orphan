@@ -33,26 +33,28 @@ main() {
     return 1
   fi
 
+  # TODO: Review draft implementation, below.
+
   # TODO: Combine this with `git orphan`. If there are working/staged changes,
   # prompt the use to keep or discard them.
 
-  # branch="${1}"
+  branch="${1}"
 
-  # if [ -z "${branch}" ]; then
-  #   # Bash-compatible code:
-  #   #read -p "Type a branch name: " branch
+  if [ -z "${branch}" ]; then
+    # Bash-compatible code:
+    #read -p "Type a branch name: " branch
 
-  #   # Posix-compatible code:
-  #   printf "Type a branch name: " >&2
-  #   read -r branch
-  # fi
+    # Posix-compatible code:
+    printf "Type a branch name: " >&2
+    read -r branch
+  fi
 
-  # if [ -z "${branch}" ]; then
-  #   echo "Require branch name" >&2
-  #   exit 1
-  # fi
+  if [ -z "${branch}" ]; then
+    echo "Require branch name" >&2
+    exit 1
+  fi
 
-  # git switch --orphan "${branch}"
+  git switch --orphan "${branch}"
 
   # ------------------------------------------------------
 

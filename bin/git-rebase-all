@@ -21,20 +21,22 @@ main() {
     return 1
   fi
 
-  # # Get the name of the trunk branch, default to main.
-  # trunk_branch=${1:-main}
+  # TODO: Review draft implementation, below.
 
-  # # Get the names of all local branches except the trunk branch
-  # branches=$(git branch --format='%(refname:short)' | grep -v "^${trunk_branch}$")
+  # Get the name of the trunk branch, default to main.
+  trunk_branch=${1:-main}
 
-  # # Rebase each branch on the trunk branch.
-  # for branch in $branches; do
-  #   git checkout $branch
-  #   git rebase $trunk_branch
-  # done
+  # Get the names of all local branches except the trunk branch
+  branches=$(git branch --format='%(refname:short)' | grep -v "^${trunk_branch}$")
 
-  # # Switch back to the trunk branch.
-  # git checkout $trunk_branch
+  # Rebase each branch on the trunk branch.
+  for branch in ${branches}; do
+    git checkout "${branch}"
+    git rebase "${trunk_branch}"
+  done
+
+  # Switch back to the trunk branch.
+  git checkout "${trunk_branch}"
 }
 
 main "$@"

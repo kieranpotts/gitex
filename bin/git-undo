@@ -39,15 +39,18 @@ main() {
     return 1
   fi
 
-  # # TODO: Prompt the user with a warning
+  # TODO: Review draft implementation, below.
 
-  # git add --all
-  # # Always disable Git hooks on this type of commit, it's just a backup point for WIP.
-  # git commit --quiet --no-verify --message '--SAVEPOINT--'
-  # git reset HEAD~1 --hard
-  # git clean -fd
+  # TODO: Prompt the user with a warning
 
-  # # TODO: Show a message regarding the --SAVEPOINT-- commit
+  git add --all
+
+  # Always disable Git hooks on this type of commit, it's just a backup point for WIP.
+  git commit --quiet --no-verify --message '--SAVEPOINT--'
+  git reset HEAD~1 --hard
+  git clean -fd
+
+  # TODO: Show a message regarding the --SAVEPOINT-- commit
 }
 
 main "$@"

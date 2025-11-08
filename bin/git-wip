@@ -4,7 +4,8 @@ set -eu
 #
 # git-wip - Save work-in-progress.
 #
-# Creates a commit, with the contents of the staging index plus working directory, and with the specified message suffixed with " - WIP". If no
+# Creates a commit, with the contents of both the staging index and the working
+# directory, and with the specified message suffixed with " - WIP". If no
 # comment is provided, the commit message will be "WIP".
 #
 # Continue where you left off tomorrow with `git resume`.
@@ -30,8 +31,10 @@ main() {
     return 1
   fi
 
-  # git add --all
-  # git commit --quiet --message "${1:-wip}${1+ - wip}"
+  # TODO: Review draft implementation, below.
+
+  git add --all
+  git commit --quiet --message "${1:-WIP}${1+ - WIP}"
 }
 
 main "$@"

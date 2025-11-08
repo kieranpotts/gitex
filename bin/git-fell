@@ -41,14 +41,15 @@ main() {
     return 1
   fi
 
+  # TODO: Review draft implementation, below.
+
   # git branch --merged "${1:-$(git default)}" | grep -vE '^\*|master|main|dev' | xargs -r git branch -d
 
-  # # Get default branch (see `default` Git alias).
-  # git remote set-head origin --auto > /dev/null
-  # DEFAULT=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+  # Get default branch (see `default` Git alias).
+  git remote set-head origin --auto > /dev/null
+  DEFAULT=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 
-  # git branch --merged "${1-$DEFAULT}" | grep --invert-match " ${1-$DEFAULT}$" | xargs git branch --delete 2> /dev/null
-
+  git branch --merged "${1-${DEFAULT}}" | grep --invert-match " ${1-${DEFAULT}}$" | xargs git branch --delete 2> /dev/null
 }
 
 main "$@"

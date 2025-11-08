@@ -18,7 +18,7 @@ set -eu
 # `--force-with-lease` will delete upstream commits when the downstream
 # repository has been updated with `git fetch` and not a subsequent `git merge`
 # (or a `git pull`, which combines both operations). See the following
-# Atlassian article for more bakcground to the dangers of force pushing:
+# Atlassian article for more background to the dangers of force pushing:
 # - https://blog.developer.atlassian.com/force-with-lease/
 #
 # See also the `git down` alias, with mirrors this one, and `git sync`,
@@ -42,18 +42,20 @@ main() {
     return 1
   fi
 
-  # # Get tracked upstream branch.
-  # upstreamBranch=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}")
+  # TODO: Review draft implementation, below.
 
-  # # Check if the upstream branch is already set.
-  # if [ -n "$upstreamBranch" ]; then
-  #   git push --follow-tags
-  # else
-  #   git push --set-upstream origin HEAD --follow-tags
-  # fi
+  # Get tracked upstream branch.
+  upstreamBranch=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}")
+
+  # Check if the upstream branch is already set.
+  if [ -n "${upstreamBranch}" ]; then
+    git push --follow-tags
+  else
+    git push --set-upstream origin HEAD --follow-tags
+  fi
 
   # Force:
-  # git push --set-upstream origin HEAD --follow-tags --force-with-lease
+  git push --set-upstream origin HEAD --follow-tags --force-with-lease
 }
 
 main "$@"

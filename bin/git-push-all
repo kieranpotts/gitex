@@ -21,24 +21,25 @@ main() {
     return 1
   fi
 
-  # # Get the name of the remote repository, default to origin.
-  # remote=${1:-origin}
+  # TODO: Review draft implementation, below.
 
-  # # Get the name of the current checked out branch.
-  # current_branch=$(git rev-parse --abbrev-ref HEAD)
+  # Get the name of the remote repository, default to origin.
+  remote=${1:-origin}
 
-  # # Get the names of all local branches except the trunk branch
-  # branches=$(git branch --format='%(refname:short)')
+  # Get the name of the current checked out branch.
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-  # # Push each branch.
-  # for branch in $branches; do
-  #   git checkout $branch
-  #   git push $remote $branch --follow-tags --force-with-lease
-  # done
+  # Get the names of all local branches except the trunk branch
+  branches=$(git branch --format='%(refname:short)')
 
-  # # Switch back to the original checked-out branch.
-  # git checkout $current_branch
+  # Push each branch.
+  for branch in ${branches}; do
+    git checkout "${branch}"
+    git push "${remote}" "${branch}" --follow-tags --force-with-lease
+  done
 
+  # Switch back to the original checked-out branch.
+  git checkout "${current_branch}"
 }
 
 main "$@"

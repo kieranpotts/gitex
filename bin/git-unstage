@@ -21,7 +21,9 @@ main() {
     return 1
   fi
 
-  # git reset
+  # TODO: Review draft implementation, below.
+
+  git reset
 }
 
 main "$@"

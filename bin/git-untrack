@@ -21,12 +21,14 @@ main() {
     return 1
   fi
 
-  # file="${1}"
+  # TODO: Review draft implementation, below.
 
-  # if [ -z "${file}" ]; then
-  #   echo "Require a file path" >&2
-  #   exit 1
-  # fi
+  file="${1}"
+
+  if [ -z "${file}" ]; then
+    echo "Require a file path" >&2
+    exit 1
+  fi
 
   # The `rm` command combined with the `--cache` option removes a file from the
   # staging index but maintains the file in the working tree. When the next
@@ -34,7 +36,7 @@ main() {
   # but not deleted from the local filesystem.
   # Reference: https://git-scm.com/docs/git-rm
 
-  # git rm --cached -- "${file}"
+  git rm --cached -- "${file}"
 }
 
 main "$@"

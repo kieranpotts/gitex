@@ -27,13 +27,15 @@ main() {
     return 1
   fi
 
-  # path="${1}"
+  # TODO: Review draft implementation, below.
 
-  # if [ -z "${path}" ]; then
-  #   git add --all
-  # else
-  #   git add "${path}"
-  # fi
+  path="${1}"
+
+  if [ -z "${path}" ]; then
+    git add --all
+  else
+    git add "${path}"
+  fi
 }
 
 main "$@"

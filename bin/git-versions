@@ -20,7 +20,9 @@ main() {
     return 1
   fi
 
-  # git tag --list --sort=-version:refname v*
+  # TODO: Review draft implementation, below.
+
+  git tag --list --sort=-version:refname v*
 }
 
 main "$@"

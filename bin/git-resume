@@ -24,26 +24,21 @@ main() {
     return 1
   fi
 
-  # # Absolute path to the repository, thus `/path/to/dotfiles`.
-  # REPO_PATH=$(dirname "$(dirname "$(readlink -f "$0")")")
+  # TODO: Review draft implementation, below.
 
-  # # Source ANSI code variables.
-  # . "${REPO_PATH}/lib/ansi-codes.sh"
+  # Get message of last commit.
+  msg=$(git show -s --format=%B HEAD)
 
-  # # Get message of last commit.
-  # msg=$(git show -s --format=%B HEAD)
+  # Bash-specific way to get the last 6 characters of a string.
+  #if [ "${msg}" = "wip" ] || [ "${msg: -6}" = " - wip" ]; then
 
-  # # Bash-specific way to get the last 6 characters of a string.
-  # #if [ "${msg}" = "wip" ] || [ "${msg: -6}" = " - wip" ]; then
-
-  # msg_end=`echo ${msg} | tail -c 7`
-  # if [ "${msg}" = "wip" ] || [ "${msg_end}" = " - wip" ]; then
-  #   git reset HEAD~1 --mixed
-  # else
-  #   printf "%bLast commit is not work-in-progress%b" "${RED}" "${RESET}" >&2
-  #   exit 1
-  # fi
-
+  msg_end=$(echo "${msg}" | tail -c 7)
+  if [ "${msg}" = "wip" ] || [ "${msg_end}" = " - wip" ]; then
+    git reset HEAD~1 --mixed
+  else
+    printf "%bLast commit is not work-in-progress%b" "${RED}" "${RESET}" >&2
+    exit 1
+  fi
 }
 
 main "$@"

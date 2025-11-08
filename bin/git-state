@@ -22,7 +22,9 @@ main() {
     return 1
   fi
 
-  # git status --short --branch
+  # TODO: Review draft implementation, below.
+
+  git status --short --branch
 }
 
 main "$@"

@@ -22,7 +22,9 @@ main() {
     return 1
   fi
 
-  # git tag --list --sort=committerdate
+  # TODO: Review draft implementation, below.
+
+  git tag --list --sort=committerdate
 }
 
 main "$@"

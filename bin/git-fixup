@@ -48,25 +48,17 @@ main() {
     return 1
   fi
 
-  # REV=$(git rev-parse "${1:-HEAD}")
-  # git add --all
+  # TODO: Review draft implementation, below.
 
-  # # If there's an environment variable called `X_GIT_COMMIT_VERIFY` and its value
-  # # is `0`, then we apply the `--no-verify` flag to the `git commit` operation.
-  # VERIFY=${X_GIT_COMMIT_VERIFY:-1}
+  REV=$(git rev-parse "${1:-HEAD}")
+  git add --all
 
-  # if [ "$VERIFY" -eq "0" ]; then
-  #   # In Bash, we can forward additional parameters to the `git commit` command.
-  #   # This is not so easy in POSIX shell.
-  #   #git commit --no-verify --quiet --fixup="${REV}" "${@:2}"
-  #   git commit --no-verify --quiet --fixup="${REV}"
-  # else
-  #   #git commit --quiet --fixup="${REV}" "${@:2}"
-  #   git commit --quiet --fixup="${REV}"
-  # fi
+  # In Bash, we can forward additional parameters to the `git commit` command.
+  # This is not so easy in POSIX shell.
+  #git commit --quiet --fixup="${REV}" "${@:2}"
+  git commit --quiet --fixup="${REV}"
 
-  # git rebase --interactive --autosquash "${REV}~1"
-
+  git rebase --autosquash "${REV}~1"
 }
 
 main "$@"
