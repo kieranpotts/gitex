@@ -1,4 +1,4 @@
-# CLAUDE instructions
+# GitEx: Project information for Claude Code
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -20,7 +20,8 @@ The project is inspired by (but not compatible with) Git Extras. Some operations
   - Call to `main` at the end.
 
 - **lib/**: Shared library code.
-  - `ansi-codes.sh`: ANSI color code definitions for terminal output formatting (exports variables like `$RED`, `$BOLD`, `$RESET`).
+  - `print.sh`: Helper functions for consistent messaging across GitEx commands. Imported directly into `bin` scripts.
+  - `ansi-codes.sh`: ANSI color code definitions for terminal output formatting (exports variables like `$RED`, `$BOLD`, `$RESET`). Used by `print.sh` but not directly sourced in `bin` scripts.
 
 - **test/**: Python-based test suite using pytest.
   - `conftest.py`: Pytest configuration with `temp_repo` fixture.
@@ -116,5 +117,6 @@ Workflows are run against `dev`, which is the main branch for this repository (n
 
 ### Other constraints
 
+- Shell scripts and Python tests must be well-commented. Use American English and full sentences (terminated with periods) for all comments.
 - The project structure mirrors Git's extension mechanism: scripts named `git-<command>` in PATH become `git <command>` aliases.
 - Windows compatibility requires Git Bash or WSL2.
