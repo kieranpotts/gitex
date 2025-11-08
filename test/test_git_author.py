@@ -115,7 +115,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: --name requires a value" in result.stderr
+        assert "--name requires a value" in result.stderr
 
     def test_rejects_email_without_value(self, temp_repo, script_path):
         """Test that --email flag requires a value."""
@@ -134,7 +134,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: --email requires a value" in result.stderr
+        assert "--email requires a value" in result.stderr
 
     def test_rejects_unknown_option(self, temp_repo, script_path):
         """Test that unknown options are rejected."""
@@ -153,7 +153,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: unknown option '--unknown'" in result.stderr
+        assert "unknown option '--unknown'" in result.stderr
 
     def test_rejects_multiple_ref_arguments(self, temp_repo, script_path):
         """Test that multiple positional arguments are rejected."""
@@ -172,4 +172,4 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "error: unexpected argument" in result.stderr
+        assert "unexpected argument" in result.stderr

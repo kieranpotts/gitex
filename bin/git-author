@@ -11,7 +11,13 @@ set -eu
 # Dependencies: None
 #
 
+
+# Source print helper functions.
+# shellcheck source=lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
+
   # Parse arguments.
   ref=""
   author_name=""
@@ -21,7 +27,7 @@ main() {
     case "$1" in
       --name)
         if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
-          echo "error: --name requires a value" >&2
+          print_error "--name requires a value"
           return 1
         fi
         author_name="$2"
@@ -29,31 +35,27 @@ main() {
         ;;
       --email)
         if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
-          echo "error: --email requires a value" >&2
+          print_error "--email requires a value"
           return 1
         fi
         author_email="$2"
         shift 2
         ;;
       -*)
-        echo "error: unknown option '$1'" >&2
+        print_error "unknown option '$1'"
         return 1
         ;;
       *)
         if [ -z "$ref" ]; then
           ref="$1"
         else
-          echo "error: unexpected argument '$1'" >&2
+          print_error "unexpected argument '$1'"
           return 1
         fi
         shift
         ;;
     esac
   done
-
-  # Source ANSI code variables.
-  # shellcheck source=lib/ansi-codes.sh
-  . "$(dirname "$0")/../lib/ansi-codes.sh"
 
   # Get the name of the current branch.
   branch=$(git branch --show-current)
@@ -142,7 +144,6 @@ main() {
 
     # New commit hash.
     new_rev=$(git rev-parse HEAD)
-    echo "${new_rev}"
 
     # Switch back to the previous branch then rebase on the new revision.
     git switch --quiet "${branch}"
