@@ -8,7 +8,7 @@ description = "Git extensions and utilities"
 name = "gitex"
 package-mode = false
 readme = "README.adoc"
-version = "0.1.0"
+version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = "^3.9"
