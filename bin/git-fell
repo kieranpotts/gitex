@@ -32,6 +32,9 @@ set -eu
 #   - https://stackoverflow.com/a/41465769
 #
 
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-fell does not accept any arguments" >&2

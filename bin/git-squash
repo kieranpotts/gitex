@@ -45,6 +45,9 @@ set -eu
 #   - https://stackoverflow.com/questions/36486966/
 #
 
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-squash does not accept any arguments" >&2

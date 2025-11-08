@@ -33,6 +33,9 @@ set -eu
 #   - https://pbassiner.github.io/blog/git_aliases_to_the_rescue.html
 #
 
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-up does not accept any arguments" >&2

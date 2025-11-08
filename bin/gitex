@@ -33,7 +33,7 @@ Examples:
 EOF
 }
 
-# shellcheck source=lib/print.sh
+# shellcheck source=../lib/print.sh
 . "$(dirname "$0")/../lib/print.sh"
 
 _print_version() {

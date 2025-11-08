@@ -42,6 +42,9 @@ set -eu
 #   - https://haacked.com/archive/2014/07/28/github-flow-aliases/
 #
 
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-default does not accept any arguments" >&2

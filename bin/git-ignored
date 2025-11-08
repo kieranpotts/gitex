@@ -15,6 +15,9 @@ set -eu
 # Dependencies: None
 #
 
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-ignored does not accept any arguments" >&2

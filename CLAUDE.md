@@ -65,7 +65,7 @@ ShellCheck is used for shell script linting:
 sudo apt-get install -y shellcheck
 
 # Lint all shell scripts (only errors, not warnings).
-shellcheck --severity=error bin/* lib/*
+shellcheck --severity=warning bin/* lib/*
 ```
 
 Ruff is used for Python linting and formatting:
@@ -99,7 +99,7 @@ Workflows are run against `dev`, which is the main branch for this repository (n
 - Follow the standard script structure (see `bin/git-whoami` for reference).
 - Include header comments with description, usage, and dependencies.
 - Wrap implementation in a `main()` function.
-- Must pass ShellCheck with `--severity=error`.
+- Must pass ShellCheck with `--severity=warning`.
 
 ### Python tests (`test/`)
 
@@ -118,5 +118,6 @@ Workflows are run against `dev`, which is the main branch for this repository (n
 ### Other constraints
 
 - Shell scripts and Python tests must be well-commented. Use American English and full sentences (terminated with periods) for all comments.
+- Each `git` alias may have dependencies on the `lib` files, but nothing else. One alias must not internally use another alias – the objective being that users should be able to disable some aliases and for the remaining ones to still work.
 - The project structure mirrors Git's extension mechanism: scripts named `git-<command>` in PATH become `git <command>` aliases.
 - Windows compatibility requires Git Bash or WSL2.

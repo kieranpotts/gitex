@@ -39,6 +39,9 @@ set -eu
 #   - https://git-scm.com/docs/git-rev-parse
 #
 
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
 main() {
   if [ $# -gt 0 ]; then
     echo "error: git-fixup does not accept any arguments" >&2
