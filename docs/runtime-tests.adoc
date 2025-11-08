@@ -20,3 +20,12 @@ $ poetry run pytest -v
 ----
 
 The tests use https://github.com/gitpython-developers/GitPython[Git Python] to dynamically create temporary Git repositories, and the tests do not change any global or user-level Git configuration (only local), ensuring isolation and no interference with your own Git configuration.
+
+[TIP]
+======
+All runtime tests can be executed with this shortcut:
+
+----
+$ ./check
+----
+======
