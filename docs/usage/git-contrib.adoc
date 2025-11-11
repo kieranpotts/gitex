@@ -1,3 +1,9 @@
 = `git contrib`
 
 List all contributors, ordered by their total commit count.
+
+== Usage
+
+----
+$ git contrib
+----

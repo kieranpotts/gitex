@@ -1,4 +1,4 @@
-= `git author ([ref]) (--name [name]) (--email [email])`
+= `git author`
 
 Change the author name and email address of the last commit or an earlier specified commit.
 
@@ -9,6 +9,12 @@ When modifying the most recent commit (HEAD), the operation is performed directl
 CAUTION: This command rewrites commit history. Avoid using it on commits that have already been pushed to a shared repository.
 
 == Usage
+
+----
+$ git author [<ref>] [--name <name>] [--email <email>]
+----
+
+== Examples
 
 ----
 $ git author

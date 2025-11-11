@@ -9,7 +9,7 @@ set -eu
 # be rebased on the target branch beforehand.
 #
 # Usage:
-#   $ git ff ([branch])
+#   $ git ff [<branch>]
 #
 # Dependencies: None
 #
@@ -19,7 +19,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-ff does not accept any arguments"
+    print_error "git-ff does not accept any options"
     return 1
   fi
 

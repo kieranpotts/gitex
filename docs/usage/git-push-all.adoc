@@ -1,3 +1,9 @@
-= `git push-all ([remote])`
+= `git push-all`
 
 Push changes in all local branches to their tracked branches in the remote repository. Defaults to the "origin" remote unless otherwise specified.
+
+== Usage
+
+----
+$ git push-all [<remote>]
+----

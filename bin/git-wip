@@ -17,7 +17,7 @@ set -eu
 # alias provides a shortcut for doing exactly this.
 #
 # Usage:
-#   $ git wip ('[msg]')
+#   $ git wip [<msg>]
 #
 # Dependencies: None
 #
@@ -27,7 +27,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-wip does not accept any arguments"
+    print_error "git-wip does not accept any options"
     return 1
   fi
 

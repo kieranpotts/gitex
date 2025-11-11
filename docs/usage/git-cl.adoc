@@ -1,3 +1,9 @@
-= `git cl ([params...])`
+= `git cl`
 
 Shortcut for `git clone`. Parameters are forwarded.
+
+== Usage
+
+----
+$ git cl [...]
+----

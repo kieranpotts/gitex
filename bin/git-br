@@ -9,7 +9,7 @@ set -eu
 # This operation fails with an error if the branch name is already taken.
 #
 # Usage:
-#   $ git br ([branch])
+#   $ git br [<branch>]
 #
 # Dependencies: None
 #
@@ -19,7 +19,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-br does not accept any arguments"
+    print_error "git-br does not accept any options"
     return 1
   fi
 

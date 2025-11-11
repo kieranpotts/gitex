@@ -2,12 +2,12 @@
 set -eu
 
 #
-# git-rebase-all - Rebase all local branches on the trunk branch. Defaults
+# git-rebase-all - Rebase all local branches on a base branch. Defaults
 # to using the `main` branch as the target base branch, unless otherwise
 # specified.
 #
 # Usage:
-#   $ git rebase-all ([trunk])
+#   $ git rebase-all [<base>]
 #
 # Dependencies: None
 #
@@ -17,26 +17,26 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-rebase-all does not accept any arguments"
+    print_error "git-rebase-all does not accept any options"
     return 1
   fi
 
   # TODO: Review draft implementation, below.
 
-  # Get the name of the trunk branch, default to main.
-  trunk_branch=${1:-main}
+  # Get the name of the base branch, default to main.
+  base_branch=${1:-main}
 
-  # Get the names of all local branches except the trunk branch
-  branches=$(git branch --format='%(refname:short)' | grep -v "^${trunk_branch}$")
+  # Get the names of all local branches except the base branch
+  branches=$(git branch --format='%(refname:short)' | grep -v "^${base_branch}$")
 
-  # Rebase each branch on the trunk branch.
+  # Rebase each branch on the base branch.
   for branch in ${branches}; do
     git checkout "${branch}"
-    git rebase "${trunk_branch}"
+    git rebase "${base_branch}"
   done
 
-  # Switch back to the trunk branch.
-  git checkout "${trunk_branch}"
+  # Switch back to the base branch.
+  git checkout "${base_branch}"
 }
 
 main "$@"

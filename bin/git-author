@@ -6,7 +6,7 @@ set -eu
 # an earlier specified commit in the checked-out branch's history.
 #
 # Usage:
-#   $ git author ([ref]) (--name [name]) (--email [email])
+#   $ git author [<ref>] [--name <name>] [--email <email>]
 #
 # Dependencies: None
 #
@@ -16,7 +16,7 @@ set -eu
 
 main() {
 
-  # Parse arguments.
+  # Parse options.
   ref=""
   author_name=""
   author_email=""
@@ -47,7 +47,7 @@ main() {
         if [ -z "${ref}" ]; then
           ref="$1"
         else
-          print_error "unexpected argument '$1'"
+          print_error "unexpected option '$1'"
           return 1
         fi
         shift

@@ -5,7 +5,7 @@ set -eu
 # git-filelog - List all the commits that have changed the specified file.
 #
 # Usage:
-#   $ git filelog [path]
+#   $ git filelog [<path>]
 #
 # Dependencies: None
 #
@@ -15,7 +15,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-filelog does not accept any arguments"
+    print_error "git-filelog does not accept any options"
     return 1
   fi
 

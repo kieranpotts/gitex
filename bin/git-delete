@@ -10,7 +10,7 @@ set -eu
 # work that is not merged elsewhere. Upstream branches are not deleted.
 #
 # Usage:
-#   $ git delete ([branch])
+#   $ git delete [<branch>]
 #
 # Dependencies: None
 #
@@ -20,13 +20,13 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-delete does not accept any arguments"
+    print_error "git-delete does not accept any options"
     return 1
   fi
 
   # TODO: Review draft implementation, below.
 
-  # Was the target branch provided as a parameter?
+  # Was the target branch provided as a option?
   branch="${1}"
 
   # If not, let the user select from a list.

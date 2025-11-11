@@ -9,13 +9,13 @@ set -eu
 # See also `git-staged`, which lists only staged changes, and `git-working`,
 # which lists only unstaged/working changes.
 #
-# If a commit hash is provided as an input parameter, this command will instead
+# If a commit hash is provided as an input option, this command will instead
 # list all the files that were committed with changes in the given commit. See
 # also `git-last`, which is a shortcut for showing the changes introduced in
 # the last commit.
 #
 # Usage:
-#   $ git changes ([ref])
+#   $ git changes [<ref>]
 #
 # Dependencies: None
 #
@@ -25,7 +25,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-changes does not accept any arguments"
+    print_error "git-changes does not accept any options"
     return 1
   fi
 

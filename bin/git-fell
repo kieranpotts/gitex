@@ -8,7 +8,7 @@ set -eu
 # It works like this:
 #
 # 1. Get a list of branches that have been merged into the specified branch,
-#    falling back on the default branch if there are no parameters.
+#    falling back on the default branch if there are no options.
 # 2. Use `grep -v` to print a list of branch names that DO NOT match the
 #    name of the target branch branch.
 # 3. Pipe this to `xargs`, which takes the standard input and executes the
@@ -22,7 +22,7 @@ set -eu
 # mainline tracks besides the default branch.
 #
 # Usage:
-#   $ git fell ([branch])
+#   $ git fell [<branch>]
 #
 # Dependencies: None
 #
@@ -37,7 +37,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-fell does not accept any arguments"
+    print_error "git-fell does not accept any options"
     return 1
   fi
 

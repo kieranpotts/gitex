@@ -1,3 +1,9 @@
-= `git sw ([params...])`
+= `git sw`
 
 Alias for `git switch`. Parameters are forwarded.
+
+== Usage
+
+----
+$ git sw [...]
+----

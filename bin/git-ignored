@@ -5,7 +5,6 @@ set -eu
 # git-ignored - Print a list of file paths, changes to which cannot be
 # added to Git's staging index because Git will ignore them.
 #
-#
 # Use `git ignore [path]` to add a file path to this list, or
 # `git unignore [path]` to remove one.
 #
@@ -20,7 +19,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-ignored does not accept any arguments"
+    print_error "git-ignored does not accept any options"
     return 1
   fi
 

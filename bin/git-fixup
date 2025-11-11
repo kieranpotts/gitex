@@ -11,9 +11,12 @@ set -eu
 # immediately rebases to squash the changes into the target commit. The
 # original commit message is preserved.
 #
-# Additional parameters will be forwarded to the `commit` command.
+# Additional options will be forwarded to the `commit` command.
 #
 # Usage:
+#  $ git fixup [<ref>]
+#
+# Examples:
 #   $ git fixup         # Fix the last commit.
 #   $ git fixup HEAD    # Fix the last commit.
 #   $ git fixup HEAD^   # Fix the last-but-one commit.
@@ -44,7 +47,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-fixup does not accept any arguments"
+    print_error "git-fixup does not accept any options"
     return 1
   fi
 
@@ -53,7 +56,7 @@ main() {
   REV=$(git rev-parse "${1:-HEAD}")
   git add --all
 
-  # In Bash, we can forward additional parameters to the `git commit` command.
+  # In Bash, we can forward additional options to the `git commit` command.
   # This is not so easy in POSIX shell.
   #git commit --quiet --fixup="${REV}" "${@:2}"
   git commit --quiet --fixup="${REV}"

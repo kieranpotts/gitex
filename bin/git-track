@@ -5,15 +5,20 @@ set -eu
 # git-track - Start tracking one or more new files. This is an alias for
 # `git add` and the opposite of the `git untrack` alias.
 #
+# Options are forwarded.
+#
 # Usage:
+#   $ git track [<path>] [--all|-A]
+#
+# Examples:
 #   # Add all changes in whole working tree.
-#   git track (--all|-A)
+#   $ git track (--all|-A)
 #
 #   # Add all changes in current path.
-#   git track .
+#   $ git track .
 #
 #   # Add one or more specific files.
-#   git track path/to/file.ext
+#   $ git track path/to/file.ext
 #
 # Dependencies: None
 #
@@ -23,7 +28,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-track does not accept any arguments"
+    print_error "git-track does not accept any options"
     return 1
   fi
 

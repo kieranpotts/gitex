@@ -1,3 +1,9 @@
-= `git delete ([branch])`
+= `git delete`
 
 Delete a local branch, but only if it's changes have been merged elsewhere.
+
+== Usage
+
+----
+$ git delete [<branch>]
+----

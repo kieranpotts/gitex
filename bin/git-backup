@@ -6,7 +6,7 @@ set -eu
 # specified branch.
 #
 # Usage:
-#   $ git backup ([branch])
+#   $ git backup [<branch>]
 #
 # Dependencies: None
 #
@@ -16,7 +16,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-backup does not accept any arguments"
+    print_error "git-backup does not accept any options"
     return 1
   fi
 

@@ -1,7 +1,13 @@
-= `git wip ('[msg]')`
+= `git wip`
 
 Save work-in-progress. Creates a commit, with the contents of the staging area plus working tree, with the specified message (or "WIP" if no message is provided).
 
 Continue where you left off tomorrow with `git resume`.
 
 // TODO: If the previous commit with another "WIP" commit, that commit will be amended, rather than a new "WIP" being created. Thus, you can keep running `git wip` to incrementally write a single commit object. This can be useful where you want the final result to be stable, atomic commits, but you want to have a backup of unstable work-in-progress along the way.
+
+== Usage
+
+----
+$ git wip [<msg>]
+----

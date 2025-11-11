@@ -1,3 +1,9 @@
-= `git br ([branch])`
+= `git br`
 
 Branch from current position, switch to it, and push upstream to setup tracking.
+
+== Usage
+
+----
+$ git br [<branch>]
+----

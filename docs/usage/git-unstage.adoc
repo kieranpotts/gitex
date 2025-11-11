@@ -1,3 +1,9 @@
 = `git unstage`
 
 Alias for `git reset`, this removes everything from the staging index, returning the changes to the working tree.
+
+== Usage
+
+----
+$ git unstage
+----

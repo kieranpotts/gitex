@@ -14,7 +14,7 @@ set -eu
 # may need to be force-pushed into the remotes that have the existing commits.
 #
 # Usage:
-#   $ git reword ([ref])
+#   $ git reword [<ref>]
 #
 # Dependencies: None
 #
@@ -24,7 +24,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-reword does not accept any arguments"
+    print_error "git-reword does not accept any options"
     return 1
   fi
 

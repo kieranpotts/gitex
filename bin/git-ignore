@@ -21,7 +21,7 @@ set -eu
 # and safer.
 #
 # Usage:
-#   $ git ignore [path]
+#   $ git ignore [<path>]
 #
 # Dependencies: None
 #
@@ -31,7 +31,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-ignore does not accept any arguments"
+    print_error "git-ignore does not accept any options"
     return 1
   fi
 

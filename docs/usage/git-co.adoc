@@ -1,3 +1,9 @@
-= `git co ([params...])`
+= `git co`
 
 Shortcut for `git checkout`. Parameters are forwarded.
+
+== Usage
+
+----
+$ git co [...]
+----
