@@ -1,6 +1,6 @@
-# GitEx: Project information for Claude Code
+# GitEx: Project information for AI coding agents
 
-The purpose of this document is to provide context for Claude Code, a generative AI coding agent.
+The purpose of this document is to provide context AI coding agents.
 
 ## Project overview
 
