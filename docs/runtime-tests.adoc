@@ -25,6 +25,12 @@ Or, for more verbose output:
 $ poetry run pytest -v
 ----
 
+Tests can be run individually:
+
+----
+$ poetry run pytest test/test_git_backup.py
+----
+
 The tests use https://github.com/gitpython-developers/GitPython[Git Python] to dynamically create temporary Git repositories, and the tests do not change any global or user-level Git configuration (only local), ensuring isolation and no interference with your own Git configuration.
 
 [TIP]

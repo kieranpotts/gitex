@@ -91,7 +91,7 @@ class TestGitWhoami:
         result = temp_repo.run(script_path, "--help")
 
         assert result.returncode == 1
-        assert "git-whoami does not accept any arguments" in result.stderr
+        assert "git-whoami does not accept any options" in result.stderr
 
     def test_rejects_multiple_arguments(self, temp_repo, script_path):
         """Test that the command rejects multiple arguments."""
@@ -99,4 +99,4 @@ class TestGitWhoami:
         result = temp_repo.run(script_path, "arg1", "arg2")
 
         assert result.returncode == 1
-        assert "git-whoami does not accept any arguments" in result.stderr
+        assert "git-whoami does not accept any options" in result.stderr

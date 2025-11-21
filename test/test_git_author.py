@@ -341,4 +341,4 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "unexpected argument" in result.stderr
+        assert "unexpected option" in result.stderr

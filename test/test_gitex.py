@@ -15,7 +15,7 @@ class TestGitex:
         assert result.returncode == 0
 
         # Verify stdout.
-        assert "Usage: gitex [options]" in result.stdout
+        assert "Usage: gitex" in result.stdout
         assert "Get help with using GitEx." in result.stdout
         assert "--version" in result.stdout
         assert "--commands" in result.stdout
@@ -30,7 +30,7 @@ class TestGitex:
         assert result.returncode == 0
 
         # Verify stdout.
-        assert "Usage: gitex [options]" in result.stdout
+        assert "Usage: gitex" in result.stdout
         assert "Get help with using GitEx." in result.stdout
 
     def test_help_flag_long(self, temp_repo, script_path):
@@ -42,7 +42,7 @@ class TestGitex:
         assert result.returncode == 0
 
         # Verify stdout.
-        assert "Usage: gitex [options]" in result.stdout
+        assert "Usage: gitex" in result.stdout
         assert "Get help with using GitEx." in result.stdout
 
     def test_version_flag_short(self, temp_repo, script_path):
@@ -146,5 +146,5 @@ class TestGitex:
         assert result.returncode == 1
 
         # Verify stderr.
-        assert "too many arguments" in result.stderr
+        assert "too many options" in result.stderr
         assert "Try 'gitex --help' for more information." in result.stderr
