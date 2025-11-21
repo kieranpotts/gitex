@@ -23,9 +23,14 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # Check if there are any commits in the repository.
+  # If HEAD doesn't exist, the repository has no commits.
+  if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+    # No commits - return successfully with no output.
+    return 0
+  fi
 
-  git shortlog --email --summary --numbered
+  git shortlog --email --summary --numbered HEAD
 }
 
 main "$@"
