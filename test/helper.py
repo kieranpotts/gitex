@@ -51,8 +51,11 @@ class TempRepo:
             subprocess.CompletedProcess with returncode, stdout, stderr
         """
 
+        # Explicitly use bash to execute the script. This is required for the tests
+        # to run in the dev container, and it should help resolve shebang
+        # interpretation issues in other dev environments, too.
         return subprocess.run(
-            [script_path, *args],
+            ["bash", script_path, *args],
             cwd=self._cwd,
             capture_output=True,
             text=True,

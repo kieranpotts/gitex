@@ -31,6 +31,6 @@
   },
 
   // Run commands after the container is created. Opens in integrated terminal.
-  // Install Poetry-managed dependencies.
-  "postCreateCommand": "poetry install"
+  // Ensure bin scripts are executable and install Poetry-managed dependencies.
+  "postCreateCommand": "chmod +x bin/* && poetry install"
 }

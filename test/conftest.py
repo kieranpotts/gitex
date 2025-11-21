@@ -36,9 +36,14 @@ def script_path(request):
     # eg. 'test_git_whoami.py' -> 'git-whoami'.
     script_name = test_file.stem.replace("test_", "").replace("_", "-")
 
-    repo_dir = test_file.parent.parent
+    # Get the repo directory - resolve symlinks to ensure we get the real path.
+    repo_dir = test_file.parent.parent.resolve()
     script_path = repo_dir / "bin" / script_name
 
     assert script_path.exists(), f"{script_name} script not found at {script_path}"
+    assert script_path.is_file(), f"{script_path} exists but is not a file"
+
+    # Ensure the script is executable.
+    script_path.chmod(0o755)
 
     return str(script_path)
