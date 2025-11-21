@@ -45,14 +45,7 @@ GitEx commands:
   git author [<ref>]
     Change the author of the last commit or an earlier specified commit.
 
-  git unamend
-    Undo the prior git amend or git commit operation.
-
-  git uncommit
-    Undo the last commit, return the changes to the staging index.
-
-  git whoami
-    Show the currently configured Git user.
+  ...
 ----
 
 Show help:
@@ -74,20 +67,4 @@ Examples:
   $ git -h
 ----
 
-When run without any arguments, `gitex` displays help information:
-
-----
-$ gitex
-Usage: gitex [options]
-
-Get help with GitEx.
-...
-----
-
-== See also
-
-* link:./git-amend.adoc[`git amend`] — Modify the last commit with new changes.
-* link:./git-author.adoc[`git author`] — Change commit authorship information.
-* link:./git-unamend.adoc[`git unamend`] — Undo the last amend or commit operation.
-* link:./git-uncommit.adoc[`git uncommit`] — Undo the last commit.
-* link:./git-whoami.adoc[`git whoami`] — Display configured Git user identity.
+Help information is also returned when the `gitex` command is run without any arguments.
