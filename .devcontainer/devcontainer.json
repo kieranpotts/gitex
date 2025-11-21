@@ -31,5 +31,6 @@
   },
 
   // Run commands after the container is created. Opens in integrated terminal.
-  "postCreateCommand": "poetry --version && python --version"
+  // Install Poetry-managed dependencies.
+  "postCreateCommand": "poetry install"
 }
