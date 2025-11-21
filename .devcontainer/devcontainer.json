@@ -1,0 +1,35 @@
+// Dev container configuration.
+// https://aka.ms/devcontainer.json.
+//
+// For config options, see the README at:
+// https://github.com/devcontainers/templates/tree/main/src/alpine
+
+{
+  "name": "GitEx",
+
+  // https://containers.dev/guide/dockerfile
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      // Install these VS Code extensions in the container.
+      // Matches recommended VS Code extensions.
+      "extensions": [
+        "asciidoctor.asciidoctor-vscode",
+        "travismichette.adoc-snippets",
+        "editorconfig.editorconfig",
+        "ms-python.python",
+        "timonwong.shellcheck"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  },
+
+  // Run commands after the container is created. Opens in integrated terminal.
+  "postCreateCommand": "poetry --version && python --version"
+}

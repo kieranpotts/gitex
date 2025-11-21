@@ -7,6 +7,9 @@
     /* AsciiDoc Snippets — Snippets for AsciiDoc for PDF and HTML output. */
     "travismichette.adoc-snippets",
 
+    /* Dev Containers — Containerized development environments. */
+    "ms-vscode-remote.remote-containers",
+
     /* EditorConfig — .editorconfig file support. */
     "editorconfig.editorconfig",
 

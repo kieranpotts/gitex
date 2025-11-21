@@ -5,7 +5,13 @@ Execution of the runtime tests requires the following dependencies to be install
 * Python >= 3.12
 * Poetry >= 2.2
 
-https://github.com/python-poetry/poetry[Poetry] is used to manage the Python development dependencies for the GitEx project. Run `poetry install` in the root directory of this repository to install pytest and other dependencies in a virtual environment.
+To avoid needing to add this software to your machine, you can instead open this project in a dev container. In VS Code, open this repository in its own workspace, then select "Dev Containers: Reopen in Dev Container" from the command palette. This will reopen the project in a Docker container, in which all of the development dependencies will be already installed.
+
+https://github.com/python-poetry/poetry[Poetry] is used to manage the Python development dependencies for the GitEx project. Run the below command in the root directory of this repository to install pytest and other dependencies in a virtual environment.
+
+----
+$ poetry install
+----
 
 The tests are run by https://github.com/pytest-dev/pytest/[pytest]. To execute the tests, run the following command from the root directory of this repository:
 
@@ -27,5 +33,11 @@ All runtime tests can be executed with this shortcut:
 
 ----
 $ ./check
+----
+
+Remember to give yourself executable privileges on this file: `chmod u+x fix`. In the dev container, you will need to use the following command instead:
+
+----
+$ bash check
 ----
 ======
