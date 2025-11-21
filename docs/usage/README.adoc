@@ -95,10 +95,10 @@ Resume work-in-progress committed via the last `git wip` operation.
 
 == Redoing commits
 
-* link:./git-amend.adoc[`git amend`] +
+* link:./git-amend.adoc[`git amend`] ✅ +
 Add all working changes to last commit, including new (untracked) files.
 
-* link:./git-unamend.adoc[`git unamend`] +
+* link:./git-unamend.adoc[`git unamend`] ✅ +
 Undo the prior `git amend` or `git commit --amend` operation.
 
 * link:./git-reword.adoc[`git reword ([ref\])`] +
@@ -109,7 +109,7 @@ Fix something in the most recent commit or an earlier specified commit. Rewrites
 
 == Undoing changes
 
-* link:./git-uncommit.adoc[`git uncommit`] +
+* link:./git-uncommit.adoc[`git uncommit`] ✅ +
 Undo the last commit, returning the changes introduced in the commit to the staging index.
 
 * link:./git-discard.adoc[`git discard [paths...\]`] +
@@ -190,7 +190,7 @@ Show the changes introduced in a specified commit, or introduced to the working 
 * link:./git-fetched.adoc[`git fetched`] +
 List the commits added by the last `git fetch` operation.
 
-* link:./git-author.adoc[`git author ([ref\])`] +
+* link:./git-author.adoc[`git author ([ref\])`] ✅ +
 Change the author of the last commit or an earlier specified commit.
 
 * link:./git-contrib.adoc[`git contrib`] +
@@ -201,5 +201,5 @@ List all contributors, ordered by their total commit count.
 * link:./git-configure.adoc[`git configure`] +
 Open `~/.gitconfig` in your default text editor.
 
-* link:./git-whoami.adoc[`git whoami`] +
+* link:./git-whoami.adoc[`git whoami`] ✅ +
 Show information about the configured Git user.
