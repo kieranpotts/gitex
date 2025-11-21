@@ -2,38 +2,27 @@
 Test suite for git-filelog command.
 """
 
-# import subprocess
 from pathlib import Path
-
-import pytest
-
-
-@pytest.fixture
-def test_script():
-    """Get the path to the git-filelog script"""
-
-    repo_dir = Path(__file__).parent.parent
-    script_path = repo_dir / "bin" / "git-filelog"
-
-    assert script_path.exists(), f"git-filelog script not found at {script_path}"
-
-    return str(script_path)
 
 
 class TestGitFilelog:
-    """Test cases for git-filelog command"""
+    """Test cases for git-filelog command."""
 
-    # def test_xxxxxxxx(self, temp_repo, test_script):
-    #     """Test when ..."""
+    # def test_xxxxxxxx(self, temp_repo, script_path):
+    #     """Test <description>."""
 
     #     git = temp_repo.git()
+
+    #     # Initial config values.
     #     git.config("--local", "user.name", "John Doe")
     #     git.config("--local", "user.email", "john.doe@example.com")
 
-    #     result = subprocess.run(
-    #         [test_script], cwd=temp_repo.cwd(), capture_output=True, text=True
-    #     )
+    #     # Create initial commit.
+    #     Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+    #     git.add("file1.txt")
+    #     git.commit("-m", "initial commit")
 
+    #     result = temp_repo.run(script_path)
+
+    #     # Verify success exit code.
     #     assert result.returncode == 0
-    #     assert "name:  John Doe" in result.stdout
-    #     assert "email: john.doe@example.com" in result.stdout
