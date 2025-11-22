@@ -3,7 +3,7 @@ Test suite for git-br command.
 """
 
 import os
-from pathlib import Path
+import subprocess
 
 
 class TestGitBr:
@@ -18,7 +18,7 @@ class TestGitBr:
         """Test creating a branch with name provided as argument."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -36,7 +36,7 @@ class TestGitBr:
         """Test creating a branch with name provided via stdin."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -55,7 +55,7 @@ class TestGitBr:
         """Test that empty branch name via stdin is rejected."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -72,7 +72,7 @@ class TestGitBr:
         """Test that multiple arguments are rejected."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -88,7 +88,7 @@ class TestGitBr:
         """Test that creating a branch with existing name fails."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -108,11 +108,11 @@ class TestGitBr:
         """Test that new branch is created from current HEAD position."""
 
         # Create multiple commits.
-        Path(repo.dir(), "file1.txt").write_text("Content 1")
+        repo.write("file1.txt", "Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Commit 1")
 
-        Path(repo.dir(), "file2.txt").write_text("Content 2")
+        repo.write("file2.txt", "Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "Commit 2")
 
@@ -130,7 +130,7 @@ class TestGitBr:
         """Test using custom remote name via X_GITEX_DEFAULT_REMOTE_NAME."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -139,8 +139,6 @@ class TestGitBr:
         env["X_GITEX_DEFAULT_REMOTE_NAME"] = "upstream"
 
         # Run with custom environment.
-        import subprocess
-
         result = subprocess.run(
             ["bash", bin, "custom-remote-branch"],
             cwd=repo.dir(),
@@ -167,7 +165,7 @@ class TestGitBr:
         """Test that empty environment variable falls back to 'origin'."""
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "Initial commit")
 
@@ -176,8 +174,6 @@ class TestGitBr:
         env["X_GITEX_DEFAULT_REMOTE_NAME"] = ""
 
         # Run with custom environment.
-        import subprocess
-
         result = subprocess.run(
             ["bash", bin, "default-remote-branch"],
             cwd=repo.dir(),
