@@ -8,7 +8,7 @@ import tempfile
 
 # https://github.com/gitpython-developers/GitPython
 # https://gitpython.readthedocs.io/en/stable/tutorial.html
-from git import Repo
+from git import Repo as GitRepo
 
 
 class TestRepo:
@@ -16,7 +16,7 @@ class TestRepo:
 
     def __init__(self):
         self._dir = tempfile.mkdtemp()
-        self._repo = Repo.init(self._dir, b="main")
+        self._repo = GitRepo.init(self._dir, b="main")
         self._files = []
 
         self.git = self._repo.git

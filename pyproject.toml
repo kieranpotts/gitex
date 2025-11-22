@@ -56,3 +56,6 @@ python_classes = "Test*"
 python_files = "test_*.py"
 python_functions = "test_*"
 testpaths = ["test"]
+filterwarnings = [
+    "ignore:cannot collect test class 'TestRepo':pytest.PytestCollectionWarning",
+]
