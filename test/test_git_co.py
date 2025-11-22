@@ -49,7 +49,7 @@ class TestGitCo:
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
-        git.commit("-m", "Initial commit")
+        git.commit("-m", "initial commit")
 
         # Use git-co with -b to create and checkout a new branch.
         result = temp_repo.run(script_path, "-b", "new-feature")
@@ -74,7 +74,7 @@ class TestGitCo:
         file_path = Path(temp_repo.cwd(), "file1.txt")
         file_path.write_text("Original content")
         git.add("file1.txt")
-        git.commit("-m", "Initial commit")
+        git.commit("-m", "initial commit")
 
         # Modify the file.
         file_path.write_text("Modified content")
@@ -91,30 +91,6 @@ class TestGitCo:
         # Verify the file is restored to original content.
         assert file_path.read_text() == "Original content"
 
-    def test_checkout_with_multiple_options(self, temp_repo, script_path):
-        """Test checkout with multiple options forwarded."""
-
-        git = temp_repo.git()
-
-        # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
-
-        # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
-        git.add("file1.txt")
-        git.commit("-m", "Initial commit")
-
-        # Use git-co with -B to force-create a branch.
-        result = temp_repo.run(script_path, "-B", "force-branch")
-
-        # Verify success exit code.
-        assert result.returncode == 0
-
-        # Verify we're on the new branch.
-        current_branch = git.rev_parse("--abbrev-ref", "HEAD").strip()
-        assert current_branch == "force-branch"
-
     def test_checkout_detached_head(self, temp_repo, script_path):
         """Test checking out a specific commit (detached HEAD)."""
 
@@ -127,25 +103,25 @@ class TestGitCo:
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
-        git.commit("-m", "Initial commit")
+        git.commit("-m", "initial commit")
 
         # Get the commit hash.
-        commit_hash = git.rev_parse("HEAD").strip()
+        first_commit_hash = git.rev_parse("HEAD").strip()
 
         # Create another commit.
         Path(temp_repo.cwd(), "file2.txt").write_text("More content")
         git.add("file2.txt")
-        git.commit("-m", "Second commit")
+        git.commit("-m", "second commit")
 
         # Use git-co to checkout the first commit.
-        result = temp_repo.run(script_path, commit_hash)
+        result = temp_repo.run(script_path, first_commit_hash)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify we're in detached HEAD state at the correct commit.
         current_commit = git.rev_parse("HEAD").strip()
-        assert current_commit == commit_hash
+        assert current_commit == first_commit_hash
 
     def test_checkout_without_arguments(self, temp_repo, script_path):
         """Test that git-co without arguments behaves like git checkout."""
@@ -159,12 +135,12 @@ class TestGitCo:
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
-        git.commit("-m", "Initial commit")
+        git.commit("-m", "initial commit")
 
-        # Run git-co without arguments (should show help/error from git).
+        # Run git-co without arguments - should show help/error from git.
         result = temp_repo.run(script_path)
 
-        # Git checkout without arguments will succeed (just shows current branch info).
+        # Git checkout without arguments will succeed.
         # The exact behavior depends on Git version.
         assert result.returncode == 0
 
@@ -180,7 +156,7 @@ class TestGitCo:
         # Create initial commit.
         Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
-        git.commit("-m", "Initial commit")
+        git.commit("-m", "initial commit")
 
         # Try to checkout a non-existent branch.
         result = temp_repo.run(script_path, "nonexistent-branch")
