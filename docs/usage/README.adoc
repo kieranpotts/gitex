@@ -12,7 +12,7 @@ Shortcut for `git clone`. Parameters are forwarded.
 
 == Branching
 
-* link:./git-br.adoc[`git br ([branch\])`] +
+* link:./git-br.adoc[`git br ([branch\])`] ✅ +
 Branch from current position, switch to it, and push upstream to setup tracking.
 
 * link:./git-orphan.adoc[`git orphan [branch\] (--fresh)`] +

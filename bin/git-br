@@ -18,36 +18,31 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-br does not accept any options"
+  # Get branch name from argument or prompt for it.
+  if [ $# -eq 0 ]; then
+    # No argument provided, prompt for branch name.
+    print_prompt "Enter branch name:"
+    read -r branch
+  elif [ $# -eq 1 ]; then
+    # Branch name provided as argument.
+    branch="$1"
+  else
+    # Too many arguments.
+    print_error "git-br accepts at most one argument (branch name)"
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
-
-  branch="${1}"
-
+  # Validate branch name is not empty.
   if [ -z "${branch}" ]; then
-    # Bash-compatible code:
-    #read -p "Type a branch name: " branch
-
-    # Posix-compatible code:
-    printf "> " >&2
-    read -r branch
+    print_error "Branch name cannot be empty"
+    return 1
   fi
 
-  if [ -z "${branch}" ]; then
-    printf "%b%b Require branch name. %b\n" "${RED}" "${REVERSED}" "${RESET}" >&2
-    exit 1
-  fi
-
+  # Create and checkout the new branch.
   git branch "${branch}" && git checkout "${branch}"
 
-  # Don't push temporary branches.
-  # TODO: Allow this to be customized through environment variables.
-  if [ "${branch}" != "tmp" ]; then
-    git push --set-upstream origin HEAD
-  fi
+  # Push to remote and set up tracking (unless it's a temporary branch).
+  git push --set-upstream origin HEAD
 }
 
 main "$@"
