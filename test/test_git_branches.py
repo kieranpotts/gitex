@@ -2,8 +2,6 @@
 Test suite for git-branches command.
 """
 
-# from pathlib import Path
-
 
 class TestGitBranches:
     """Test cases for git-branches command."""
@@ -16,7 +14,7 @@ class TestGitBranches:
     #     repo.git.config("--local", "user.email", "john.doe@example.com")
 
     #     # Create initial commit.
-    #     Path(repo.dir(), "file1.txt").write_text("Initial content")
+    #     repo.write("file1.txt", "Initial content")
     #     repo.git.add("file1.txt")
     #     repo.git.commit("-m", "initial commit")
 

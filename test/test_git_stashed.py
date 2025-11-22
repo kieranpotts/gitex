@@ -2,8 +2,6 @@
 Test suite for git-stashed command.
 """
 
-# from pathlib import Path
-
 
 class TestGitStashed:
     """Test cases for git-stashed command."""
@@ -16,7 +14,7 @@ class TestGitStashed:
     #     repo.git.config("--local", "user.email", "john.doe@example.com")
 
     #     # Create initial commit.
-    #     Path(repo.dir(), "file1.txt").write_text("Initial content")
+    #     repo.write("file1.txt", "Initial content")
     #     repo.git.add("file1.txt")
     #     repo.git.commit("-m", "initial commit")
 
