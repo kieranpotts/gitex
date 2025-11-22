@@ -7,28 +7,28 @@ Get help with GitEx commands.
 
 == Cloning
 
-* link:./git-cl.adoc[`git cl ([params...\])`] ✅ +
+* link:./git-cl.adoc[`git cl`] ✅ +
 Shortcut for `git clone`. Parameters are forwarded.
 
 == Branching
 
-* link:./git-br.adoc[`git br ([branch\])`] ✅ +
+* link:./git-br.adoc[`git br`] ✅ +
 Branch from current position, switch to it, and push upstream to setup tracking.
 
-* link:./git-orphan.adoc[`git orphan [branch\] (--fresh)`] +
+* link:./git-orphan.adoc[`git orphan`] +
 Create an orphaned branch and switch to it. Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working directory will be cleared –
 careful, you may lose work-in-progress.
 
-* link:./git-co.adoc[`git co ([params...\])`] +
+* link:./git-co.adoc[`git co`] +
 Shortcut for `git checkout`. Parameters are forwarded.
 
-* link:./git-sw.adoc[`git sw ([params...\])`] +
+* link:./git-sw.adoc[`git sw`] +
 Alias for `git switch`. Parameters are forwarded.
 
-* link:./git-delete.adoc[`git delete ([branch\])`] +
+* link:./git-delete.adoc[`git delete`] +
 Delete a local branch, but only if it's changes have been merged elsewhere.
 
-* link:./git-fell.adoc[`git fell ([branch\])`] +
+* link:./git-fell.adoc[`git fell`] +
 Delete any branches that have already been merged into the default branch or the specified branch.
 
 * link:./git-branches.adoc[`git branches`] +
@@ -43,7 +43,7 @@ Show the name of the current branch.
 * link:./git-default.adoc[`git default`] +
 Show the name of the default branch, as configured in the "origin" repo.
 
-* link:./git-backup.adoc[`git backup ([branch\])`] +
+* link:./git-backup.adoc[`git backup`] +
 Create a backup of the current branch or another specified branch.
 
 == Tagging
@@ -65,10 +65,10 @@ List all changed files in the working directory.
 * link:./git-staged.adoc[`git staged`] +
 List files with changes staged for committing.
 
-* link:./git-track.adoc[`git track [path\]`] +
+* link:./git-track.adoc[`git track`] +
 Start tracking a new file. This is an alias for `git add` and the opposite of the `git untrack` alias.
 
-* link:./git-untrack.adoc[`git untrack [path\]`] +
+* link:./git-untrack.adoc[`git untrack`] +
 Untrack a specified file.
 
 == Ignoring
@@ -76,18 +76,18 @@ Untrack a specified file.
 * link:./git-ignored.adoc[`git ignored`] +
 List all ignored files.
 
-* link:./git-ignore.adoc[`git ignore [path\]`] +
+* link:./git-ignore.adoc[`git ignore`] +
 Ignore changes made to the specified file.
 
-* link:./git-unignore.adoc[`git unignore [path\]`] +
+* link:./git-unignore.adoc[`git unignore`] +
 Stop ignoring changes made to a file.
 
 == Committing
 
-* link:./git-cm.adoc[`git cm ('[msg\]')`] +
+* link:./git-cm.adoc[`git cm`] +
 Shortcut for `git add . && git commit`. Stage and commit all changes in the working directory, including new (untracked) files. If a message is provided, it is used as the commit message; otherwise, the user will be prompted to input a message.
 
-* link:./git-wip.adoc[`git wip ('[msg\]')`] +
+* link:./git-wip.adoc[`git wip`] +
 Save work-in-progress. Creates a commit, with the contents of the staging index plus working directory, with the specified message (or "WIP" if no message is provided). Continue where you left off tomorrow with `git resume`.
 
 * link:./git-resume.adoc[`git resume`] +
@@ -101,10 +101,10 @@ Add all working changes to last commit, including new (untracked) files.
 * link:./git-unamend.adoc[`git unamend`] ✅ +
 Undo the prior `git amend` or `git commit --amend` operation.
 
-* link:./git-reword.adoc[`git reword ([ref\])`] +
+* link:./git-reword.adoc[`git reword`] +
 Change the message of the most recent commit or an earlier specified commit. Anything staged will get added to the newly recreated commit, too.
 
-* link:./git-fixup.adoc[`git fixup ([ref\])`] +
+* link:./git-fixup.adoc[`git fixup`] +
 Fix something in the most recent commit or an earlier specified commit. Rewrites history.
 
 == Undoing changes
@@ -112,7 +112,7 @@ Fix something in the most recent commit or an earlier specified commit. Rewrites
 * link:./git-uncommit.adoc[`git uncommit`] ✅ +
 Undo the last commit, returning the changes introduced in the commit to the staging index.
 
-* link:./git-discard.adoc[`git discard [paths...\]`] +
+* link:./git-discard.adoc[`git discard`] +
 Discard working changes to one or more files. Changes made will be lost indefinitely.
 
 * link:./git-unstage.adoc[`git unstage`] +
@@ -125,13 +125,13 @@ Reset to the last commit, undoing all staged and working changes. A save-point c
 
 == Merging
 
-* link:./git-ff.adoc[`git ff ([branch\])`] +
+* link:./git-ff.adoc[`git ff`] +
 Perform a fast-forward merge.
 
 * link:./git-squash.adoc[`git squash`] +
 Perform a `git merge --squash` operation.
 
-* link:./git-pick.adoc[`git pick ([params...\])`] +
+* link:./git-pick.adoc[`git pick`] +
 Shortcut for `git cherry-pick`. Parameters are forwarded.
 
 == Pushing and pulling
@@ -139,16 +139,16 @@ Shortcut for `git cherry-pick`. Parameters are forwarded.
 * link:./git-down.adoc[`git down`] +
 Shortcut for `git pull` with the rebase merge strategy (ie. `git pull --rebase`).
 
-* link:./git-up.adoc[`git up (--force)`] +
+* link:./git-up.adoc[`git up`] +
 Push new commits up to the tracked upstream branch (else to a new branch of the same name, if tracking is not yet established). Pushes tags and sets up tracking, too. Add the `--force` option to remove commits from the upstream branch that do not exist in the local branch – unless those commits were introduced by someone else.
 
 * link:./git-sync.adoc[`git sync`] +
 Sync the local checked-out branch with its tracked upstream branch, maintaining linear history.
 
-* link:./git-push-all.adoc[`git push-all ([remote\])`] +
+* link:./git-push-all.adoc[`git push-all`] +
 Push changes in all local branches to their tracked branches in the remote repository. Defaults to the "origin" remote unless otherwise specified.
 
-* link:./git-rebase-all.adoc[`git rebase-all ([trunk\])`] +
+* link:./git-rebase-all.adoc[`git rebase-all`] +
 Rebase all local branches on the trunk branch. Defaults to using the `main` branch as the target base branch, unless otherwise specified.
 
 * link:./git-upstream.adoc[`git upstream`] +
@@ -181,16 +181,16 @@ Show a detailed graphical representation of the commit history; alternative to `
 * link:./git-last.adoc[`git last`] +
 Show detailed information on the changes in the last commit.
 
-* link:./git-filelog.adoc[`git filelog [path\]`] +
+* link:./git-filelog.adoc[`git filelog`] +
 List all the commits that have changed the specified file.
 
-* link:./git-changes.adoc[`git changes ([ref\])`] +
+* link:./git-changes.adoc[`git changes`] +
 Show the changes introduced in a specified commit, or introduced to the working directory plus staging index since the last commit.
 
 * link:./git-fetched.adoc[`git fetched`] +
 List the commits added by the last `git fetch` operation.
 
-* link:./git-author.adoc[`git author ([ref\])`] ✅ +
+* link:./git-author.adoc[`git author`] ✅ +
 Change the author of the last commit or an earlier specified commit.
 
 * link:./git-contrib.adoc[`git contrib`] ✅ +
