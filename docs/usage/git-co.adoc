@@ -1,9 +1,69 @@
 = `git co`
 
-Shortcut for `git checkout`. Parameters are forwarded.
+Shortcut for `git checkout`. All parameters are forwarded to the underlying `git checkout` command.
+
+This is a convenience alias for one of Git's most frequently used commands. It saves typing while providing full access to all `git checkout` functionality.
 
 == Usage
 
 ----
-$ git co [...]
+$ git co <branch>
+$ git co [<options>] <branch>
+$ git co [<tree-ish>] [--] <pathspec>...
 ----
+
+== Examples
+
+Switch to an existing branch:
+
+----
+$ git co feature-branch
+----
+
+Create a new branch and switch to it:
+
+----
+$ git co -b new-feature
+----
+
+Force-create a branch (overwrites if it exists):
+
+----
+$ git co -B hotfix
+----
+
+Switch to the previous branch:
+
+----
+$ git co -
+----
+
+Checkout a specific commit (detached HEAD):
+
+----
+$ git co a1b2c3d
+----
+
+Discard changes to a specific file:
+
+----
+$ git co HEAD -- path/to/file.txt
+----
+
+Checkout a file from another branch:
+
+----
+$ git co main -- README.md
+----
+
+Create a branch from a specific commit:
+
+----
+$ git co -b feature-x a1b2c3d
+----
+
+== See also
+
+* https://git-scm.com/docs/git-checkout[git-checkout]
+* https://git-scm.com/docs/git-switch[git-switch] — Modern alternative for switching branches.
+* https://git-scm.com/docs/git-restore[git-restore] — Modern alternative for restoring files.

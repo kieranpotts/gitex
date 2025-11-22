@@ -10,24 +10,9 @@ set -eu
 # Dependencies: None
 #
 
-# shellcheck source=../lib/print.sh
-. "$(dirname "$0")/../lib/print.sh"
-
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-co does not accept any options"
-    return 1
-  fi
-
-  # TODO: Review draft implementation, below.
-
-  # Bash-compatible code, with string indexing that allows additional options
-  # to be passed on to the `git checkout` command.
-  #git checkout ${@:1}
-
-  # POSIX-compatible code, without string indexing. This code only passes the
-  # first option to the `git checkout` command.
-  git checkout "${1}"
+  # Forward all arguments to git checkout.
+  git checkout "$@"
 }
 
 main "$@"

@@ -19,7 +19,7 @@ Branch from current position, switch to it, and push upstream to setup tracking.
 Create an orphaned branch and switch to it. Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working directory will be cleared –
 careful, you may lose work-in-progress.
 
-* link:./git-co.adoc[`git co`] +
+* link:./git-co.adoc[`git co`] ✅ +
 Shortcut for `git checkout`. Parameters are forwarded.
 
 * link:./git-sw.adoc[`git sw`] +
