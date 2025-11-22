@@ -6,6 +6,8 @@ set -eu
 # immediately, establishing remote tracking from the start of the branch's
 # existence.
 #
+# If the new branch name is not inputted, the user will be prompted for it.
+#
 # This operation fails with an error if the branch name is already taken.
 #
 # Usage:
@@ -18,7 +20,7 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  # Get branch name from argument or prompt for it.
+  # Get branch name from argument, else prompt for it.
   if [ $# -eq 0 ]; then
     # No argument provided, prompt for branch name.
     print_prompt "Enter branch name:"
