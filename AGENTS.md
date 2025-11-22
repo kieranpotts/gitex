@@ -24,7 +24,7 @@ The project is inspired by (but not compatible with) Git Extras. Some operations
   - `ansi-codes.sh`: ANSI color code definitions for terminal output formatting (exports variables like `$RED`, `$BOLD`, `$RESET`). Used by `print.sh` but not directly sourced from `bin` scripts.
 
 - **test/**: Python-based test suite using pytest.
-  - `conftest.py`: Pytest configuration with fixtures such as `test_repo`.
+  - `conftest.py`: Pytest configuration with fixtures such as `repo`.
   - `helper.py`: Contains `TestRepo` class for creating isolated temporary Git repositories using GitPython.
   - `test_*.py`: Test files, each mapping to one Git extension (eg. `test_git_whoami.py` tests `git whoami`).
 
@@ -103,7 +103,7 @@ Workflows are run against `dev`, which is the trunk for this repository (not `ma
 
 ### Python tests (`test/`)
 
-- Use the `test_repo` fixture from `conftest.py` for test isolation.
+- Use the `repo` fixture from `conftest.py` for test isolation.
 - Import `TestRepo` from `helper.py` if additional repository setup is needed.
 - Follow existing test patterns (see `test/test_git_whoami.py` for a good example).
 - Tests must not modify global or user-level Git configuration. Use `git config --local` only, to keep changes scoped to the test repository.
