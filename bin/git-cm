@@ -33,7 +33,7 @@ main() {
   msg="${1}"
 
   # Print an empty line before the command's main output.
-  echo "\n"
+  printf "\n"
 
   # If the user has supplied a commit message, commit it verbatim.
   if [ -n "${msg}" ]; then
