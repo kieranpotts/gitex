@@ -41,12 +41,12 @@ class TestRepo:
     # def git(self):
     #     return self._repo.git
 
-    def run(self, script_path, *args, input=None):
+    def run(self, bin, *args, input=None):
         """
         Run a git extension script and return the subprocess result.
 
         Args:
-            script_path: Path to the script to run.
+            bin: Path to the script to run.
             *args: Optional arguments to pass to the script.
             input: Optional input to pass to the script via stdin.
 
@@ -58,7 +58,7 @@ class TestRepo:
         # to run in the dev container, and it should help resolve shebang
         # interpretation issues in other dev environments, too.
         return subprocess.run(
-            ["bash", script_path, *args],
+            ["bash", bin, *args],
             cwd=self._cwd,
             capture_output=True,
             text=True,

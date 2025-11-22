@@ -6,28 +6,26 @@ Test suite for git-author command.
 class TestGitAuthor:
     """Test cases for git-author command."""
 
-    def test_with_name_and_email_flags(self, test_repo, script_path):
+    def test_with_name_and_email_flags(self, repo, bin):
         """Test changing author with --name and --email flags."""
 
         # Initial config values.
-        test_repo.git.config("--local", "user.name", "John Doe")
-        test_repo.git.config("--local", "user.email", "john.doe@example.com")
+        repo.git.config("--local", "user.name", "John Doe")
+        repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        test_repo.write("test.txt", "initial content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "initial content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Get commit hash before amend.
-        commit_before_amend = test_repo.git.rev_parse("HEAD")
+        commit_before_amend = repo.git.rev_parse("HEAD")
 
         # Change the author of the commit using command-line flags.
-        result = test_repo.run(
-            script_path, "--name", "Jane Smith", "--email", "jane@example.com"
-        )
+        result = repo.run(bin, "--name", "Jane Smith", "--email", "jane@example.com")
 
         # Get commit hash after amend.
-        commit_after_amend = test_repo.git.rev_parse("HEAD")
+        commit_after_amend = repo.git.rev_parse("HEAD")
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -39,89 +37,85 @@ class TestGitAuthor:
         assert commit_after_amend != commit_before_amend
 
         # Verify the author was changed.
-        author = test_repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
-    def test_with_only_name_flag_prompts_for_email(self, test_repo, script_path):
+    def test_with_only_name_flag_prompts_for_email(self, repo, bin):
         """Test that providing only --name, prompts for email."""
 
         # Initial config values.
-        test_repo.git.config("--local", "user.name", "John Doe")
-        test_repo.git.config("--local", "user.email", "john.doe@example.com")
+        repo.git.config("--local", "user.name", "John Doe")
+        repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        test_repo.write("test.txt", "initial content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "initial content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide only --name flag and supply email via stdin.
-        result = test_repo.run(
-            script_path, "--name", "Jane Smith", input="jane@example.com\n"
-        )
+        result = repo.run(bin, "--name", "Jane Smith", input="jane@example.com\n")
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the author was changed.
-        author = test_repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
-    def test_with_only_email_flag_prompts_for_name(self, test_repo, script_path):
+    def test_with_only_email_flag_prompts_for_name(self, repo, bin):
         """Test that providing only --email, prompts for name."""
 
         # Initial config values.
-        test_repo.git.config("--local", "user.name", "John Doe")
-        test_repo.git.config("--local", "user.email", "john.doe@example.com")
+        repo.git.config("--local", "user.name", "John Doe")
+        repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        test_repo.write("test.txt", "initial content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "initial content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide only --email flag and supply name via stdin.
-        result = test_repo.run(
-            script_path, "--email", "jane@example.com", input="Jane Smith\n"
-        )
+        result = repo.run(bin, "--email", "jane@example.com", input="Jane Smith\n")
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the author was changed.
-        author = test_repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
-    def test_with_no_flags_prompts_for_both(self, test_repo, script_path):
+    def test_with_no_flags_prompts_for_both(self, repo, bin):
         """Test that providing no flags prompts for both name and email."""
 
         # Initial config values.
-        test_repo.git.config("--local", "user.name", "John Doe")
-        test_repo.git.config("--local", "user.email", "john.doe@example.com")
+        repo.git.config("--local", "user.name", "John Doe")
+        repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        test_repo.write("test.txt", "initial content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "initial content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide no flags and supply name and email via stdin.
-        result = test_repo.run(script_path, input="Jane Smith\njane@example.com\n")
+        result = repo.run(bin, input="Jane Smith\njane@example.com\n")
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the author was changed.
-        author = test_repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
-    def test_rejects_empty_name_from_prompt(self, test_repo, script_path):
+    def test_rejects_empty_name_from_prompt(self, repo, bin):
         """Test that empty name from prompt is rejected."""
 
         # Create an initial commit.
-        test_repo.write("test.txt", "initial content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "initial content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide empty name via stdin.
-        result = test_repo.run(script_path, input="\n")
+        result = repo.run(bin, input="\n")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -129,16 +123,16 @@ class TestGitAuthor:
         # Verify error message.
         assert "Name is required" in result.stderr
 
-    def test_rejects_empty_email_from_prompt(self, test_repo, script_path):
+    def test_rejects_empty_email_from_prompt(self, repo, bin):
         """Test that empty email from prompt is rejected."""
 
         # Create an initial commit.
-        test_repo.write("test.txt", "initial content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "initial content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide name but empty email via stdin.
-        result = test_repo.run(script_path, input="Jane Smith\n\n")
+        result = repo.run(bin, input="Jane Smith\n\n")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -146,28 +140,28 @@ class TestGitAuthor:
         # Verify error message.
         assert "Email is required" in result.stderr
 
-    def test_modifying_earlier_commit_with_flags(self, test_repo, script_path):
+    def test_modifying_earlier_commit_with_flags(self, repo, bin):
         """Test changing author of an earlier commit using flags."""
 
         # Create multiple commits.
-        test_repo.write("file1.txt", "content 1")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "first commit")
+        repo.write("file1.txt", "content 1")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "first commit")
 
-        test_repo.write("file2.txt", "content 2")
-        test_repo.git.add("file2.txt")
-        test_repo.git.commit("-m", "second commit")
+        repo.write("file2.txt", "content 2")
+        repo.git.add("file2.txt")
+        repo.git.commit("-m", "second commit")
 
-        test_repo.write("file3.txt", "content 3")
-        test_repo.git.add("file3.txt")
-        test_repo.git.commit("-m", "third commit")
+        repo.write("file3.txt", "content 3")
+        repo.git.add("file3.txt")
+        repo.git.commit("-m", "third commit")
 
         # Get the hash of the first commit (HEAD~2).
-        first_commit_before = test_repo.git.rev_parse("HEAD~2")
+        first_commit_before = repo.git.rev_parse("HEAD~2")
 
         # Change the author of the first commit.
-        result = test_repo.run(
-            script_path,
+        result = repo.run(
+            bin,
             "HEAD~2",
             "--name",
             "Jane Smith",
@@ -182,59 +176,57 @@ class TestGitAuthor:
         assert "New commit hash is" in result.stdout
 
         # Get the hash of the first commit after the change.
-        first_commit_after = test_repo.git.rev_parse("HEAD~2")
+        first_commit_after = repo.git.rev_parse("HEAD~2")
 
         # The commit hash should have changed.
         assert first_commit_after != first_commit_before
 
         # Verify the author was changed on the first commit.
-        author = test_repo.git.log("HEAD~2", "-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("HEAD~2", "-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
         # Verify all three commits still exist.
-        log_count = len(test_repo.git.log("--oneline").strip().split("\n"))
+        log_count = len(repo.git.log("--oneline").strip().split("\n"))
         assert log_count == 3
 
-    def test_modifying_earlier_commit_with_prompts(self, test_repo, script_path):
+    def test_modifying_earlier_commit_with_prompts(self, repo, bin):
         """Test changing author of an earlier commit using prompts."""
 
         # Create multiple commits.
-        test_repo.write("file1.txt", "content 1")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "first commit")
+        repo.write("file1.txt", "content 1")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "first commit")
 
-        test_repo.write("file2.txt", "content 2")
-        test_repo.git.add("file2.txt")
-        test_repo.git.commit("-m", "second commit")
+        repo.write("file2.txt", "content 2")
+        repo.git.add("file2.txt")
+        repo.git.commit("-m", "second commit")
 
         # Change the author of the first commit via prompts.
-        result = test_repo.run(
-            script_path, "HEAD~1", input="Jane Smith\njane@example.com\n"
-        )
+        result = repo.run(bin, "HEAD~1", input="Jane Smith\njane@example.com\n")
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the author was changed.
-        author = test_repo.git.log("HEAD~1", "-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("HEAD~1", "-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
-    def test_modifying_earlier_commit_by_sha(self, test_repo, script_path):
+    def test_modifying_earlier_commit_by_sha(self, repo, bin):
         """Test changing author using a commit SHA instead of relative ref."""
 
         # Create multiple commits.
-        test_repo.write("file1.txt", "content 1")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "first commit")
-        first_commit_sha = test_repo.git.rev_parse("HEAD")
+        repo.write("file1.txt", "content 1")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "first commit")
+        first_commit_sha = repo.git.rev_parse("HEAD")
 
-        test_repo.write("file2.txt", "content 2")
-        test_repo.git.add("file2.txt")
-        test_repo.git.commit("-m", "second commit")
+        repo.write("file2.txt", "content 2")
+        repo.git.add("file2.txt")
+        repo.git.commit("-m", "second commit")
 
         # Change the author using the SHA.
-        result = test_repo.run(
-            script_path,
+        result = repo.run(
+            bin,
             first_commit_sha,
             "--name",
             "Jane Smith",
@@ -246,19 +238,19 @@ class TestGitAuthor:
         assert result.returncode == 0
 
         # Verify the author was changed.
-        author = test_repo.git.log("HEAD~1", "-1", "--pretty=format:%an <%ae>").strip()
+        author = repo.git.log("HEAD~1", "-1", "--pretty=format:%an <%ae>").strip()
         assert author == "Jane Smith <jane@example.com>"
 
-    def test_rejects_name_without_value(self, test_repo, script_path):
+    def test_rejects_name_without_value(self, repo, bin):
         """Test that --name flag requires a value."""
 
         # Create an initial commit.
-        test_repo.write("test.txt", "content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide only --name flag but with no value.
-        result = test_repo.run(script_path, "--name")
+        result = repo.run(bin, "--name")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -266,16 +258,16 @@ class TestGitAuthor:
         # Verify error message.
         assert "--name requires a value" in result.stderr
 
-    def test_rejects_email_without_value(self, test_repo, script_path):
+    def test_rejects_email_without_value(self, repo, bin):
         """Test that --email flag requires a value."""
 
         # Create an initial commit.
-        test_repo.write("test.txt", "content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Provide only --email flag but with no value.
-        result = test_repo.run(script_path, "--email")
+        result = repo.run(bin, "--email")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -283,16 +275,16 @@ class TestGitAuthor:
         # Verify error message.
         assert "--email requires a value" in result.stderr
 
-    def test_rejects_unknown_option(self, test_repo, script_path):
+    def test_rejects_unknown_option(self, repo, bin):
         """Test that unknown options are rejected."""
 
         # Create an initial commit.
-        test_repo.write("test.txt", "content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Call the script with an unsupported option.
-        result = test_repo.run(script_path, "--unknown")
+        result = repo.run(bin, "--unknown")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -300,16 +292,16 @@ class TestGitAuthor:
         # Verify error message.
         assert "unknown option '--unknown'" in result.stderr
 
-    def test_rejects_multiple_ref_arguments(self, test_repo, script_path):
+    def test_rejects_multiple_ref_arguments(self, repo, bin):
         """Test that multiple positional arguments are rejected."""
 
         # Create an initial commit.
-        test_repo.write("test.txt", "content")
-        test_repo.git.add("test.txt")
-        test_repo.git.commit("-m", "initial commit")
+        repo.write("test.txt", "content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Call the script with multiple positional arguments.
-        result = test_repo.run(script_path, "HEAD", "HEAD~1")
+        result = repo.run(bin, "HEAD", "HEAD~1")
 
         # Verify error exit code.
         assert result.returncode == 1

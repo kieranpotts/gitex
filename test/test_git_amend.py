@@ -8,181 +8,181 @@ from pathlib import Path
 class TestGitAmend:
     """Test cases for git-amend command."""
 
-    def test_amend_with_unstaged_changes(self, test_repo, script_path):
+    def test_amend_with_unstaged_changes(self, repo, bin):
         """Test amending with unstaged changes."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Make unstaged changes.
-        Path(test_repo.cwd(), "file1.txt").write_text("Modified content")
+        Path(repo.cwd(), "file1.txt").write_text("Modified content")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify there's still only one commit.
-        log_output = test_repo.git.log("--oneline")
+        log_output = repo.git.log("--oneline")
         assert log_output.count("\n") == 0
 
         # Verify the new file content exists in the commit.
-        show_output = test_repo.git.show("HEAD:file1.txt")
+        show_output = repo.git.show("HEAD:file1.txt")
         assert "Modified content" in show_output
 
         # Verify the original commit message is unchanged.
-        commit_msg = test_repo.git.log("-1", "--format=%s")
+        commit_msg = repo.git.log("-1", "--format=%s")
         assert commit_msg == "initial commit"
 
-    def test_amend_with_untracked_files(self, test_repo, script_path):
+    def test_amend_with_untracked_files(self, repo, bin):
         """Test amending with new untracked files."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "first commit")
+        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "first commit")
 
         # Create untracked file.
-        Path(test_repo.cwd(), "file2.txt").write_text("New file")
+        Path(repo.cwd(), "file2.txt").write_text("New file")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the new file was added to the commit.
-        ls_tree = test_repo.git.ls_tree("-r", "--name-only", "HEAD")
+        ls_tree = repo.git.ls_tree("-r", "--name-only", "HEAD")
         assert "file1.txt" in ls_tree
         assert "file2.txt" in ls_tree
 
         # Verify still only one commit.
-        log_output = test_repo.git.log("--oneline")
+        log_output = repo.git.log("--oneline")
         assert log_output.count("\n") == 0
 
-    def test_amend_with_staged_changes(self, test_repo, script_path):
+    def test_amend_with_staged_changes(self, repo, bin):
         """Test amending with already staged changes."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
 
         # Make and stage changes.
-        Path(test_repo.cwd(), "file1.txt").write_text("Staged content")
-        test_repo.git.add("file1.txt")
+        Path(repo.cwd(), "file1.txt").write_text("Staged content")
+        repo.git.add("file1.txt")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify the changes were added to the last commit.
-        show_output = test_repo.git.show("HEAD:file1.txt")
+        show_output = repo.git.show("HEAD:file1.txt")
         assert "Staged content" in show_output
 
-    def test_amend_with_staged_changes_only_when_mixed(self, test_repo, script_path):
+    def test_amend_with_staged_changes_only_when_mixed(self, repo, bin):
         """Test that only staged changes are amended when there are both staged and working changes."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Initial file 1 content")
-        Path(test_repo.cwd(), "file2.txt").write_text("Initial file 2 content")
-        test_repo.git.add(".")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Initial file 1 content")
+        Path(repo.cwd(), "file2.txt").write_text("Initial file 2 content")
+        repo.git.add(".")
+        repo.git.commit("-m", "initial commit")
 
         # Staged change.
-        Path(test_repo.cwd(), "file1.txt").write_text("Staged content")
-        test_repo.git.add("file1.txt")
+        Path(repo.cwd(), "file1.txt").write_text("Staged content")
+        repo.git.add("file1.txt")
 
         # Unstaged change.
-        Path(test_repo.cwd(), "file2.txt").write_text("Unstaged content")
+        Path(repo.cwd(), "file2.txt").write_text("Unstaged content")
 
         # Untracked file.
-        Path(test_repo.cwd(), "file3.txt").write_text("Untracked file")
+        Path(repo.cwd(), "file3.txt").write_text("Untracked file")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify only staged changes were included.
-        assert "Staged content" in test_repo.git.show("HEAD:file1.txt")
+        assert "Staged content" in repo.git.show("HEAD:file1.txt")
 
         # Verify unstaged changes were NOT included.
         # For file 2, only the original committed content should be committed.
-        assert "Initial file 2 content" in test_repo.git.show("HEAD:file2.txt")
+        assert "Initial file 2 content" in repo.git.show("HEAD:file2.txt")
 
         # Verify untracked file was NOT included.
-        ls_tree = test_repo.git.ls_tree("-r", "--name-only", "HEAD")
+        ls_tree = repo.git.ls_tree("-r", "--name-only", "HEAD")
         assert "file3.txt" not in ls_tree
 
         # Verify still only one commit.
-        log_output = test_repo.git.log("--oneline")
+        log_output = repo.git.log("--oneline")
         assert log_output.count("\n") == 0
 
         # Verify unstaged and untracked changes still exist in working tree.
-        status = test_repo.git.status("--short")
+        status = repo.git.status("--short")
         assert "M file2.txt" in status or " M file2.txt" in status
         assert "?? file3.txt" in status
 
-    def test_amend_with_only_unstaged_and_untracked(self, test_repo, script_path):
+    def test_amend_with_only_unstaged_and_untracked(self, repo, bin):
         """Test that all working changes are staged when there are no staged changes."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Initial file 1 content")
-        Path(test_repo.cwd(), "file2.txt").write_text("Initial file 2 content")
-        test_repo.git.add(".")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Initial file 1 content")
+        Path(repo.cwd(), "file2.txt").write_text("Initial file 2 content")
+        repo.git.add(".")
+        repo.git.commit("-m", "initial commit")
 
         # Unstaged change (no staging).
-        Path(test_repo.cwd(), "file1.txt").write_text("Unstaged content")
+        Path(repo.cwd(), "file1.txt").write_text("Unstaged content")
 
         # Untracked file (no staging).
-        Path(test_repo.cwd(), "file3.txt").write_text("Untracked file")
+        Path(repo.cwd(), "file3.txt").write_text("Untracked file")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify all working changes were included.
-        assert "Unstaged content" in test_repo.git.show("HEAD:file1.txt")
-        assert "Untracked file" in test_repo.git.show("HEAD:file3.txt")
+        assert "Unstaged content" in repo.git.show("HEAD:file1.txt")
+        assert "Untracked file" in repo.git.show("HEAD:file3.txt")
 
         # Verify still only one commit.
-        log_output = test_repo.git.log("--oneline")
+        log_output = repo.git.log("--oneline")
         assert log_output.count("\n") == 0
 
-    def test_commit_message_preserved(self, test_repo, script_path):
+    def test_commit_message_preserved(self, repo, bin):
         """Test that the commit message is preserved when amending."""
 
         # Create initial commit with specific message.
-        Path(test_repo.cwd(), "file1.txt").write_text("Content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "my custom commit message")
+        Path(repo.cwd(), "file1.txt").write_text("Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "my custom commit message")
 
         # Make changes.
-        Path(test_repo.cwd(), "file1.txt").write_text("Modified")
+        Path(repo.cwd(), "file1.txt").write_text("Modified")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
         # Verify commit message is unchanged.
-        commit_msg = test_repo.git.log("-1", "--format=%s")
+        commit_msg = repo.git.log("-1", "--format=%s")
         assert commit_msg == "my custom commit message"
 
-    def test_no_changes_to_amend(self, test_repo, script_path):
+    def test_no_changes_to_amend(self, repo, bin):
         """Test that a message is printed when there are no changes to amend."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -191,18 +191,18 @@ class TestGitAmend:
         assert "nothing to amend, working tree clean" in result.stdout
 
         # Verify the commit hasn't changed.
-        log_output = test_repo.git.log("--oneline")
-        commit_msg = test_repo.git.log("-1", "--format=%s")
+        log_output = repo.git.log("--oneline")
+        commit_msg = repo.git.log("-1", "--format=%s")
         assert log_output.count("\n") == 0
         assert commit_msg == "initial commit"
 
-    def test_error_no_commits_exist(self, test_repo, script_path):
+    def test_error_no_commits_exist(self, repo, bin):
         """Test error when there are no commits to amend."""
 
         # Create a file but don't commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.cwd(), "file1.txt").write_text("Content")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -210,15 +210,15 @@ class TestGitAmend:
         # Verify error message.
         assert "no commits exist to amend" in result.stderr
 
-    def test_rejects_single_argument(self, test_repo, script_path):
+    def test_rejects_single_argument(self, repo, bin):
         """Test that the command rejects arguments."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
 
-        result = test_repo.run(script_path, "--help")
+        result = repo.run(bin, "--help")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -226,15 +226,15 @@ class TestGitAmend:
         # Verify error message.
         assert "git-amend does not accept any options" in result.stderr
 
-    def test_rejects_multiple_arguments(self, test_repo, script_path):
+    def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
 
         # Create initial commit.
-        Path(test_repo.cwd(), "file1.txt").write_text("Content")
-        test_repo.git.add("file1.txt")
-        test_repo.git.commit("-m", "initial commit")
+        Path(repo.cwd(), "file1.txt").write_text("Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
 
-        result = test_repo.run(script_path, "arg1", "arg2")
+        result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.
         assert result.returncode == 1

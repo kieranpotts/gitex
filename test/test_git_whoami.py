@@ -6,14 +6,14 @@ Test suite for git-whoami command.
 class TestGitWhoami:
     """Test cases for git-whoami command."""
 
-    def test_with_name_and_email_set(self, test_repo, script_path):
+    def test_with_name_and_email_set(self, repo, bin):
         """Test when both user.name and user.email are configured."""
 
         # Git config: user name and email provided.
-        test_repo.git.config("--local", "user.name", "John Doe")
-        test_repo.git.config("--local", "user.email", "john.doe@example.com")
+        repo.git.config("--local", "user.name", "John Doe")
+        repo.git.config("--local", "user.email", "john.doe@example.com")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -22,14 +22,14 @@ class TestGitWhoami:
         assert "name:  John Doe" in result.stdout
         assert "email: john.doe@example.com" in result.stdout
 
-    def test_with_neither_name_nor_email_set(self, test_repo, script_path):
+    def test_with_neither_name_nor_email_set(self, repo, bin):
         """Test when neither user.name nor user.email are configured."""
 
         # Git config: user name and email both empty.
-        test_repo.git.config("--local", "user.name", "")
-        test_repo.git.config("--local", "user.email", "")
+        repo.git.config("--local", "user.name", "")
+        repo.git.config("--local", "user.email", "")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -38,14 +38,14 @@ class TestGitWhoami:
         assert "name:  [not set]" in result.stdout
         assert "email: [not set]" in result.stdout
 
-    def test_with_only_name_set(self, test_repo, script_path):
+    def test_with_only_name_set(self, repo, bin):
         """Test when only user.name is configured."""
 
         # Git config: user name provided, email empty.
-        test_repo.git.config("--local", "user.name", "Jane Doe")
-        test_repo.git.config("--local", "user.email", "")
+        repo.git.config("--local", "user.name", "Jane Doe")
+        repo.git.config("--local", "user.email", "")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -54,14 +54,14 @@ class TestGitWhoami:
         assert "name:  Jane Doe" in result.stdout
         assert "email: [not set]" in result.stdout
 
-    def test_with_only_email_set(self, test_repo, script_path):
+    def test_with_only_email_set(self, repo, bin):
         """Test when only user.email is configured."""
 
         # Git config: email provided, name empty.
-        test_repo.git.config("--local", "user.name", "")
-        test_repo.git.config("--local", "user.email", "jane.doe@example.com")
+        repo.git.config("--local", "user.name", "")
+        repo.git.config("--local", "user.email", "jane.doe@example.com")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -70,14 +70,14 @@ class TestGitWhoami:
         assert "name:  [not set]" in result.stdout
         assert "email: jane.doe@example.com" in result.stdout
 
-    def test_output_line_count(self, test_repo, script_path):
+    def test_output_line_count(self, repo, bin):
         """Test that the output does not exceed the expected number of lines."""
 
         # Git config: user name and email provided.
-        test_repo.git.config("--local", "user.name", "John Doe")
-        test_repo.git.config("--local", "user.email", "john.doe@example.com")
+        repo.git.config("--local", "user.name", "John Doe")
+        repo.git.config("--local", "user.email", "john.doe@example.com")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify stdout structure.
         lines = result.stdout.strip().split("\n")
@@ -85,14 +85,14 @@ class TestGitWhoami:
         assert lines[0].startswith("name:  ")
         assert lines[1].startswith("email: ")
 
-    def test_with_special_characters_in_name(self, test_repo, script_path):
+    def test_with_special_characters_in_name(self, repo, bin):
         """Test with special characters in username."""
 
         # Git config: user name includes special characters.
-        test_repo.git.config("--local", "user.name", "José García-Pérez")
-        test_repo.git.config("--local", "user.email", "jose@example.com")
+        repo.git.config("--local", "user.name", "José García-Pérez")
+        repo.git.config("--local", "user.email", "jose@example.com")
 
-        result = test_repo.run(script_path)
+        result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
@@ -101,10 +101,10 @@ class TestGitWhoami:
         assert "name:  José García-Pérez" in result.stdout
         assert "email: jose@example.com" in result.stdout
 
-    def test_rejects_single_argument(self, test_repo, script_path):
+    def test_rejects_single_argument(self, repo, bin):
         """Test that the command rejects arguments."""
 
-        result = test_repo.run(script_path, "--help")
+        result = repo.run(bin, "--help")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -112,10 +112,10 @@ class TestGitWhoami:
         # Verify stderr.
         assert "git-whoami does not accept any options" in result.stderr
 
-    def test_rejects_multiple_arguments(self, test_repo, script_path):
+    def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
 
-        result = test_repo.run(script_path, "arg1", "arg2")
+        result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.
         assert result.returncode == 1

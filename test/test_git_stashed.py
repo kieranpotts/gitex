@@ -8,19 +8,19 @@ Test suite for git-stashed command.
 class TestGitStashed:
     """Test cases for git-stashed command."""
 
-    # def test_xxxxxxxx(self, test_repo, script_path):
+    # def test_xxxxxxxx(self, repo, bin):
     #     """Test <description>."""
 
     #     # Initial config values.
-    #     test_repo.git.config("--local", "user.name", "John Doe")
-    #     test_repo.git.config("--local", "user.email", "john.doe@example.com")
+    #     repo.git.config("--local", "user.name", "John Doe")
+    #     repo.git.config("--local", "user.email", "john.doe@example.com")
 
     #     # Create initial commit.
-    #     Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-    #     test_repo.git.add("file1.txt")
-    #     test_repo.git.commit("-m", "initial commit")
+    #     Path(repo.cwd(), "file1.txt").write_text("Initial content")
+    #     repo.git.add("file1.txt")
+    #     repo.git.commit("-m", "initial commit")
 
-    #     result = test_repo.run(script_path)
+    #     result = repo.run(bin)
 
     #     # Verify success exit code.
     #     assert result.returncode == 0
