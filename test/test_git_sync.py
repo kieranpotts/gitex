@@ -2,7 +2,7 @@
 Test suite for git-sync command.
 """
 
-from pathlib import Path
+# from pathlib import Path
 
 
 class TestGitSync:

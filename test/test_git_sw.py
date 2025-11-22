@@ -2,7 +2,7 @@
 Test suite for git-sw command.
 """
 
-from pathlib import Path
+# from pathlib import Path
 
 
 class TestGitSw:

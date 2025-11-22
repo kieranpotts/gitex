@@ -2,7 +2,7 @@
 Test suite for git-upstream command.
 """
 
-from pathlib import Path
+# from pathlib import Path
 
 
 class TestGitUpstream:
