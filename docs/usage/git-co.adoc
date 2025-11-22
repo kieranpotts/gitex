@@ -7,9 +7,7 @@ This is a convenience alias for one of Git's most frequently used commands. It s
 == Usage
 
 ----
-$ git co <branch>
-$ git co [<options>] <branch>
-$ git co [<tree-ish>] [--] <pathspec>...
+$ git co [...]
 ----
 
 == Examples
@@ -44,26 +42,15 @@ Checkout a specific commit (detached HEAD):
 $ git co a1b2c3d
 ----
 
-Discard changes to a specific file:
-
-----
-$ git co HEAD -- path/to/file.txt
-----
-
-Checkout a file from another branch:
-
-----
-$ git co main -- README.md
-----
-
 Create a branch from a specific commit:
 
 ----
 $ git co -b feature-x a1b2c3d
 ----
 
+See https://git-scm.com/docs/git-checkout[git-checkout] for further documentation.
+
 == See also
 
-* https://git-scm.com/docs/git-checkout[git-checkout]
 * https://git-scm.com/docs/git-switch[git-switch] — Modern alternative for switching branches.
 * https://git-scm.com/docs/git-restore[git-restore] — Modern alternative for restoring files.

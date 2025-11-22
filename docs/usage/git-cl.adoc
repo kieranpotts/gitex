@@ -5,8 +5,7 @@ Shortcut for `git clone`. All parameters are forwarded to the underlying `git cl
 == Usage
 
 ----
-$ git cl <repository> [<directory>]
-$ git cl [<options>] <repository> [<directory>]
+$ git cl [...]
 ----
 
 == Examples
@@ -35,6 +34,4 @@ Clone a specific branch:
 $ git cl --branch develop https://github.com/<user>/<repo>.git
 ----
 
-== See also
-
-* https://git-scm.com/docs/git-clone[git-clone]
+See https://git-scm.com/docs/git-clone[git-clone] for further documentation.
