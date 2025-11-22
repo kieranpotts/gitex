@@ -60,6 +60,14 @@
     "editor.formatOnType": false,
   },
 
+  "[markdown]": {
+    "editor.rulers": [
+      100
+    ],
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 100,
+  },
+
   "[python]": {
     "editor.rulers": [
       88
