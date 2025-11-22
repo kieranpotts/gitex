@@ -12,12 +12,12 @@ class TestGitUncommit:
         """Test uncommitting a commit with a single file."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
         # Create second commit.
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -42,13 +42,13 @@ class TestGitUncommit:
         """Test uncommitting a commit with multiple files."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
         # Create second commit with multiple files.
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
-        Path(repo.cwd(), "file3.txt").write_text("Content 3")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file3.txt").write_text("Content 3")
         repo.git.add(".")
         repo.git.commit("-m", "second commit")
 
@@ -66,12 +66,12 @@ class TestGitUncommit:
         """Test uncommitting a commit that modified an existing file."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Version 1")
+        Path(repo.dir(), "file1.txt").write_text("Version 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
         # Modify and commit.
-        Path(repo.cwd(), "file1.txt").write_text("Version 2")
+        Path(repo.dir(), "file1.txt").write_text("Version 2")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "second commit")
 
@@ -92,13 +92,13 @@ class TestGitUncommit:
         """Test uncommitting a commit that deleted a file."""
 
         # Create initial commit with two files.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add(".")
         repo.git.commit("-m", "first commit")
 
         # Delete file2 and commit.
-        Path(repo.cwd(), "file2.txt").unlink()
+        Path(repo.dir(), "file2.txt").unlink()
         repo.git.add("file2.txt")
         repo.git.commit("-m", "delete file2")
 
@@ -119,15 +119,15 @@ class TestGitUncommit:
         """Test uncommitting multiple times in succession."""
 
         # Create three commits.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit 1")
 
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "commit 2")
 
-        Path(repo.cwd(), "file3.txt").write_text("Content 3")
+        Path(repo.dir(), "file3.txt").write_text("Content 3")
         repo.git.add("file3.txt")
         repo.git.commit("-m", "commit 3")
 
@@ -149,7 +149,7 @@ class TestGitUncommit:
         """Test uncommitting an empty commit."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
@@ -173,17 +173,17 @@ class TestGitUncommit:
         """Test that uncommit preserves unstaged working tree changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
         # Create second commit.
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
         # Make unstaged change.
-        Path(repo.cwd(), "file3.txt").write_text("Unstaged file")
+        Path(repo.dir(), "file3.txt").write_text("Unstaged file")
 
         result = repo.run(bin)
 
@@ -191,7 +191,7 @@ class TestGitUncommit:
         assert result.returncode == 0
 
         # Verify file3.txt still exists and is unstaged.
-        assert Path(repo.cwd(), "file3.txt").exists()
+        assert Path(repo.dir(), "file3.txt").exists()
         status = repo.git.status("--short")
         assert "?? file3.txt" in status
 
@@ -199,21 +199,21 @@ class TestGitUncommit:
         """Test that uncommit preserves both staged and unstaged changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
         # Create second commit.
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
         # Make staged change.
-        Path(repo.cwd(), "file3.txt").write_text("Staged content")
+        Path(repo.dir(), "file3.txt").write_text("Staged content")
         repo.git.add("file3.txt")
 
         # Make unstaged change.
-        Path(repo.cwd(), "file4.txt").write_text("Unstaged content")
+        Path(repo.dir(), "file4.txt").write_text("Unstaged content")
 
         result = repo.run(bin)
 
@@ -243,7 +243,7 @@ class TestGitUncommit:
         """Test that the command rejects arguments."""
 
         # Create a commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 
@@ -259,7 +259,7 @@ class TestGitUncommit:
         """Test that the command rejects multiple arguments."""
 
         # Create a commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 

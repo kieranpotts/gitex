@@ -12,12 +12,12 @@ class TestGitAmend:
         """Test amending with unstaged changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
         # Make unstaged changes.
-        Path(repo.cwd(), "file1.txt").write_text("Modified content")
+        Path(repo.dir(), "file1.txt").write_text("Modified content")
 
         result = repo.run(bin)
 
@@ -40,12 +40,12 @@ class TestGitAmend:
         """Test amending with new untracked files."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
         # Create untracked file.
-        Path(repo.cwd(), "file2.txt").write_text("New file")
+        Path(repo.dir(), "file2.txt").write_text("New file")
 
         result = repo.run(bin)
 
@@ -65,12 +65,12 @@ class TestGitAmend:
         """Test amending with already staged changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
         # Make and stage changes.
-        Path(repo.cwd(), "file1.txt").write_text("Staged content")
+        Path(repo.dir(), "file1.txt").write_text("Staged content")
         repo.git.add("file1.txt")
 
         result = repo.run(bin)
@@ -86,20 +86,20 @@ class TestGitAmend:
         """Test that only staged changes are amended when there are both staged and working changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial file 1 content")
-        Path(repo.cwd(), "file2.txt").write_text("Initial file 2 content")
+        Path(repo.dir(), "file1.txt").write_text("Initial file 1 content")
+        Path(repo.dir(), "file2.txt").write_text("Initial file 2 content")
         repo.git.add(".")
         repo.git.commit("-m", "initial commit")
 
         # Staged change.
-        Path(repo.cwd(), "file1.txt").write_text("Staged content")
+        Path(repo.dir(), "file1.txt").write_text("Staged content")
         repo.git.add("file1.txt")
 
         # Unstaged change.
-        Path(repo.cwd(), "file2.txt").write_text("Unstaged content")
+        Path(repo.dir(), "file2.txt").write_text("Unstaged content")
 
         # Untracked file.
-        Path(repo.cwd(), "file3.txt").write_text("Untracked file")
+        Path(repo.dir(), "file3.txt").write_text("Untracked file")
 
         result = repo.run(bin)
 
@@ -130,16 +130,16 @@ class TestGitAmend:
         """Test that all working changes are staged when there are no staged changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial file 1 content")
-        Path(repo.cwd(), "file2.txt").write_text("Initial file 2 content")
+        Path(repo.dir(), "file1.txt").write_text("Initial file 1 content")
+        Path(repo.dir(), "file2.txt").write_text("Initial file 2 content")
         repo.git.add(".")
         repo.git.commit("-m", "initial commit")
 
         # Unstaged change (no staging).
-        Path(repo.cwd(), "file1.txt").write_text("Unstaged content")
+        Path(repo.dir(), "file1.txt").write_text("Unstaged content")
 
         # Untracked file (no staging).
-        Path(repo.cwd(), "file3.txt").write_text("Untracked file")
+        Path(repo.dir(), "file3.txt").write_text("Untracked file")
 
         result = repo.run(bin)
 
@@ -158,12 +158,12 @@ class TestGitAmend:
         """Test that the commit message is preserved when amending."""
 
         # Create initial commit with specific message.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "my custom commit message")
 
         # Make changes.
-        Path(repo.cwd(), "file1.txt").write_text("Modified")
+        Path(repo.dir(), "file1.txt").write_text("Modified")
 
         result = repo.run(bin)
 
@@ -178,7 +178,7 @@ class TestGitAmend:
         """Test that a message is printed when there are no changes to amend."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -200,7 +200,7 @@ class TestGitAmend:
         """Test error when there are no commits to amend."""
 
         # Create a file but don't commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
 
         result = repo.run(bin)
 
@@ -214,7 +214,7 @@ class TestGitAmend:
         """Test that the command rejects arguments."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -230,7 +230,7 @@ class TestGitAmend:
         """Test that the command rejects multiple arguments."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 

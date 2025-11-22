@@ -12,7 +12,7 @@ class TestGitCl:
         """Test cloning a repository with a URL."""
 
         # Create a bare repository to clone from.
-        source_repo_path = os.path.join(repo.cwd(), "source.git")
+        source_repo_path = os.path.join(repo.dir(), "source.git")
         repo.git.init("--bare", source_repo_path)
 
         # Clone the repository.
@@ -22,7 +22,7 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.cwd(), "cloned")
+        cloned_repo_path = os.path.join(repo.dir(), "cloned")
         assert os.path.isdir(cloned_repo_path)
 
         # Verify it's a Git repository.
@@ -32,7 +32,7 @@ class TestGitCl:
         """Test cloning with --depth option."""
 
         # Create a source repository.
-        source_repo_path = os.path.join(repo.cwd(), "source")
+        source_repo_path = os.path.join(repo.dir(), "source")
         os.makedirs(source_repo_path)
         os.chdir(source_repo_path)
         repo.git.init(source_repo_path)
@@ -46,7 +46,7 @@ class TestGitCl:
             repo.git.commit("-m", f"Commit {i}")
 
         # Return to the original working directory.
-        os.chdir(repo.cwd())
+        os.chdir(repo.dir())
 
         # Clone with depth 1.
         result = repo.run(bin, "--depth", "1", source_repo_path, "shallow")
@@ -55,14 +55,14 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.cwd(), "shallow")
+        cloned_repo_path = os.path.join(repo.dir(), "shallow")
         assert os.path.isdir(cloned_repo_path)
 
     def test_clone_with_single_branch_option(self, repo, bin):
         """Test cloning with --single-branch option."""
 
         # Create a source repository.
-        source_repo_path = os.path.join(repo.cwd(), "source")
+        source_repo_path = os.path.join(repo.dir(), "source")
         os.makedirs(source_repo_path)
         os.chdir(source_repo_path)
         repo.git.init(source_repo_path)
@@ -75,7 +75,7 @@ class TestGitCl:
         repo.git.commit("-m", "Initial commit")
 
         # Return to the original working directory.
-        os.chdir(repo.cwd())
+        os.chdir(repo.dir())
 
         # Clone with single-branch option.
         result = repo.run(
@@ -86,14 +86,14 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.cwd(), "single-branch-clone")
+        cloned_repo_path = os.path.join(repo.dir(), "single-branch-clone")
         assert os.path.isdir(cloned_repo_path)
 
     def test_clone_with_multiple_options(self, repo, bin):
         """Test cloning with multiple options forwarded."""
 
         # Create a source repository.
-        source_repo_path = os.path.join(repo.cwd(), "source")
+        source_repo_path = os.path.join(repo.dir(), "source")
         os.makedirs(source_repo_path)
         os.chdir(source_repo_path)
         repo.git.init(source_repo_path)
@@ -107,7 +107,7 @@ class TestGitCl:
             repo.git.commit("-m", f"Commit {i}")
 
         # Return to the original working directory.
-        os.chdir(repo.cwd())
+        os.chdir(repo.dir())
 
         # Clone with multiple options: --depth and --no-tags.
         result = repo.run(
@@ -118,7 +118,7 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.cwd(), "multi-option")
+        cloned_repo_path = os.path.join(repo.dir(), "multi-option")
         assert os.path.isdir(cloned_repo_path)
 
     def test_clone_without_arguments(self, repo, bin):

@@ -38,7 +38,7 @@ def bin(request):
     # eg. 'test_git_whoami.py' -> 'git-whoami'.
     script_name = test_file.stem.replace("test_", "").replace("_", "-")
 
-    # Get the repo directory - resolve symlinks to ensure we get the real path.
+    # Get the repo directory path. Resolve symlinks to ensure we get the real path.
     repo_dir = test_file.parent.parent.resolve()
     bin = repo_dir / "bin" / script_name
 

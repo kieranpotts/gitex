@@ -15,8 +15,8 @@ class TestRepo:
     """Class to create and manage a temporary Git repository for testing purposes."""
 
     def __init__(self):
-        self._cwd = tempfile.mkdtemp()
-        self._repo = Repo.init(self._cwd, b="main")
+        self._dir = tempfile.mkdtemp()
+        self._repo = Repo.init(self._dir, b="main")
         self._files = []
 
         self.git = self._repo.git
@@ -24,22 +24,22 @@ class TestRepo:
         self.cd()
 
     def cd(self):
-        """Change to the test repo's root directory."""
-        os.chdir(self._cwd)
-        print(f"The current work directory has switched to {self._cwd}")
+        """Change to the test repo's root working directory."""
 
-    def cwd(self):
-        return self._cwd
+        os.chdir(self._dir)
+        print(f"The current work directory has switched to {self._dir}")
+
+    def dir(self):
+        """Get the full path to the temporary repository's root directory."""
+
+        return self._dir
 
     def dirname(self):
         """Get the directory name of the temporary repository"""
 
         system_tmpdir = tempfile.gettempdir()
 
-        return self._cwd[len(system_tmpdir) + 1 :]
-
-    # def git(self):
-    #     return self._repo.git
+        return self._dir[len(system_tmpdir) + 1 :]
 
     def run(self, bin, *args, input=None):
         """
@@ -59,7 +59,7 @@ class TestRepo:
         # interpretation issues in other dev environments, too.
         return subprocess.run(
             ["bash", bin, *args],
-            cwd=self._cwd,
+            cwd=self._dir,
             capture_output=True,
             text=True,
             input=input,
@@ -74,7 +74,7 @@ class TestRepo:
             content: Content to write to the file.
         """
 
-        file_path = os.path.join(self._cwd, filename)
+        file_path = os.path.join(self._dir, filename)
         with open(file_path, "w") as f:
             f.write(content)
         self._files.append(filename)

@@ -16,7 +16,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit on main.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -43,7 +43,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -65,7 +65,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -95,7 +95,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -103,7 +103,7 @@ class TestGitSw:
         commit_hash = repo.git.rev_parse("HEAD").strip()
 
         # Create another commit.
-        Path(repo.cwd(), "file2.txt").write_text("More content")
+        Path(repo.dir(), "file2.txt").write_text("More content")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -125,7 +125,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        file_path = Path(repo.cwd(), "file1.txt")
+        file_path = Path(repo.dir(), "file1.txt")
         file_path.write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
@@ -157,7 +157,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -175,7 +175,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 

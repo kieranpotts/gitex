@@ -12,12 +12,12 @@ class TestGitUnamend:
         """Test unamending after adding a new file via amend."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(repo.dir(), "file1.txt").write_text("Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
         # Amend with new file.
-        Path(repo.cwd(), "file2.txt").write_text("New file")
+        Path(repo.dir(), "file2.txt").write_text("New file")
         repo.git.add("file2.txt")
         repo.git.commit("--amend", "--no-edit")
 
@@ -46,12 +46,12 @@ class TestGitUnamend:
         """Test unamending after modifying an existing file via amend."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Version 1")
+        Path(repo.dir(), "file1.txt").write_text("Version 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
         # Amend with modification.
-        Path(repo.cwd(), "file1.txt").write_text("Version 2")
+        Path(repo.dir(), "file1.txt").write_text("Version 2")
         repo.git.add("file1.txt")
         repo.git.commit("--amend", "--no-edit")
 
@@ -73,11 +73,11 @@ class TestGitUnamend:
         """Test that unamend fails when used after a regular commit."""
 
         # Create two commits.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -98,17 +98,17 @@ class TestGitUnamend:
         """Test that unamend preserves unstaged working tree changes."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Version 1")
+        Path(repo.dir(), "file1.txt").write_text("Version 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
         # Amend with new file.
-        Path(repo.cwd(), "file2.txt").write_text("Staged file")
+        Path(repo.dir(), "file2.txt").write_text("Staged file")
         repo.git.add("file2.txt")
         repo.git.commit("--amend", "--no-edit")
 
         # Make unstaged change.
-        Path(repo.cwd(), "file3.txt").write_text("Unstaged file")
+        Path(repo.dir(), "file3.txt").write_text("Unstaged file")
 
         result = repo.run(bin)
 
@@ -116,7 +116,7 @@ class TestGitUnamend:
         assert result.returncode == 0
 
         # Verify file3.txt still exists and is unstaged.
-        assert Path(repo.cwd(), "file3.txt").exists()
+        assert Path(repo.dir(), "file3.txt").exists()
         status = repo.git.status("--short")
         assert "?? file3.txt" in status
 
@@ -124,7 +124,7 @@ class TestGitUnamend:
         """Test unamending when the amend changed the commit message."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "original message")
 
@@ -144,17 +144,17 @@ class TestGitUnamend:
         """Test that unamend fails when called a second time (after a reset, not an amend)."""
 
         # Create initial commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(repo.dir(), "file1.txt").write_text("Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit 1")
 
         # Second commit.
-        Path(repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(repo.dir(), "file2.txt").write_text("Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "commit 2")
 
         # Amend it.
-        Path(repo.cwd(), "file3.txt").write_text("Content 3")
+        Path(repo.dir(), "file3.txt").write_text("Content 3")
         repo.git.add("file3.txt")
         repo.git.commit("--amend", "--no-edit")
 
@@ -185,7 +185,7 @@ class TestGitUnamend:
         """Test that the command rejects arguments."""
 
         # Create a commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 
@@ -201,7 +201,7 @@ class TestGitUnamend:
         """Test that the command rejects multiple arguments."""
 
         # Create a commit.
-        Path(repo.cwd(), "file1.txt").write_text("Content")
+        Path(repo.dir(), "file1.txt").write_text("Content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 

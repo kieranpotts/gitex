@@ -16,7 +16,7 @@ class TestGitDiscard:
     #     repo.git.config("--local", "user.email", "john.doe@example.com")
 
     #     # Create initial commit.
-    #     Path(repo.cwd(), "file1.txt").write_text("Initial content")
+    #     Path(repo.dir(), "file1.txt").write_text("Initial content")
     #     repo.git.add("file1.txt")
     #     repo.git.commit("-m", "initial commit")
 
