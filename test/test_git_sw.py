@@ -2,8 +2,6 @@
 Test suite for git-sw command.
 """
 
-import os
-
 
 class TestGitSw:
     """Test cases for git-sw command."""
@@ -146,9 +144,7 @@ class TestGitSw:
         assert current_branch == "other-branch"
 
         # Verify the file was restored (changes discarded).
-        file_path = os.path.join(repo.dir(), "file1.txt")
-        with open(file_path, "r") as f:
-            assert f.read() == "Initial content"
+        assert repo.read("file1.txt") == "Initial content"
 
     def test_switch_nonexistent_branch(self, repo, bin):
         """Test switching to a non-existent branch fails."""

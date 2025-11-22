@@ -2,8 +2,6 @@
 Test suite for git-uncommit command.
 """
 
-import os
-
 
 class TestGitUncommit:
     """Test cases for git-uncommit command."""
@@ -98,7 +96,7 @@ class TestGitUncommit:
         repo.git.commit("-m", "first commit")
 
         # Delete file2 and commit.
-        os.remove(os.path.join(repo.dir(), "file2.txt"))
+        repo.remove("file2.txt")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "delete file2")
 
@@ -191,7 +189,7 @@ class TestGitUncommit:
         assert result.returncode == 0
 
         # Verify file3.txt still exists and is unstaged.
-        assert os.path.exists(os.path.join(repo.dir(), "file3.txt"))
+        assert repo.exists("file3.txt")
         status = repo.git.status("--short")
         assert "?? file3.txt" in status
 

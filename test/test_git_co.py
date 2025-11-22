@@ -2,8 +2,6 @@
 Test suite for git-co command.
 """
 
-import os
-
 
 class TestGitCo:
     """Test cases for git-co command."""
@@ -73,9 +71,7 @@ class TestGitCo:
         repo.write("file1.txt", "Modified content")
 
         # Verify the file is modified.
-        file_path = os.path.join(repo.dir(), "file1.txt")
-        with open(file_path, "r") as f:
-            assert f.read() == "Modified content"
+        assert repo.read("file1.txt") == "Modified content"
 
         # Use git-co to checkout the file from HEAD.
         result = repo.run(bin, "HEAD", "--", "file1.txt")
@@ -84,8 +80,7 @@ class TestGitCo:
         assert result.returncode == 0
 
         # Verify the file is restored to original content.
-        with open(file_path, "r") as f:
-            assert f.read() == "Original content"
+        assert repo.read("file1.txt") == "Original content"
 
     def test_checkout_detached_head(self, repo, bin):
         """Test checking out a specific commit (detached HEAD)."""

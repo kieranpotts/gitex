@@ -2,8 +2,6 @@
 Test suite for git-unamend command.
 """
 
-import os
-
 
 class TestGitUnamend:
     """Test cases for git-unamend command."""
@@ -116,7 +114,7 @@ class TestGitUnamend:
         assert result.returncode == 0
 
         # Verify file3.txt still exists and is unstaged.
-        assert os.path.exists(os.path.join(repo.dir(), "file3.txt"))
+        assert repo.exists("file3.txt")
         status = repo.git.status("--short")
         assert "?? file3.txt" in status
 

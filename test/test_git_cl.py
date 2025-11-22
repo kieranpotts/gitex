@@ -2,8 +2,6 @@
 Test suite for git-cl command.
 """
 
-import os
-
 
 class TestGitCl:
     """Test cases for git-cl command."""
@@ -12,7 +10,7 @@ class TestGitCl:
         """Test cloning a repository with a URL."""
 
         # Create a bare repository to clone from.
-        source_repo_path = os.path.join(repo.dir(), "source.git")
+        source_repo_path = repo.path("source.git")
         repo.git.init("--bare", source_repo_path)
 
         # Clone the repository.
@@ -22,31 +20,29 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.dir(), "cloned")
-        assert os.path.isdir(cloned_repo_path)
+        assert repo.isdir("cloned")
 
         # Verify it's a Git repository.
-        assert os.path.isdir(os.path.join(cloned_repo_path, ".git"))
+        assert repo.isdir("cloned/.git")
 
     def test_clone_with_depth_option(self, repo, bin):
         """Test cloning with --depth option."""
 
         # Create a source repository.
-        source_repo_path = os.path.join(repo.dir(), "source")
-        os.makedirs(source_repo_path)
-        os.chdir(source_repo_path)
-        repo.git.init(source_repo_path)
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
+        source_repo_path = repo.path("source")
+        from git import Repo as GitRepo
+
+        source_git = GitRepo.init(source_repo_path)
+        source_git.config_writer().set_value("user", "name", "Test User").release()
+        source_git.config_writer().set_value(
+            "user", "email", "test@example.com"
+        ).release()
 
         # Create multiple commits in the source repository.
         for i in range(3):
-            repo.write(f"file{i}.txt", f"content{i}")
-            repo.git.add(f"file{i}.txt")
-            repo.git.commit("-m", f"Commit {i}")
-
-        # Return to the original working directory.
-        os.chdir(repo.dir())
+            repo.write(f"source/file{i}.txt", f"content{i}")
+            source_git.index.add([f"file{i}.txt"])
+            source_git.index.commit(f"Commit {i}")
 
         # Clone with depth 1.
         result = repo.run(bin, "--depth", "1", source_repo_path, "shallow")
@@ -55,27 +51,25 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.dir(), "shallow")
-        assert os.path.isdir(cloned_repo_path)
+        assert repo.isdir("shallow")
 
     def test_clone_with_single_branch_option(self, repo, bin):
         """Test cloning with --single-branch option."""
 
         # Create a source repository.
-        source_repo_path = os.path.join(repo.dir(), "source")
-        os.makedirs(source_repo_path)
-        os.chdir(source_repo_path)
-        repo.git.init(source_repo_path)
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
+        source_repo_path = repo.path("source")
+        from git import Repo as GitRepo
+
+        source_git = GitRepo.init(source_repo_path)
+        source_git.config_writer().set_value("user", "name", "Test User").release()
+        source_git.config_writer().set_value(
+            "user", "email", "test@example.com"
+        ).release()
 
         # Create an initial commit in the source repository.
-        repo.write("file.txt", "content")
-        repo.git.add("file.txt")
-        repo.git.commit("-m", "Initial commit")
-
-        # Return to the original working directory.
-        os.chdir(repo.dir())
+        repo.write("source/file.txt", "content")
+        source_git.index.add(["file.txt"])
+        source_git.index.commit("Initial commit")
 
         # Clone with single-branch option.
         result = repo.run(
@@ -86,28 +80,26 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.dir(), "single-branch-clone")
-        assert os.path.isdir(cloned_repo_path)
+        assert repo.isdir("single-branch-clone")
 
     def test_clone_with_multiple_options(self, repo, bin):
         """Test cloning with multiple options forwarded."""
 
         # Create a source repository.
-        source_repo_path = os.path.join(repo.dir(), "source")
-        os.makedirs(source_repo_path)
-        os.chdir(source_repo_path)
-        repo.git.init(source_repo_path)
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
+        source_repo_path = repo.path("source")
+        from git import Repo as GitRepo
+
+        source_git = GitRepo.init(source_repo_path)
+        source_git.config_writer().set_value("user", "name", "Test User").release()
+        source_git.config_writer().set_value(
+            "user", "email", "test@example.com"
+        ).release()
 
         # Create multiple commits in the source repository.
         for i in range(5):
-            repo.write(f"file{i}.txt", f"content{i}")
-            repo.git.add(f"file{i}.txt")
-            repo.git.commit("-m", f"Commit {i}")
-
-        # Return to the original working directory.
-        os.chdir(repo.dir())
+            repo.write(f"source/file{i}.txt", f"content{i}")
+            source_git.index.add([f"file{i}.txt"])
+            source_git.index.commit(f"Commit {i}")
 
         # Clone with multiple options: --depth and --no-tags.
         result = repo.run(
@@ -118,8 +110,7 @@ class TestGitCl:
         assert result.returncode == 0
 
         # Verify the cloned repository exists.
-        cloned_repo_path = os.path.join(repo.dir(), "multi-option")
-        assert os.path.isdir(cloned_repo_path)
+        assert repo.isdir("multi-option")
 
     def test_clone_without_arguments(self, repo, bin):
         """Test that git-cl without arguments fails appropriately."""

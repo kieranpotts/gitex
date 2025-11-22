@@ -3,7 +3,6 @@ Test suite for git-br command.
 """
 
 import os
-import subprocess
 
 
 class TestGitBr:
@@ -139,13 +138,7 @@ class TestGitBr:
         env["X_GITEX_DEFAULT_REMOTE_NAME"] = "upstream"
 
         # Run with custom environment.
-        result = subprocess.run(
-            ["bash", bin, "custom-remote-branch"],
-            cwd=repo.dir(),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = repo.run(bin, "custom-remote-branch", env=env)
 
         # Verify the branch was created.
         branches = repo.git.branch()
@@ -174,13 +167,7 @@ class TestGitBr:
         env["X_GITEX_DEFAULT_REMOTE_NAME"] = ""
 
         # Run with custom environment.
-        result = subprocess.run(
-            ["bash", bin, "default-remote-branch"],
-            cwd=repo.dir(),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = repo.run(bin, "default-remote-branch", env=env)
 
         # Verify the branch was created.
         branches = repo.git.branch()
