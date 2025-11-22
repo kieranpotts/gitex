@@ -24,62 +24,88 @@ class TestRepo:
         self.cd()
 
     def cd(self):
-        """Change to the test repo's root working directory."""
+        """Change the current working directory to the test repository's root."""
 
         os.chdir(self._dir)
         print(f"The current work directory has switched to {self._dir}")
 
     def dir(self):
-        """Get the full path to the temporary repository's root directory."""
+        """
+        Get the full path to the temporary repository's root directory.
+
+        Returns:
+            The absolute path to the repository directory.
+        """
 
         return self._dir
 
     def dirname(self):
-        """Get the directory name of the temporary repository"""
+        """
+        Get the directory name of the temporary repository (basename only).
+
+        Returns:
+            The repository directory name without the system temp directory prefix.
+        """
 
         system_tmpdir = tempfile.gettempdir()
 
         return self._dir[len(system_tmpdir) + 1 :]
 
-    def run(self, bin, *args, input=None, env=None):
+    def exists(self, filename):
         """
-        Run a git extension script and return the subprocess result.
+        Check if a file or directory exists in the temporary repository.
 
         Args:
-            bin: Path to the script to run.
-            *args: Optional arguments to pass to the script.
-            input: Optional input to pass to the script via stdin.
-            env: Optional environment variables to pass to the script.
+            filename: Name of the file or directory to check.
 
         Returns:
-            subprocess.CompletedProcess with returncode, stdout, stderr
-        """
-
-        # Explicitly use bash to execute the script. This is required for the tests
-        # to run in the dev container, and it should help resolve shebang
-        # interpretation issues in other dev environments, too.
-        return subprocess.run(
-            ["bash", bin, *args],
-            cwd=self._dir,
-            capture_output=True,
-            text=True,
-            input=input,
-            env=env,
-        )
-
-    def write(self, filename, content):
-        """
-        Write content to a file in the temporary repository.
-
-        Args:
-            filename: Name of the file to write.
-            content: Content to write to the file.
+            True if the file or directory exists, False otherwise.
         """
 
         file_path = os.path.join(self._dir, filename)
-        with open(file_path, "w") as f:
-            f.write(content)
-        self._files.append(filename)
+        return os.path.exists(file_path)
+
+    def isdir(self, dirname):
+        """
+        Check if a directory exists in the temporary repository.
+
+        Args:
+            dirname: Name of the directory to check.
+
+        Returns:
+            True if the directory exists and is a directory, False otherwise.
+        """
+
+        dir_path = os.path.join(self._dir, dirname)
+        return os.path.isdir(dir_path)
+
+    def mkdir(self, dirname):
+        """
+        Create a directory in the temporary repository.
+
+        Args:
+            dirname: Name of the directory to create.
+
+        Returns:
+            The full path to the created directory.
+        """
+
+        dir_path = os.path.join(self._dir, dirname)
+        os.makedirs(dir_path)
+        return dir_path
+
+    def path(self, filename):
+        """
+        Get the full path to a file or directory in the temporary repository.
+
+        Args:
+            filename: Name of the file or directory.
+
+        Returns:
+            The absolute path to the file or directory.
+        """
+
+        return os.path.join(self._dir, filename)
 
     def read(self, filename):
         """
@@ -107,58 +133,42 @@ class TestRepo:
         file_path = os.path.join(self._dir, filename)
         os.remove(file_path)
 
-    def exists(self, filename):
+    def run(self, bin, *args, input=None, env=None):
         """
-        Check if a file exists in the temporary repository.
+        Run a git extension script and return the subprocess result.
 
         Args:
-            filename: Name of the file to check.
+            bin: Path to the script to run.
+            *args: Optional arguments to pass to the script.
+            input: Optional input to pass to the script via stdin.
+            env: Optional environment variables to pass to the script.
 
         Returns:
-            True if the file exists, False otherwise.
+            subprocess.CompletedProcess with returncode, stdout, and stderr.
+        """
+
+        # Explicitly use bash to execute the script. This is required for the tests
+        # to run in the dev container, and it should help resolve shebang
+        # interpretation issues in other dev environments, too.
+        return subprocess.run(
+            ["bash", bin, *args],
+            cwd=self._dir,
+            capture_output=True,
+            text=True,
+            input=input,
+            env=env,
+        )
+
+    def write(self, filename, content):
+        """
+        Write content to a file in the temporary repository.
+
+        Args:
+            filename: Name of the file to write.
+            content: Content to write to the file.
         """
 
         file_path = os.path.join(self._dir, filename)
-        return os.path.exists(file_path)
-
-    def path(self, filename):
-        """
-        Get the full path to a file in the temporary repository.
-
-        Args:
-            filename: Name of the file.
-
-        Returns:
-            The full path to the file.
-        """
-
-        return os.path.join(self._dir, filename)
-
-    def mkdir(self, dirname):
-        """
-        Create a directory in the temporary repository.
-
-        Args:
-            dirname: Name of the directory to create.
-
-        Returns:
-            The full path to the created directory.
-        """
-
-        dir_path = os.path.join(self._dir, dirname)
-        os.makedirs(dir_path)
-        return dir_path
-
-    def isdir(self, dirname):
-        """
-        Check if a directory exists in the temporary repository.
-
-        Args:
-            dirname: Name of the directory to check.
-
-        Returns:
-            True if the directory exists, False otherwise.
-        """
-
-        dir_path = os.path.join(self._dir, dirname)
-        return os.path.isdir(dir_path)
+        with open(file_path, "w") as f:
+            f.write(content)
+        self._files.append(filename)
