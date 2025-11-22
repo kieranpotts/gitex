@@ -2,6 +2,7 @@
 Test suite for git-br command.
 """
 
+import os
 from pathlib import Path
 
 
@@ -136,3 +137,74 @@ class TestGitBr:
         # Verify the new branch points to the same commit.
         new_branch_commit = git.rev_parse("HEAD")
         assert new_branch_commit == original_commit
+
+    def test_custom_remote_via_environment_variable(self, temp_repo, script_path):
+        """Test using custom remote name via X_GITEX_DEFAULT_REMOTE_NAME."""
+
+        git = temp_repo.git()
+
+        # Create initial commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        git.add("file1.txt")
+        git.commit("-m", "Initial commit")
+
+        # Set custom remote name via environment variable.
+        env = os.environ.copy()
+        env["X_GITEX_DEFAULT_REMOTE_NAME"] = "upstream"
+
+        # Run with custom environment.
+        import subprocess
+
+        result = subprocess.run(
+            ["bash", script_path, "custom-remote-branch"],
+            cwd=temp_repo.cwd(),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+
+        # Verify the branch was created.
+        branches = git.branch()
+        assert "custom-remote-branch" in branches
+
+        # Verify we're on the new branch.
+        current_branch = git.rev_parse("--abbrev-ref", "HEAD")
+        assert current_branch == "custom-remote-branch"
+
+        # Verify the error message mentions the custom remote name.
+        # Since there's no actual remote, the push will fail, but
+        # at least we can inspect the error message to verify Git
+        # stried to push to the remote we expect.
+        assert "upstream" in result.stderr
+
+    def test_default_remote_when_env_var_empty(self, temp_repo, script_path):
+        """Test that empty environment variable falls back to 'origin'."""
+
+        git = temp_repo.git()
+
+        # Create initial commit.
+        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        git.add("file1.txt")
+        git.commit("-m", "Initial commit")
+
+        # Set empty remote name via environment variable.
+        env = os.environ.copy()
+        env["X_GITEX_DEFAULT_REMOTE_NAME"] = ""
+
+        # Run with custom environment.
+        import subprocess
+
+        result = subprocess.run(
+            ["bash", script_path, "default-remote-branch"],
+            cwd=temp_repo.cwd(),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+
+        # Verify the branch was created.
+        branches = git.branch()
+        assert "default-remote-branch" in branches
+
+        # Verify the error message mentions 'origin' (the default).
+        assert "origin" in result.stderr

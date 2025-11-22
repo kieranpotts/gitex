@@ -41,8 +41,11 @@ main() {
   # Create and checkout the new branch.
   git branch "${branch}" && git checkout "${branch}"
 
-  # Push to remote and set up tracking (unless it's a temporary branch).
-  git push --set-upstream origin HEAD
+  # Determine the remote name to use (customizable via environment variable).
+  remote="${X_GITEX_DEFAULT_REMOTE_NAME:-origin}"
+
+  # Push to remote and set up tracking.
+  git push --set-upstream "${remote}" HEAD
 }
 
 main "$@"
