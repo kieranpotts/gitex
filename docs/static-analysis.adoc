@@ -11,10 +11,10 @@ Shellcheck is already pre-installed in the https://containers.dev/[dev container
 To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of this repository:
 
 ----
-$ shellcheck --severity=warning bin/* lib/*
+$ shellcheck --severity=style bin/* lib/*
 ----
 
-(Other ShellCheck severity levels, in declining order of severity, are: "error", "warning", "info", and "style".)
+(Other ShellCheck severity levels, in declining order of severity, are: "error", "warning", "info", and "style" (https://github.com/koalaman/shellcheck/blob/eac8efff9c41bf90416b53a72209903aa9213bdb/shellcheck.1.md?plain=1#L106[reference).)
 
 https://github.com/astral-sh/ruff[Ruff] is used to lint and format the Python code used in the runtime tests. Installation of Ruff is managed by Poetry – see link:./runtime-tests.adoc[Runtime tests] for details.
 

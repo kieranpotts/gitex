@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Shellcheck
-        run: shellcheck --severity=warning bin/* lib/*
+        run: shellcheck --severity=style bin/* lib/*
       # https://github.com/astral-sh/ruff-action
       - name: Lint Python with Ruff
         uses: astral-sh/ruff-action@v3

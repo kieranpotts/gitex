@@ -11,7 +11,7 @@ set -e
 #
 
 echo "Running ShellCheck..."
-shellcheck --severity=warning bin/* lib/*
+shellcheck --severity=style bin/* lib/*
 
 echo ""
 echo "Running Ruff linter..."

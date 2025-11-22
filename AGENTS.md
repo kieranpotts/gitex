@@ -64,8 +64,8 @@ ShellCheck is used for linting shell scripts:
 # Install ShellCheck (Debian-based systems).
 sudo apt-get install -y shellcheck
 
-# Lint all shell scripts (only errors, not warnings).
-shellcheck --severity=warning bin/* lib/*
+# Lint all shell scripts - lowest level of severity.
+shellcheck --severity=style bin/* lib/*
 ```
 
 Ruff is used for linting and formatting Python code:
@@ -99,7 +99,7 @@ Workflows are run against `dev`, which is the trunk for this repository (not `ma
 - Follow the standard script structure (see `bin/git-whoami` for reference).
 - Include header comments with description, usage, and dependencies.
 - Wrap implementation in a `main()` function.
-- Must pass ShellCheck with `--severity=warning`.
+- Must pass ShellCheck with `--severity=style`.
 
 ### Python tests (`test/`)
 
