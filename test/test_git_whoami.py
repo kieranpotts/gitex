@@ -9,11 +9,9 @@ class TestGitWhoami:
     def test_with_name_and_email_set(self, test_repo, script_path):
         """Test when both user.name and user.email are configured."""
 
-        git = test_repo.git()
-
         # Git config: user name and email provided.
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
+        test_repo.git.config("--local", "user.name", "John Doe")
+        test_repo.git.config("--local", "user.email", "john.doe@example.com")
 
         result = test_repo.run(script_path)
 
@@ -27,11 +25,9 @@ class TestGitWhoami:
     def test_with_neither_name_nor_email_set(self, test_repo, script_path):
         """Test when neither user.name nor user.email are configured."""
 
-        git = test_repo.git()
-
         # Git config: user name and email both empty.
-        git.config("--local", "user.name", "")
-        git.config("--local", "user.email", "")
+        test_repo.git.config("--local", "user.name", "")
+        test_repo.git.config("--local", "user.email", "")
 
         result = test_repo.run(script_path)
 
@@ -45,11 +41,9 @@ class TestGitWhoami:
     def test_with_only_name_set(self, test_repo, script_path):
         """Test when only user.name is configured."""
 
-        git = test_repo.git()
-
         # Git config: user name provided, email empty.
-        git.config("--local", "user.name", "Jane Doe")
-        git.config("--local", "user.email", "")
+        test_repo.git.config("--local", "user.name", "Jane Doe")
+        test_repo.git.config("--local", "user.email", "")
 
         result = test_repo.run(script_path)
 
@@ -63,11 +57,9 @@ class TestGitWhoami:
     def test_with_only_email_set(self, test_repo, script_path):
         """Test when only user.email is configured."""
 
-        git = test_repo.git()
-
         # Git config: email provided, name empty.
-        git.config("--local", "user.name", "")
-        git.config("--local", "user.email", "jane.doe@example.com")
+        test_repo.git.config("--local", "user.name", "")
+        test_repo.git.config("--local", "user.email", "jane.doe@example.com")
 
         result = test_repo.run(script_path)
 
@@ -81,11 +73,9 @@ class TestGitWhoami:
     def test_output_line_count(self, test_repo, script_path):
         """Test that the output does not exceed the expected number of lines."""
 
-        git = test_repo.git()
-
         # Git config: user name and email provided.
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
+        test_repo.git.config("--local", "user.name", "John Doe")
+        test_repo.git.config("--local", "user.email", "john.doe@example.com")
 
         result = test_repo.run(script_path)
 
@@ -98,11 +88,9 @@ class TestGitWhoami:
     def test_with_special_characters_in_name(self, test_repo, script_path):
         """Test with special characters in username."""
 
-        git = test_repo.git()
-
         # Git config: user name includes special characters.
-        git.config("--local", "user.name", "José García-Pérez")
-        git.config("--local", "user.email", "jose@example.com")
+        test_repo.git.config("--local", "user.name", "José García-Pérez")
+        test_repo.git.config("--local", "user.email", "jose@example.com")
 
         result = test_repo.run(script_path)
 

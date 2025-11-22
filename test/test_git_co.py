@@ -11,20 +11,18 @@ class TestGitCo:
     def test_checkout_existing_branch(self, test_repo, script_path):
         """Test checking out an existing branch."""
 
-        git = test_repo.git()
-
         # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit on main.
         Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "initial commit")
 
         # Create a new branch and switch back to main.
-        git.branch("feature-branch")
-        current_branch = git.rev_parse("--abbrev-ref", "HEAD").strip()
+        test_repo.git.branch("feature-branch")
+        current_branch = test_repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
         assert current_branch in ["main", "master"]
 
         # Use git-co to checkout the feature branch.
@@ -34,22 +32,20 @@ class TestGitCo:
         assert result.returncode == 0
 
         # Verify we're on the feature branch.
-        current_branch = git.rev_parse("--abbrev-ref", "HEAD").strip()
+        current_branch = test_repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
         assert current_branch == "feature-branch"
 
     def test_checkout_with_create_branch_option(self, test_repo, script_path):
         """Test checking out a new branch with -b option."""
 
-        git = test_repo.git()
-
         # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "initial commit")
 
         # Use git-co with -b to create and checkout a new branch.
         result = test_repo.run(script_path, "-b", "new-feature")
@@ -58,23 +54,21 @@ class TestGitCo:
         assert result.returncode == 0
 
         # Verify we're on the new branch.
-        current_branch = git.rev_parse("--abbrev-ref", "HEAD").strip()
+        current_branch = test_repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
         assert current_branch == "new-feature"
 
     def test_checkout_specific_file(self, test_repo, script_path):
         """Test checking out a specific file to discard changes."""
 
-        git = test_repo.git()
-
         # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         file_path = Path(test_repo.cwd(), "file1.txt")
         file_path.write_text("Original content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "initial commit")
 
         # Modify the file.
         file_path.write_text("Modified content")
@@ -94,24 +88,22 @@ class TestGitCo:
     def test_checkout_detached_head(self, test_repo, script_path):
         """Test checking out a specific commit (detached HEAD)."""
 
-        git = test_repo.git()
-
         # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "initial commit")
 
         # Get the commit hash.
-        first_commit_hash = git.rev_parse("HEAD").strip()
+        first_commit_hash = test_repo.git.rev_parse("HEAD").strip()
 
         # Create another commit.
         Path(test_repo.cwd(), "file2.txt").write_text("More content")
-        git.add("file2.txt")
-        git.commit("-m", "second commit")
+        test_repo.git.add("file2.txt")
+        test_repo.git.commit("-m", "second commit")
 
         # Use git-co to checkout the first commit.
         result = test_repo.run(script_path, first_commit_hash)
@@ -120,24 +112,22 @@ class TestGitCo:
         assert result.returncode == 0
 
         # Verify we're in detached HEAD state at the correct commit.
-        current_commit = git.rev_parse("HEAD").strip()
+        current_commit = test_repo.git.rev_parse("HEAD").strip()
         assert current_commit == first_commit_hash
 
     def test_checkout_without_arguments(self, test_repo, script_path):
         """Test that git-co without arguments behaves like git checkout."""
 
-        git = test_repo.git()
-
         # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "initial commit")
 
-        # Run git-co without arguments - should show help/error from git.
+        # Run git-co without arguments - should show help/error from test_repo.git.
         result = test_repo.run(script_path)
 
         # Git checkout without arguments will succeed.
@@ -147,16 +137,14 @@ class TestGitCo:
     def test_checkout_nonexistent_branch(self, test_repo, script_path):
         """Test checking out a non-existent branch fails."""
 
-        git = test_repo.git()
-
         # Configure Git user.
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
-        git.add("file1.txt")
-        git.commit("-m", "initial commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "initial commit")
 
         # Try to checkout a non-existent branch.
         result = test_repo.run(script_path, "nonexistent-branch")

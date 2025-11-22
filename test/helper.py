@@ -19,9 +19,12 @@ class TestRepo:
         self._repo = Repo.init(self._cwd, b="main")
         self._files = []
 
-        self.cd_repo()
+        self.git = self._repo.git
 
-    def cd_repo(self):
+        self.cd()
+
+    def cd(self):
+        """Change to the test repo's root directory."""
         os.chdir(self._cwd)
         print(f"The current work directory has switched to {self._cwd}")
 
@@ -35,8 +38,8 @@ class TestRepo:
 
         return self._cwd[len(system_tmpdir) + 1 :]
 
-    def git(self):
-        return self._repo.git
+    # def git(self):
+    #     return self._repo.git
 
     def run(self, script_path, *args, input=None):
         """

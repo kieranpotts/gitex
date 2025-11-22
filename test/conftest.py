@@ -17,9 +17,8 @@ def test_repo():
 
     test_repo = TestRepo()
 
-    git = test_repo.git()
-    git.config("--local", "user.name", "John Doe")
-    git.config("--local", "user.email", "john.doe@example.com")
+    test_repo.git.config("--local", "user.name", "John Doe")
+    test_repo.git.config("--local", "user.email", "john.doe@example.com")
 
     return test_repo
 

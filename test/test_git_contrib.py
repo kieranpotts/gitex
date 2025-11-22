@@ -9,19 +9,18 @@ class TestGitContrib:
     def test_single_contributor(self, test_repo, script_path):
         """Test with a single contributor."""
 
-        git = test_repo.git()
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
+        test_repo.git.config("--local", "user.name", "John Doe")
+        test_repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Make first commit.
         test_repo.write("file1.txt", "content 1")
-        git.add("file1.txt")
-        git.commit("-m", "first commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "first commit")
 
         # Make second commit.
         test_repo.write("file2.txt", "content 2")
-        git.add("file2.txt")
-        git.commit("-m", "second commit")
+        test_repo.git.add("file2.txt")
+        test_repo.git.commit("-m", "second commit")
 
         result = test_repo.run(script_path)
 
@@ -36,53 +35,51 @@ class TestGitContrib:
     def test_multiple_contributors(self, test_repo, script_path):
         """Test with multiple contributors."""
 
-        git = test_repo.git()
-
         # Set first contributor.
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
+        test_repo.git.config("--local", "user.name", "John Doe")
+        test_repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # First commit, made by first contributor.
         test_repo.write("file1.txt", "content 1")
-        git.add("file1.txt")
-        git.commit("-m", "first commit")
+        test_repo.git.add("file1.txt")
+        test_repo.git.commit("-m", "first commit")
 
         # Switch to second contributor.
-        git.config("--local", "user.name", "Jane Smith")
-        git.config("--local", "user.email", "jane.smith@example.com")
+        test_repo.git.config("--local", "user.name", "Jane Smith")
+        test_repo.git.config("--local", "user.email", "jane.smith@example.com")
 
         # Second commit, made by second contributor.
         test_repo.write("file2.txt", "content 2")
-        git.add("file2.txt")
-        git.commit("-m", "second commit")
+        test_repo.git.add("file2.txt")
+        test_repo.git.commit("-m", "second commit")
 
         # Third commit, made by second contributor.
         test_repo.write("file3.txt", "content 3")
-        git.add("file3.txt")
-        git.commit("-m", "third commit")
+        test_repo.git.add("file3.txt")
+        test_repo.git.commit("-m", "third commit")
 
         # Switch to third contributor.
-        git.config("--local", "user.name", "Bob Johnson")
-        git.config("--local", "user.email", "bob@example.com")
+        test_repo.git.config("--local", "user.name", "Bob Johnson")
+        test_repo.git.config("--local", "user.email", "bob@example.com")
 
         # Fourth commit, made by third contributor.
         test_repo.write("file4.txt", "content 4")
-        git.add("file4.txt")
-        git.commit("-m", "fourth commit")
+        test_repo.git.add("file4.txt")
+        test_repo.git.commit("-m", "fourth commit")
 
         # Fifth commit, made by third contributor.
         test_repo.write("file5.txt", "content 5")
-        git.add("file5.txt")
-        git.commit("-m", "fifth commit")
+        test_repo.git.add("file5.txt")
+        test_repo.git.commit("-m", "fifth commit")
 
         # Switch back to second contributor.
-        git.config("--local", "user.name", "Jane Smith")
-        git.config("--local", "user.email", "jane.smith@example.com")
+        test_repo.git.config("--local", "user.name", "Jane Smith")
+        test_repo.git.config("--local", "user.email", "jane.smith@example.com")
 
         # Sixth commit, made by second contributor.
         test_repo.write("file6.txt", "content 6")
-        git.add("file6.txt")
-        git.commit("-m", "sixth commit")
+        test_repo.git.add("file6.txt")
+        test_repo.git.commit("-m", "sixth commit")
 
         result = test_repo.run(script_path)
 
@@ -111,16 +108,14 @@ class TestGitContrib:
     def test_output_format(self, test_repo, script_path):
         """Test the output format matches git shortlog expectations."""
 
-        git = test_repo.git()
-
         # User config.
-        git.config("--local", "user.name", "John Doe")
-        git.config("--local", "user.email", "john.doe@example.com")
+        test_repo.git.config("--local", "user.name", "John Doe")
+        test_repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create a commit.
         test_repo.write("test.txt", "content")
-        git.add("test.txt")
-        git.commit("-m", "test commit")
+        test_repo.git.add("test.txt")
+        test_repo.git.commit("-m", "test commit")
 
         result = test_repo.run(script_path)
 

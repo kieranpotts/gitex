@@ -11,11 +11,9 @@ class TestGitCl:
     def test_clone_with_repository_url(self, test_repo, script_path):
         """Test cloning a repository with a URL."""
 
-        git = test_repo.git()
-
         # Create a bare repository to clone from.
         source_repo_path = os.path.join(test_repo.cwd(), "source.git")
-        git.init("--bare", source_repo_path)
+        test_repo.git.init("--bare", source_repo_path)
 
         # Clone the repository.
         result = test_repo.run(script_path, source_repo_path, "cloned")
@@ -33,21 +31,19 @@ class TestGitCl:
     def test_clone_with_depth_option(self, test_repo, script_path):
         """Test cloning with --depth option."""
 
-        git = test_repo.git()
-
         # Create a source repository.
         source_repo_path = os.path.join(test_repo.cwd(), "source")
         os.makedirs(source_repo_path)
         os.chdir(source_repo_path)
-        git.init(source_repo_path)
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.init(source_repo_path)
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create multiple commits in the source repository.
         for i in range(3):
             test_repo.write(f"file{i}.txt", f"content{i}")
-            git.add(f"file{i}.txt")
-            git.commit("-m", f"Commit {i}")
+            test_repo.git.add(f"file{i}.txt")
+            test_repo.git.commit("-m", f"Commit {i}")
 
         # Return to the original working directory.
         os.chdir(test_repo.cwd())
@@ -65,20 +61,18 @@ class TestGitCl:
     def test_clone_with_single_branch_option(self, test_repo, script_path):
         """Test cloning with --single-branch option."""
 
-        git = test_repo.git()
-
         # Create a source repository.
         source_repo_path = os.path.join(test_repo.cwd(), "source")
         os.makedirs(source_repo_path)
         os.chdir(source_repo_path)
-        git.init(source_repo_path)
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.init(source_repo_path)
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create an initial commit in the source repository.
         test_repo.write("file.txt", "content")
-        git.add("file.txt")
-        git.commit("-m", "Initial commit")
+        test_repo.git.add("file.txt")
+        test_repo.git.commit("-m", "Initial commit")
 
         # Return to the original working directory.
         os.chdir(test_repo.cwd())
@@ -98,21 +92,19 @@ class TestGitCl:
     def test_clone_with_multiple_options(self, test_repo, script_path):
         """Test cloning with multiple options forwarded."""
 
-        git = test_repo.git()
-
         # Create a source repository.
         source_repo_path = os.path.join(test_repo.cwd(), "source")
         os.makedirs(source_repo_path)
         os.chdir(source_repo_path)
-        git.init(source_repo_path)
-        git.config("--local", "user.name", "Test User")
-        git.config("--local", "user.email", "test@example.com")
+        test_repo.git.init(source_repo_path)
+        test_repo.git.config("--local", "user.name", "Test User")
+        test_repo.git.config("--local", "user.email", "test@example.com")
 
         # Create multiple commits in the source repository.
         for i in range(5):
             test_repo.write(f"file{i}.txt", f"content{i}")
-            git.add(f"file{i}.txt")
-            git.commit("-m", f"Commit {i}")
+            test_repo.git.add(f"file{i}.txt")
+            test_repo.git.commit("-m", f"Commit {i}")
 
         # Return to the original working directory.
         os.chdir(test_repo.cwd())
