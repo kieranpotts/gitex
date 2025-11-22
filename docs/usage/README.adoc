@@ -7,7 +7,7 @@ Get help with GitEx commands.
 
 == Cloning
 
-* link:./git-cl.adoc[`git cl ([params...\])`] +
+* link:./git-cl.adoc[`git cl ([params...\])`] ✅ +
 Shortcut for `git clone`. Parameters are forwarded.
 
 == Branching

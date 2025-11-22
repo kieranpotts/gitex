@@ -1,9 +1,40 @@
 = `git cl`
 
-Shortcut for `git clone`. Parameters are forwarded.
+Shortcut for `git clone`. All parameters are forwarded to the underlying `git clone` command.
 
 == Usage
 
 ----
-$ git cl [...]
+$ git cl <repository> [<directory>]
+$ git cl [<options>] <repository> [<directory>]
 ----
+
+== Examples
+
+Clone a repository:
+
+----
+$ git cl https://github.com/<user>/<repo>.git
+----
+
+Clone into a specific directory:
+
+----
+$ git cl https://github.com/<user>/<repo>.git <dir>
+----
+
+Clone with options (shallow clone):
+
+----
+$ git cl --depth 1 https://github.com/<user>/<repo>.git
+----
+
+Clone a specific branch:
+
+----
+$ git cl --branch develop https://github.com/<user>/<repo>.git
+----
+
+== See also
+
+* https://git-scm.com/docs/git-clone[git-clone]
