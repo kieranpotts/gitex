@@ -22,7 +22,7 @@ careful, you may lose work-in-progress.
 * link:./git-co.adoc[`git co`] ✅ +
 Shortcut for `git checkout`. Parameters are forwarded.
 
-* link:./git-sw.adoc[`git sw`] +
+* link:./git-sw.adoc[`git sw`] ✅ +
 Alias for `git switch`. Parameters are forwarded.
 
 * link:./git-delete.adoc[`git delete`] +

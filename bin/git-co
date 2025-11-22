@@ -11,7 +11,7 @@ set -eu
 #
 
 main() {
-  # Forward all arguments to git checkout.
+  # Forward all options to git checkout.
   git checkout "$@"
 }
 
