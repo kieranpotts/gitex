@@ -2,7 +2,7 @@
 Test suite for git-co command.
 """
 
-from pathlib import Path
+import os
 
 
 class TestGitCo:
@@ -16,7 +16,7 @@ class TestGitCo:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit on main.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -43,7 +43,7 @@ class TestGitCo:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -65,16 +65,17 @@ class TestGitCo:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        file_path = Path(repo.dir(), "file1.txt")
-        file_path.write_text("Original content")
+        repo.write("file1.txt", "Original content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
         # Modify the file.
-        file_path.write_text("Modified content")
+        repo.write("file1.txt", "Modified content")
 
         # Verify the file is modified.
-        assert file_path.read_text() == "Modified content"
+        file_path = os.path.join(repo.dir(), "file1.txt")
+        with open(file_path, "r") as f:
+            assert f.read() == "Modified content"
 
         # Use git-co to checkout the file from HEAD.
         result = repo.run(bin, "HEAD", "--", "file1.txt")
@@ -83,7 +84,8 @@ class TestGitCo:
         assert result.returncode == 0
 
         # Verify the file is restored to original content.
-        assert file_path.read_text() == "Original content"
+        with open(file_path, "r") as f:
+            assert f.read() == "Original content"
 
     def test_checkout_detached_head(self, repo, bin):
         """Test checking out a specific commit (detached HEAD)."""
@@ -93,7 +95,7 @@ class TestGitCo:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -101,7 +103,7 @@ class TestGitCo:
         first_commit_hash = repo.git.rev_parse("HEAD").strip()
 
         # Create another commit.
-        Path(repo.dir(), "file2.txt").write_text("More content")
+        repo.write("file2.txt", "More content")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -123,7 +125,7 @@ class TestGitCo:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -142,7 +144,7 @@ class TestGitCo:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 

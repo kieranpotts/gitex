@@ -2,7 +2,7 @@
 Test suite for git-sw command.
 """
 
-from pathlib import Path
+import os
 
 
 class TestGitSw:
@@ -16,7 +16,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit on main.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -43,7 +43,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -65,7 +65,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -95,7 +95,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -103,7 +103,7 @@ class TestGitSw:
         commit_hash = repo.git.rev_parse("HEAD").strip()
 
         # Create another commit.
-        Path(repo.dir(), "file2.txt").write_text("More content")
+        repo.write("file2.txt", "More content")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -125,8 +125,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        file_path = Path(repo.dir(), "file1.txt")
-        file_path.write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -134,7 +133,7 @@ class TestGitSw:
         repo.git.branch("other-branch")
 
         # Modify the file to create uncommitted changes.
-        file_path.write_text("Modified content")
+        repo.write("file1.txt", "Modified content")
 
         # Use git-sw with --discard-changes to switch, discarding working changes.
         result = repo.run(bin, "--discard-changes", "other-branch")
@@ -147,7 +146,9 @@ class TestGitSw:
         assert current_branch == "other-branch"
 
         # Verify the file was restored (changes discarded).
-        assert file_path.read_text() == "Initial content"
+        file_path = os.path.join(repo.dir(), "file1.txt")
+        with open(file_path, "r") as f:
+            assert f.read() == "Initial content"
 
     def test_switch_nonexistent_branch(self, repo, bin):
         """Test switching to a non-existent branch fails."""
@@ -157,7 +158,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -175,7 +176,7 @@ class TestGitSw:
         repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
-        Path(repo.dir(), "file1.txt").write_text("Initial content")
+        repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
