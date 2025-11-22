@@ -1,6 +1,6 @@
 # GitEx: Project information for AI coding agents
 
-The purpose of this document is to provide context AI coding agents.
+The purpose of this document is to provide context on the project for AI coding agents.
 
 ## Project overview
 
@@ -12,32 +12,32 @@ The project is inspired by (but not compatible with) Git Extras. Some operations
 
 ### Core components
 
-- **bin/**: Contains ~60 Git extension scripts (eg., `git-whoami`, `git-amend`, `git-sync`). Each script follows POSIX shell compliance and has a standard structure:
+- **bin/**: Contains ~60 Git extension scripts (eg. `git-whoami`, `git-amend`, `git-sync`). Each script follows POSIX shell compliance and has a standard structure:
   - Shebang: `#!/bin/env sh`.
   - Error handling: `set -eu`.
   - Header comment with description, usage, and dependencies.
   - `main()` function containing implementation.
-  - Call to `main` at the end.
+  - Call to `main` at the end, forwarding all command-line arguments.
 
 - **lib/**: Shared library code.
   - `print.sh`: Helper functions for consistent messaging across GitEx commands. Imported directly into `bin` scripts.
-  - `ansi-codes.sh`: ANSI color code definitions for terminal output formatting (exports variables like `$RED`, `$BOLD`, `$RESET`). Used by `print.sh` but not directly sourced in `bin` scripts.
+  - `ansi-codes.sh`: ANSI color code definitions for terminal output formatting (exports variables like `$RED`, `$BOLD`, `$RESET`). Used by `print.sh` but not directly sourced from `bin` scripts.
 
 - **test/**: Python-based test suite using pytest.
-  - `conftest.py`: Pytest configuration with `temp_repo` fixture.
+  - `conftest.py`: Pytest configuration with fixtures such as `temp_repo`.
   - `helper.py`: Contains `TempRepo` class for creating isolated temporary Git repositories using GitPython.
-  - `test_*.py`: Test files, each mapping to one Git extension (eg., `test_git_whoami.py` tests `git whoami`).
+  - `test_*.py`: Test files, each mapping to one Git extension (eg. `test_git_whoami.py` tests `git whoami`).
 
 - **docs/**: User and developer documentation written in AsciiDoc.
   - `requirements.adoc`, `installation.adoc`: Setup instructions.
-  - `usage/*.adoc`: Documentation for individual commands.
+  - `usage/*.adoc`: Documentation for individual Git extensions.
   - `runtime-tests.adoc`, `static-analysis.adoc`: Development process documentation.
 
 ## Development tools
 
 ### Running tests
 
-Tests use pytest with GitPython to create isolated temporary repositories. Tests do not modify global or user-level Git configuration.
+Tests use pytest with GitPython to create isolated temporary repositories. Tests do not modify global or user-level Git configuration, only local (repository-level) configuration.
 
 ```bash
 # Install dependencies (requires Python >= 3.12, Poetry >= 2.2).
@@ -58,7 +58,7 @@ poetry run pytest test/test_git_whoami.py::TestGitWhoami::test_with_name_and_ema
 
 ### Static analysis
 
-ShellCheck is used for shell script linting:
+ShellCheck is used for linting shell scripts:
 
 ```bash
 # Install ShellCheck (Debian-based systems).
@@ -68,7 +68,7 @@ sudo apt-get install -y shellcheck
 shellcheck --severity=warning bin/* lib/*
 ```
 
-Ruff is used for Python linting and formatting:
+Ruff is used for linting and formatting Python code:
 
 ```bash
 # Lint Python code.
@@ -88,7 +88,7 @@ GitHub Actions workflows (in `.github/workflows/`):
 
 - **commit-validation.yaml**: Validates commit messages.
 
-Workflows are run against `dev`, which is the main branch for this repository (not `main` or `master`).
+Workflows are run against `dev`, which is the trunk for this repository (not `main` or `master`).
 
 ## Development guidelines
 
@@ -105,7 +105,7 @@ Workflows are run against `dev`, which is the main branch for this repository (n
 
 - Use the `temp_repo` fixture from `conftest.py` for test isolation.
 - Import `TempRepo` from `helper.py` if additional repository setup is needed.
-- Follow existing test patterns (see `test/test_git_whoami.py`).
+- Follow existing test patterns (see `test/test_git_whoami.py` for a good example).
 - Tests must not modify global or user-level Git configuration. Use `git config --local` only, to keep changes scoped to the test repository.
 - Run Ruff formatter before committing.
 
