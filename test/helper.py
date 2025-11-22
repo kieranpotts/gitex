@@ -11,7 +11,7 @@ import tempfile
 from git import Repo
 
 
-class TempRepo:
+class TestRepo:
     """Class to create and manage a temporary Git repository for testing purposes."""
 
     def __init__(self):

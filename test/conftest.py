@@ -5,21 +5,23 @@ from pathlib import Path
 
 import pytest
 
-from helper import TempRepo
+from helper import TestRepo
 
 
 @pytest.fixture(scope="function")
-def temp_repo():
-    """Create a temporary Git repository that is reset for each test
-    function call."""
+def test_repo():
+    """
+    Create a temporary Git repository that is reset for each test
+    function call.
+    """
 
-    temp_repo = TempRepo()
+    test_repo = TestRepo()
 
-    git = temp_repo.git()
+    git = test_repo.git()
     git.config("--local", "user.name", "John Doe")
     git.config("--local", "user.email", "john.doe@example.com")
 
-    return temp_repo
+    return test_repo
 
 
 @pytest.fixture

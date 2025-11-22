@@ -14,17 +14,17 @@ class TestGitBr:
     # We can't therefore test for a successful operation, but we can at least
     # verify the new branches are created and checked out.
 
-    def test_create_branch_with_argument(self, temp_repo, script_path):
+    def test_create_branch_with_argument(self, test_repo, script_path):
         """Test creating a branch with name provided as argument."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
-        temp_repo.run(script_path, "feature-branch")
+        test_repo.run(script_path, "feature-branch")
 
         # Verify the branch was created.
         branches = git.branch()
@@ -34,18 +34,18 @@ class TestGitBr:
         current_branch = git.rev_parse("--abbrev-ref", "HEAD")
         assert current_branch == "feature-branch"
 
-    def test_create_branch_with_stdin(self, temp_repo, script_path):
+    def test_create_branch_with_stdin(self, test_repo, script_path):
         """Test creating a branch with name provided via stdin."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
         # Provide branch name via stdin.
-        temp_repo.run(script_path, input="my-feature\n")
+        test_repo.run(script_path, input="my-feature\n")
 
         # Verify the branch was created.
         branches = git.branch()
@@ -55,18 +55,18 @@ class TestGitBr:
         current_branch = git.rev_parse("--abbrev-ref", "HEAD")
         assert current_branch == "my-feature"
 
-    def test_reject_empty_branch_name_from_stdin(self, temp_repo, script_path):
+    def test_reject_empty_branch_name_from_stdin(self, test_repo, script_path):
         """Test that empty branch name via stdin is rejected."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
         # Provide empty branch name via stdin.
-        result = temp_repo.run(script_path, input="\n")
+        result = test_repo.run(script_path, input="\n")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -74,17 +74,17 @@ class TestGitBr:
         # Verify error message.
         assert "Branch name cannot be empty" in result.stderr
 
-    def test_reject_multiple_arguments(self, temp_repo, script_path):
+    def test_reject_multiple_arguments(self, test_repo, script_path):
         """Test that multiple arguments are rejected."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
-        result = temp_repo.run(script_path, "branch1", "branch2")
+        result = test_repo.run(script_path, "branch1", "branch2")
 
         # Verify error exit code.
         assert result.returncode == 1
@@ -92,13 +92,13 @@ class TestGitBr:
         # Verify error message.
         assert "git-br accepts at most one argument" in result.stderr
 
-    def test_fail_on_duplicate_branch_name(self, temp_repo, script_path):
+    def test_fail_on_duplicate_branch_name(self, test_repo, script_path):
         """Test that creating a branch with existing name fails."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
@@ -106,7 +106,7 @@ class TestGitBr:
         git.branch("existing-branch")
 
         # Try to create the same branch again.
-        result = temp_repo.run(script_path, "existing-branch")
+        result = test_repo.run(script_path, "existing-branch")
 
         # Verify error exit code.
         assert result.returncode != 0
@@ -114,17 +114,17 @@ class TestGitBr:
         # Verify git error about existing branch.
         assert "already exists" in result.stderr or "fatal" in result.stderr
 
-    def test_branch_from_specific_commit(self, temp_repo, script_path):
+    def test_branch_from_specific_commit(self, test_repo, script_path):
         """Test that new branch is created from current HEAD position."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create multiple commits.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Content 1")
+        Path(test_repo.cwd(), "file1.txt").write_text("Content 1")
         git.add("file1.txt")
         git.commit("-m", "Commit 1")
 
-        Path(temp_repo.cwd(), "file2.txt").write_text("Content 2")
+        Path(test_repo.cwd(), "file2.txt").write_text("Content 2")
         git.add("file2.txt")
         git.commit("-m", "Commit 2")
 
@@ -132,19 +132,19 @@ class TestGitBr:
         original_commit = git.rev_parse("HEAD")
 
         # Create new branch.
-        temp_repo.run(script_path, "new-branch")
+        test_repo.run(script_path, "new-branch")
 
         # Verify the new branch points to the same commit.
         new_branch_commit = git.rev_parse("HEAD")
         assert new_branch_commit == original_commit
 
-    def test_custom_remote_via_environment_variable(self, temp_repo, script_path):
+    def test_custom_remote_via_environment_variable(self, test_repo, script_path):
         """Test using custom remote name via X_GITEX_DEFAULT_REMOTE_NAME."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
@@ -157,7 +157,7 @@ class TestGitBr:
 
         result = subprocess.run(
             ["bash", script_path, "custom-remote-branch"],
-            cwd=temp_repo.cwd(),
+            cwd=test_repo.cwd(),
             capture_output=True,
             text=True,
             env=env,
@@ -177,13 +177,13 @@ class TestGitBr:
         # stried to push to the remote we expect.
         assert "upstream" in result.stderr
 
-    def test_default_remote_when_env_var_empty(self, temp_repo, script_path):
+    def test_default_remote_when_env_var_empty(self, test_repo, script_path):
         """Test that empty environment variable falls back to 'origin'."""
 
-        git = temp_repo.git()
+        git = test_repo.git()
 
         # Create initial commit.
-        Path(temp_repo.cwd(), "file1.txt").write_text("Initial content")
+        Path(test_repo.cwd(), "file1.txt").write_text("Initial content")
         git.add("file1.txt")
         git.commit("-m", "Initial commit")
 
@@ -196,7 +196,7 @@ class TestGitBr:
 
         result = subprocess.run(
             ["bash", script_path, "default-remote-branch"],
-            cwd=temp_repo.cwd(),
+            cwd=test_repo.cwd(),
             capture_output=True,
             text=True,
             env=env,
