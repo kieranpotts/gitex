@@ -13,6 +13,7 @@ class TestGitWhoami:
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
+        # Run 'git-whoami' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -29,6 +30,7 @@ class TestGitWhoami:
         repo.git.config("--local", "user.name", "")
         repo.git.config("--local", "user.email", "")
 
+        # Run 'git-whoami' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -45,6 +47,7 @@ class TestGitWhoami:
         repo.git.config("--local", "user.name", "Jane Doe")
         repo.git.config("--local", "user.email", "")
 
+        # Run 'git-whoami' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -61,6 +64,7 @@ class TestGitWhoami:
         repo.git.config("--local", "user.name", "")
         repo.git.config("--local", "user.email", "jane.doe@example.com")
 
+        # Run 'git-whoami' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -77,6 +81,7 @@ class TestGitWhoami:
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
+        # Run 'git-whoami' inside the test repository.
         result = repo.run(bin)
 
         # Verify stdout structure.
@@ -92,6 +97,7 @@ class TestGitWhoami:
         repo.git.config("--local", "user.name", "José García-Pérez")
         repo.git.config("--local", "user.email", "jose@example.com")
 
+        # Run 'git-whoami' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -104,6 +110,7 @@ class TestGitWhoami:
     def test_rejects_single_argument(self, repo, bin):
         """Test that the command rejects arguments."""
 
+        # Run 'git-whoami --help' inside the test repository.
         result = repo.run(bin, "--help")
 
         # Verify error exit code.
@@ -115,6 +122,7 @@ class TestGitWhoami:
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
 
+        # Run 'git-whoami', with positioned options, inside the test repository.
         result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.

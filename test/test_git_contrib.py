@@ -9,6 +9,7 @@ class TestGitContrib:
     def test_single_contributor(self, repo, bin):
         """Test with a single contributor."""
 
+        # Configure contributor.
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -22,6 +23,7 @@ class TestGitContrib:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
+        # Run 'git-contrib' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -81,6 +83,7 @@ class TestGitContrib:
         repo.git.add("file6.txt")
         repo.git.commit("-m", "sixth commit")
 
+        # Run 'git-contrib' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -108,7 +111,7 @@ class TestGitContrib:
     def test_output_format(self, repo, bin):
         """Test the output format matches git shortlog expectations."""
 
-        # User config.
+        # Configure contributor.
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -117,6 +120,7 @@ class TestGitContrib:
         repo.git.add("test.txt")
         repo.git.commit("-m", "test commit")
 
+        # Run 'git-contrib' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -132,6 +136,7 @@ class TestGitContrib:
     def test_with_no_commits(self, repo, bin):
         """Test with a repository that has no commits."""
 
+        # Run 'git-contrib' inside the test repository.
         result = repo.run(bin)
 
         # 'git shortlog' returns success but empty output for repos with no commits.
@@ -141,6 +146,7 @@ class TestGitContrib:
     def test_rejects_single_argument(self, repo, bin):
         """Test that the command rejects arguments."""
 
+        # Run 'git-contrib --help' inside the test repository.
         result = repo.run(bin, "--help")
 
         # Verify error exit code.
@@ -152,6 +158,7 @@ class TestGitContrib:
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
 
+        # Run 'git-contrib' inside the test repository with two positioned options.
         result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.

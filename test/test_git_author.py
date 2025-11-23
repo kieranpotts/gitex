@@ -9,7 +9,7 @@ class TestGitAuthor:
     def test_with_name_and_email_flags(self, repo, bin):
         """Test changing author with --name and --email flags."""
 
-        # Initial config values.
+        # Default contributor name.
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -21,10 +21,11 @@ class TestGitAuthor:
         # Get commit hash before amend.
         commit_before_amend = repo.git.rev_parse("HEAD")
 
-        # Change the author of the commit using command-line flags.
+        # Run 'git-author' inside the test repository. Use commands-line flags
+        # to change the author of the last commit.
         result = repo.run(bin, "--name", "Jane Smith", "--email", "jane@example.com")
 
-        # Get commit hash after amend.
+        # Get commit hash after the amend.
         commit_after_amend = repo.git.rev_parse("HEAD")
 
         # Verify success exit code.
@@ -43,7 +44,7 @@ class TestGitAuthor:
     def test_with_only_name_flag_prompts_for_email(self, repo, bin):
         """Test that providing only --name, prompts for email."""
 
-        # Initial config values.
+        # Default contributor name.
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -52,6 +53,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Provide only --name flag and supply email via stdin.
         result = repo.run(bin, "--name", "Jane Smith", input="jane@example.com\n")
 
@@ -65,7 +67,7 @@ class TestGitAuthor:
     def test_with_only_email_flag_prompts_for_name(self, repo, bin):
         """Test that providing only --email, prompts for name."""
 
-        # Initial config values.
+        # Default contributor name.
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -74,6 +76,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Provide only --email flag and supply name via stdin.
         result = repo.run(bin, "--email", "jane@example.com", input="Jane Smith\n")
 
@@ -87,7 +90,7 @@ class TestGitAuthor:
     def test_with_no_flags_prompts_for_both(self, repo, bin):
         """Test that providing no flags prompts for both name and email."""
 
-        # Initial config values.
+        # Default contributor name.
         repo.git.config("--local", "user.name", "John Doe")
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -96,7 +99,8 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
-        # Provide no flags and supply name and email via stdin.
+        # Run 'git-author' inside the test repository.
+        # Provide no flags and supply both name and email via stdin.
         result = repo.run(bin, input="Jane Smith\njane@example.com\n")
 
         # Verify success exit code.
@@ -114,6 +118,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Provide empty name via stdin.
         result = repo.run(bin, input="\n")
 
@@ -131,6 +136,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Provide name but empty email via stdin.
         result = repo.run(bin, input="Jane Smith\n\n")
 
@@ -159,6 +165,7 @@ class TestGitAuthor:
         # Get the hash of the first commit (HEAD~2).
         first_commit_before = repo.git.rev_parse("HEAD~2")
 
+        # Run 'git-author' inside the test repository.
         # Change the author of the first commit.
         result = repo.run(
             bin,
@@ -201,6 +208,7 @@ class TestGitAuthor:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
+        # Run 'git-author' inside the test repository.
         # Change the author of the first commit via prompts.
         result = repo.run(bin, "HEAD~1", input="Jane Smith\njane@example.com\n")
 
@@ -224,7 +232,8 @@ class TestGitAuthor:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
-        # Change the author using the SHA.
+        # Run 'git-author' inside the test repository.
+        # Change the author of a specific commit using its SHA.
         result = repo.run(
             bin,
             first_commit_sha,
@@ -249,6 +258,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Provide only --name flag but with no value.
         result = repo.run(bin, "--name")
 
@@ -266,6 +276,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Provide only --email flag but with no value.
         result = repo.run(bin, "--email")
 
@@ -283,6 +294,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Call the script with an unsupported option.
         result = repo.run(bin, "--unknown")
 
@@ -300,6 +312,7 @@ class TestGitAuthor:
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-author' inside the test repository.
         # Call the script with multiple positional arguments.
         result = repo.run(bin, "HEAD", "HEAD~1")
 

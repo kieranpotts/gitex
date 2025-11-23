@@ -154,7 +154,8 @@ class TestRepo:
 
     def run(self, bin, *args, input=None, env=None):
         """
-        Run a git extension script and return the subprocess result.
+        Run a git extension script in the context of the rest repository,
+        and return the result.
 
         Args:
             bin: Path to the script to run.

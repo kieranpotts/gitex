@@ -17,6 +17,7 @@ class TestGitAmend:
         # Make unstaged changes.
         repo.write("file1.txt", "Modified content")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -45,6 +46,7 @@ class TestGitAmend:
         # Create untracked file.
         repo.write("file2.txt", "New file")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -71,6 +73,7 @@ class TestGitAmend:
         repo.write("file1.txt", "Staged content")
         repo.git.add("file1.txt")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -99,19 +102,20 @@ class TestGitAmend:
         # Untracked file.
         repo.write("file3.txt", "Untracked file")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
         assert result.returncode == 0
 
-        # Verify only staged changes were included.
+        # Verify only staged changes were added to the commit.
         assert "Staged content" in repo.git.show("HEAD:file1.txt")
 
-        # Verify unstaged changes were NOT included.
+        # Verify unstaged changes were NOT added to the commit.
         # For file 2, only the original committed content should be committed.
         assert "Initial file 2 content" in repo.git.show("HEAD:file2.txt")
 
-        # Verify untracked file was NOT included.
+        # Verify untracked file was NOT added to the commit.
         ls_tree = repo.git.ls_tree("-r", "--name-only", "HEAD")
         assert "file3.txt" not in ls_tree
 
@@ -133,12 +137,13 @@ class TestGitAmend:
         repo.git.add(".")
         repo.git.commit("-m", "initial commit")
 
-        # Unstaged change (no staging).
+        # Unstaged change.
         repo.write("file1.txt", "Unstaged content")
 
-        # Untracked file (no staging).
+        # Untracked file.
         repo.write("file3.txt", "Untracked file")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -163,6 +168,7 @@ class TestGitAmend:
         # Make changes.
         repo.write("file1.txt", "Modified")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -180,6 +186,7 @@ class TestGitAmend:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -200,6 +207,7 @@ class TestGitAmend:
         # Create a file but don't commit.
         repo.write("file1.txt", "Content")
 
+        # Run 'git-amend' inside the test repository.
         result = repo.run(bin)
 
         # Verify error exit code.
@@ -216,6 +224,7 @@ class TestGitAmend:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-amend' inside the test repository with the '--help' option.
         result = repo.run(bin, "--help")
 
         # Verify error exit code.
@@ -232,6 +241,7 @@ class TestGitAmend:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-amend' inside the test repository with additional options.
         result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.

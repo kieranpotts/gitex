@@ -9,7 +9,7 @@ class TestGitFell:
     # def test_xxxxxxxx(self, repo, bin):
     #     """Test <description>."""
 
-    #     # Initial config values.
+    #     # Set minimum required Git config.
     #     repo.git.config("--local", "user.name", "John Doe")
     #     repo.git.config("--local", "user.email", "john.doe@example.com")
 
@@ -18,6 +18,7 @@ class TestGitFell:
     #     repo.git.add("file1.txt")
     #     repo.git.commit("-m", "initial commit")
 
+    #     # Run 'git-fell' inside the test repository.
     #     result = repo.run(bin)
 
     #     # Verify success exit code.

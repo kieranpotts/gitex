@@ -19,6 +19,7 @@ class TestGitUncommit:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -50,6 +51,7 @@ class TestGitUncommit:
         repo.git.add(".")
         repo.git.commit("-m", "second commit")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -73,6 +75,7 @@ class TestGitUncommit:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "second commit")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -100,6 +103,7 @@ class TestGitUncommit:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "delete file2")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -154,6 +158,7 @@ class TestGitUncommit:
         # Create empty commit.
         repo.git.commit("--allow-empty", "-m", "empty commit")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -183,6 +188,7 @@ class TestGitUncommit:
         # Make unstaged change.
         repo.write("file3.txt", "Unstaged file")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -213,6 +219,7 @@ class TestGitUncommit:
         # Make unstaged change.
         repo.write("file4.txt", "Unstaged content")
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -229,6 +236,7 @@ class TestGitUncommit:
     def test_fails_with_no_commits(self, repo, bin):
         """Test that uncommit fails when there are no commits in the repository."""
 
+        # Run 'git-uncommit' inside the test repository.
         result = repo.run(bin)
 
         # Verify error exit code.
@@ -245,6 +253,7 @@ class TestGitUncommit:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 
+        # Run 'git-uncommit --help' inside the test repository.
         result = repo.run(bin, "--help")
 
         # Verify error exit code.
@@ -261,6 +270,7 @@ class TestGitUncommit:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 
+        # Run 'git-uncommit' inside the test repository with positioned options.
         result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.

@@ -9,10 +9,6 @@ class TestGitSw:
     def test_switch_existing_branch(self, repo, bin):
         """Test switching to an existing branch."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit on main.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
@@ -23,7 +19,8 @@ class TestGitSw:
         current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
         assert current_branch == "main"
 
-        # Use git-sw to switch to the feature branch.
+        # Run 'git-sw' inside the test repository.
+        # Switch to the feature branch.
         result = repo.run(bin, "feature-branch")
 
         # Verify success exit code.
@@ -36,16 +33,13 @@ class TestGitSw:
     def test_switch_with_create_option(self, repo, bin):
         """Test switching to a new branch with -c option."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
-        # Use git-sw with -c to create and switch to a new branch.
+        # Run 'git-sw' inside the test repository.
+        # Use the '-c' option to create and switch to a new branch.
         result = repo.run(bin, "-c", "new-feature")
 
         # Verify success exit code.
@@ -57,10 +51,6 @@ class TestGitSw:
 
     def test_switch_to_previous_branch(self, repo, bin):
         """Test switching to the previous branch with dash."""
-
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
@@ -75,7 +65,8 @@ class TestGitSw:
         current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
         assert current_branch == "feature-branch"
 
-        # Use git-sw to switch back to previous branch using dash.
+        # Run 'git-sw' inside the test repository.
+        # Switch back to the previous branch using the dash syntax.
         result = repo.run(bin, "-")
 
         # Verify success exit code.
@@ -87,10 +78,6 @@ class TestGitSw:
 
     def test_switch_with_detach_option(self, repo, bin):
         """Test switching with --detach option."""
-
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
@@ -105,7 +92,8 @@ class TestGitSw:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
-        # Use git-sw with --detach to enter detached HEAD state.
+        # Run 'git-sw' inside the test repository.
+        # Use the '--detach' option to enter detached HEAD state.
         result = repo.run(bin, "--detach", commit_hash)
 
         # Verify success exit code.
@@ -118,10 +106,6 @@ class TestGitSw:
     def test_switch_with_discard_changes_option(self, repo, bin):
         """Test switching with --discard-changes option."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
@@ -133,7 +117,9 @@ class TestGitSw:
         # Modify the file to create uncommitted changes.
         repo.write("file1.txt", "Modified content")
 
-        # Use git-sw with --discard-changes to switch, discarding working changes.
+        # Run 'git-sw' inside the test repository.
+        # Use '--discard-changes' to discard any unstaged and uncommitted
+        # working changes.
         result = repo.run(bin, "--discard-changes", "other-branch")
 
         # Verify success exit code.
@@ -149,15 +135,12 @@ class TestGitSw:
     def test_switch_nonexistent_branch(self, repo, bin):
         """Test switching to a non-existent branch fails."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-sw' inside the test repository.
         # Try to switch to a non-existent branch.
         result = repo.run(bin, "nonexistent-branch")
 
@@ -167,16 +150,12 @@ class TestGitSw:
     def test_switch_without_arguments(self, repo, bin):
         """Test that git-sw without arguments fails appropriately."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
-        # Run git-sw without arguments.
+        # Run 'git-sw' without any arguments.
         result = repo.run(bin)
 
         # Git switch without arguments will fail - requires a branch name.

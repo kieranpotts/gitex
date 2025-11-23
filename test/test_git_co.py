@@ -9,10 +9,6 @@ class TestGitCo:
     def test_checkout_existing_branch(self, repo, bin):
         """Test checking out an existing branch."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit on main.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
@@ -23,7 +19,8 @@ class TestGitCo:
         current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
         assert current_branch == "main"
 
-        # Use git-co to checkout the feature branch.
+        # Run 'git-co' inside the test repository.
+        # Checkout the feature branch.
         result = repo.run(bin, "feature-branch")
 
         # Verify success exit code.
@@ -36,16 +33,13 @@ class TestGitCo:
     def test_checkout_with_create_branch_option(self, repo, bin):
         """Test checking out a new branch with -b option."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
-        # Use git-co with -b to create and checkout a new branch.
+        # Run 'git-co' inside the test repository.
+        # Use the '-b' option to create and checkout a new branch.
         result = repo.run(bin, "-b", "new-feature")
 
         # Verify success exit code.
@@ -58,10 +52,6 @@ class TestGitCo:
     def test_checkout_specific_file(self, repo, bin):
         """Test checking out a specific file to discard changes."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Original content")
         repo.git.add("file1.txt")
@@ -73,7 +63,8 @@ class TestGitCo:
         # Verify the file is modified.
         assert repo.read("file1.txt") == "Modified content"
 
-        # Use git-co to checkout the file from HEAD.
+        # Run 'git-co' inside the test repository.
+        # Checkout the file from HEAD.
         result = repo.run(bin, "HEAD", "--", "file1.txt")
 
         # Verify success exit code.
@@ -84,10 +75,6 @@ class TestGitCo:
 
     def test_checkout_detached_head(self, repo, bin):
         """Test checking out a specific commit (detached HEAD)."""
-
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
 
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
@@ -102,7 +89,8 @@ class TestGitCo:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
-        # Use git-co to checkout the first commit.
+        # Run 'git-co' inside the test repository.
+        # Checkout the first commit.
         result = repo.run(bin, first_commit_hash)
 
         # Verify success exit code.
@@ -115,34 +103,28 @@ class TestGitCo:
     def test_checkout_without_arguments(self, repo, bin):
         """Test that git-co without arguments behaves like git checkout."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
-        # Run git-co without arguments - should show help/error from repo.git.
+        # Run 'git-co' inside the test repository.
+        # Don't supply any options.
         result = repo.run(bin)
 
         # Git checkout without arguments will succeed.
-        # The exact behavior depends on Git version.
+        # Should show help or error - the exact behavior depends on Git version.
         assert result.returncode == 0
 
     def test_checkout_nonexistent_branch(self, repo, bin):
         """Test checking out a non-existent branch fails."""
 
-        # Configure Git user.
-        repo.git.config("--local", "user.name", "Test User")
-        repo.git.config("--local", "user.email", "test@example.com")
-
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-co' inside the test repository.
         # Try to checkout a non-existent branch.
         result = repo.run(bin, "nonexistent-branch")
 

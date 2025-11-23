@@ -20,7 +20,7 @@ def repo():
     repo = TestRepo()
     repo.cd()
 
-    # Minimal required Git configuration.
+    # Set minimum required Git config.
     repo.git.config("--local", "user.name", "John Doe")
     repo.git.config("--local", "user.email", "john.doe@example.com")
 

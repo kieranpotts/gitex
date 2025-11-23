@@ -2,6 +2,8 @@
 Test suite for git-cl command.
 """
 
+from git import Repo as GitRepo
+
 
 class TestGitCl:
     """Test cases for git-cl command."""
@@ -13,6 +15,7 @@ class TestGitCl:
         source_repo_path = repo.path("source.git")
         repo.git.init("--bare", source_repo_path)
 
+        # Run 'git-cl' inside the test repository.
         # Clone the repository.
         result = repo.run(bin, source_repo_path, "cloned")
 
@@ -30,7 +33,6 @@ class TestGitCl:
 
         # Create a source repository.
         source_repo_path = repo.path("source")
-        from git import Repo as GitRepo
 
         source_git = GitRepo.init(source_repo_path)
         source_git.config_writer().set_value("user", "name", "Test User").release()
@@ -44,6 +46,7 @@ class TestGitCl:
             source_git.index.add([f"file{i}.txt"])
             source_git.index.commit(f"Commit {i}")
 
+        # Run 'git-cl' inside the test repository.
         # Clone with depth 1.
         result = repo.run(bin, "--depth", "1", source_repo_path, "shallow")
 
@@ -58,7 +61,6 @@ class TestGitCl:
 
         # Create a source repository.
         source_repo_path = repo.path("source")
-        from git import Repo as GitRepo
 
         source_git = GitRepo.init(source_repo_path)
         source_git.config_writer().set_value("user", "name", "Test User").release()
@@ -71,6 +73,7 @@ class TestGitCl:
         source_git.index.add(["file.txt"])
         source_git.index.commit("Initial commit")
 
+        # Run 'git-cl' inside the test repository.
         # Clone with single-branch option.
         result = repo.run(
             bin, "--single-branch", source_repo_path, "single-branch-clone"
@@ -87,7 +90,6 @@ class TestGitCl:
 
         # Create a source repository.
         source_repo_path = repo.path("source")
-        from git import Repo as GitRepo
 
         source_git = GitRepo.init(source_repo_path)
         source_git.config_writer().set_value("user", "name", "Test User").release()
@@ -101,6 +103,7 @@ class TestGitCl:
             source_git.index.add([f"file{i}.txt"])
             source_git.index.commit(f"Commit {i}")
 
+        # Run 'git-cl' inside the test repository.
         # Clone with multiple options: --depth and --no-tags.
         result = repo.run(
             bin, "--depth", "2", "--no-tags", source_repo_path, "multi-option"
@@ -115,6 +118,7 @@ class TestGitCl:
     def test_clone_without_arguments(self, repo, bin):
         """Test that git-cl without arguments fails appropriately."""
 
+        # Run 'git-cl' inside the test repository.
         result = repo.run(bin)
 
         # Verify error exit code - 'git clone' will fail without arguments.
@@ -123,6 +127,7 @@ class TestGitCl:
     def test_clone_with_invalid_repository(self, repo, bin):
         """Test cloning an invalid repository URL."""
 
+        # Run 'git-cl' inside the test repository.
         result = repo.run(bin, "nonexistent-repo")
 
         # Verify error exit code.

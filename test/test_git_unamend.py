@@ -22,6 +22,7 @@ class TestGitUnamend:
         # Get commit hash after amend.
         commit_after_amend = repo.git.rev_parse("HEAD")
 
+        # Run 'git-unamend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -53,6 +54,7 @@ class TestGitUnamend:
         repo.git.add("file1.txt")
         repo.git.commit("--amend", "--no-edit")
 
+        # Run 'git-unamend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -79,6 +81,7 @@ class TestGitUnamend:
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
+        # Run 'git-unamend' inside the test repository.
         result = repo.run(bin)
 
         # Verify error exit code.
@@ -108,6 +111,7 @@ class TestGitUnamend:
         # Make unstaged change.
         repo.write("file3.txt", "Unstaged file")
 
+        # Run 'git-unamend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -129,6 +133,7 @@ class TestGitUnamend:
         # Amend just the message.
         repo.git.commit("--amend", "-m", "amended message")
 
+        # Run 'git-unamend' inside the test repository.
         result = repo.run(bin)
 
         # Verify success exit code.
@@ -171,6 +176,7 @@ class TestGitUnamend:
     def test_fails_with_no_commits(self, repo, bin):
         """Test that unamend fails when there are no commits in the repository."""
 
+        # Run 'git-unamend' inside the test repository.
         result = repo.run(bin)
 
         # Verify error exit code.
@@ -187,6 +193,7 @@ class TestGitUnamend:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 
+        # Run 'git-unamend --help' inside the test repository.
         result = repo.run(bin, "--help")
 
         # Verify error exit code.
@@ -203,6 +210,8 @@ class TestGitUnamend:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "commit")
 
+        # Run 'git-unamend' inside the test repository with multiple
+        # positioned options.
         result = repo.run(bin, "arg1", "arg2")
 
         # Verify error exit code.

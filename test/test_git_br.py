@@ -8,10 +8,10 @@ import os
 class TestGitBr:
     """Test cases for git-br command."""
 
-    # In the test environment, `git push` operations fail because there is not
+    # In the test environment, `git push` operations fail because there is no
     # remote to push to. Therefore, `git cl` is expected to return an error.
     # We can't therefore test for a successful operation, but we can at least
-    # verify the new branches are created and checked out.
+    # verify that new branches are created and checked out.
 
     def test_create_branch_with_argument(self, repo, bin):
         """Test creating a branch with name provided as argument."""
@@ -21,6 +21,8 @@ class TestGitBr:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-br' inside the test repository.
+        # Provide branch name as a positioned option.
         repo.run(bin, "feature-branch")
 
         # Verify the branch was created.
@@ -39,6 +41,7 @@ class TestGitBr:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-br' inside the test repository.
         # Provide branch name via stdin.
         repo.run(bin, input="my-feature\n")
 
@@ -58,6 +61,7 @@ class TestGitBr:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-br' inside the test repository.
         # Provide empty branch name via stdin.
         result = repo.run(bin, input="\n")
 
@@ -75,6 +79,8 @@ class TestGitBr:
         repo.git.add("file1.txt")
         repo.git.commit("-m", "initial commit")
 
+        # Run 'git-br' inside the test repository.
+        # Supply mulitple positioned options.
         result = repo.run(bin, "branch1", "branch2")
 
         # Verify error exit code.
@@ -94,6 +100,7 @@ class TestGitBr:
         # Create a branch.
         repo.git.branch("existing-branch")
 
+        # Run 'git-br' inside the test repository.
         # Try to create the same branch again.
         result = repo.run(bin, "existing-branch")
 
@@ -118,6 +125,7 @@ class TestGitBr:
         # Get current commit hash.
         original_commit = repo.git.rev_parse("HEAD")
 
+        # Run 'git-br' inside the test repository.
         # Create new branch.
         repo.run(bin, "new-branch")
 
@@ -137,7 +145,8 @@ class TestGitBr:
         env = os.environ.copy()
         env["X_GITEX_DEFAULT_REMOTE_NAME"] = "upstream"
 
-        # Run with custom environment.
+        # Run 'git-br' inside the test repository.
+        # Run with custom environment variables.
         result = repo.run(bin, "custom-remote-branch", env=env)
 
         # Verify the branch was created.
@@ -151,7 +160,7 @@ class TestGitBr:
         # Verify the error message mentions the custom remote name.
         # Since there's no actual remote, the push will fail, but
         # at least we can inspect the error message to verify Git
-        # stried to push to the remote we expect.
+        # attempted to push to the remote we expect.
         assert "upstream" in result.stderr
 
     def test_default_remote_when_env_var_empty(self, repo, bin):
@@ -166,6 +175,7 @@ class TestGitBr:
         env = os.environ.copy()
         env["X_GITEX_DEFAULT_REMOTE_NAME"] = ""
 
+        # Run 'git-br' inside the test repository.
         # Run with custom environment.
         result = repo.run(bin, "default-remote-branch", env=env)
 
