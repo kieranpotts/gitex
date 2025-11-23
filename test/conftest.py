@@ -15,7 +15,10 @@ def repo():
     function call.
     """
 
+    # Create a Git repository for testing purposes.
+    # Change to its root directory.
     repo = TestRepo()
+    repo.cd()
 
     # Minimal required Git configuration.
     repo.git.config("--local", "user.name", "John Doe")
@@ -27,7 +30,7 @@ def repo():
 @pytest.fixture
 def bin(request):
     """
-    Get the path to a git extension script based on the test file name.
+    Get the path to a git extension script.
     Automatically derives the script name from the test file name.
     """
 

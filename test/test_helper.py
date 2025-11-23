@@ -27,22 +27,21 @@ class TestTestRepo:
         # Verify git object is accessible.
         assert repo.git is not None
 
-        # Verify current directory is the repo directory.
-        assert os.getcwd() == repo.dir()
-
     def test_cd(self):
         """Test changing to the repository directory."""
 
         repo = TestRepo()
-        original_dir = repo.dir()
+        repo_dir = repo.dir()
 
         # Change to a different directory.
         os.chdir(tempfile.gettempdir())
-        assert os.getcwd() != original_dir
+        assert os.getcwd() != repo_dir
 
         # Use cd() to change back.
         repo.cd()
-        assert os.getcwd() == original_dir
+
+        # Verify current directory is the repo directory.
+        assert os.getcwd() == repo_dir
 
     def test_dir(self):
         """Test getting the repository directory path."""
@@ -85,6 +84,24 @@ class TestTestRepo:
 
         # File now exists.
         assert repo.exists("test.txt")
+
+    def test_files(self):
+        """Test getting the list of files written to the repository."""
+
+        repo = TestRepo()
+
+        # Initially no files.
+        assert repo.files() == []
+
+        # Write a file.
+        repo.write("file1.txt", "Content 1")
+        assert repo.files() == ["file1.txt"]
+
+        # Write more files.
+        repo.write("file2.txt", "Content 2")
+        repo.mkdir("subdir")
+        repo.write("subdir/file3.txt", "Content 3")
+        assert repo.files() == ["file1.txt", "file2.txt", "subdir/file3.txt"]
 
     def test_exists_directory(self):
         """Test checking if a directory exists."""

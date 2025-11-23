@@ -15,13 +15,18 @@ class TestRepo:
     """Class to create and manage a temporary Git repository for testing purposes."""
 
     def __init__(self):
+        # /tmp/* directory in which the test repository will be created.
         self._dir = tempfile.mkdtemp()
+
+        # Initialize a Git repository in the temporary directory.
+        # Default branch = main.
         self._repo = GitRepo.init(self._dir, b="main")
+
+        # Maintain a list of files that will be written to the test repo directory.
         self._files = []
 
+        # Expose Git interface.
         self.git = self._repo.git
-
-        self.cd()
 
     def cd(self):
         """Change the current working directory to the test repository's root."""
@@ -44,7 +49,7 @@ class TestRepo:
         Get the directory name of the temporary repository (basename only).
 
         Returns:
-            The repository directory name without the system temp directory prefix.
+            The repo's directory basename without the full path to the /tmp directory.
         """
 
         system_tmpdir = tempfile.gettempdir()
@@ -63,7 +68,18 @@ class TestRepo:
         """
 
         file_path = os.path.join(self._dir, filename)
+
         return os.path.exists(file_path)
+
+    def files(self):
+        """
+        Get the list of files that have been written to the repository.
+
+        Returns:
+            A list of filenames that were created using the write() method.
+        """
+
+        return self._files
 
     def isdir(self, dirname):
         """
@@ -77,6 +93,7 @@ class TestRepo:
         """
 
         dir_path = os.path.join(self._dir, dirname)
+
         return os.path.isdir(dir_path)
 
     def mkdir(self, dirname):
@@ -92,6 +109,7 @@ class TestRepo:
 
         dir_path = os.path.join(self._dir, dirname)
         os.makedirs(dir_path)
+
         return dir_path
 
     def path(self, filename):
@@ -119,6 +137,7 @@ class TestRepo:
         """
 
         file_path = os.path.join(self._dir, filename)
+
         with open(file_path, "r") as f:
             return f.read()
 
