@@ -14,7 +14,7 @@ class TestGitAuthor:
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        repo.write("test.txt", "initial content")
+        repo.write("test.txt", "Initial content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -48,7 +48,7 @@ class TestGitAuthor:
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        repo.write("test.txt", "initial content")
+        repo.write("test.txt", "Initial content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -70,7 +70,7 @@ class TestGitAuthor:
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        repo.write("test.txt", "initial content")
+        repo.write("test.txt", "Initial content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -92,7 +92,7 @@ class TestGitAuthor:
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create an initial commit.
-        repo.write("test.txt", "initial content")
+        repo.write("test.txt", "Initial content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -110,7 +110,7 @@ class TestGitAuthor:
         """Test that empty name from prompt is rejected."""
 
         # Create an initial commit.
-        repo.write("test.txt", "initial content")
+        repo.write("test.txt", "Initial content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -127,7 +127,7 @@ class TestGitAuthor:
         """Test that empty email from prompt is rejected."""
 
         # Create an initial commit.
-        repo.write("test.txt", "initial content")
+        repo.write("test.txt", "Initial content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -144,15 +144,15 @@ class TestGitAuthor:
         """Test changing author of an earlier commit using flags."""
 
         # Create multiple commits.
-        repo.write("file1.txt", "content 1")
+        repo.write("file1.txt", "Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
-        repo.write("file2.txt", "content 2")
+        repo.write("file2.txt", "Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
-        repo.write("file3.txt", "content 3")
+        repo.write("file3.txt", "Content 3")
         repo.git.add("file3.txt")
         repo.git.commit("-m", "third commit")
 
@@ -193,11 +193,11 @@ class TestGitAuthor:
         """Test changing author of an earlier commit using prompts."""
 
         # Create multiple commits.
-        repo.write("file1.txt", "content 1")
+        repo.write("file1.txt", "Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
-        repo.write("file2.txt", "content 2")
+        repo.write("file2.txt", "Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -215,12 +215,12 @@ class TestGitAuthor:
         """Test changing author using a commit SHA instead of relative ref."""
 
         # Create multiple commits.
-        repo.write("file1.txt", "content 1")
+        repo.write("file1.txt", "Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
         first_commit_sha = repo.git.rev_parse("HEAD")
 
-        repo.write("file2.txt", "content 2")
+        repo.write("file2.txt", "Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
@@ -245,7 +245,7 @@ class TestGitAuthor:
         """Test that --name flag requires a value."""
 
         # Create an initial commit.
-        repo.write("test.txt", "content")
+        repo.write("test.txt", "Content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -262,7 +262,7 @@ class TestGitAuthor:
         """Test that --email flag requires a value."""
 
         # Create an initial commit.
-        repo.write("test.txt", "content")
+        repo.write("test.txt", "Content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -279,7 +279,7 @@ class TestGitAuthor:
         """Test that unknown options are rejected."""
 
         # Create an initial commit.
-        repo.write("test.txt", "content")
+        repo.write("test.txt", "Content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 
@@ -296,7 +296,7 @@ class TestGitAuthor:
         """Test that multiple positional arguments are rejected."""
 
         # Create an initial commit.
-        repo.write("test.txt", "content")
+        repo.write("test.txt", "Content")
         repo.git.add("test.txt")
         repo.git.commit("-m", "initial commit")
 

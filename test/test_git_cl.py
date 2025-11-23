@@ -67,7 +67,7 @@ class TestGitCl:
         ).release()
 
         # Create an initial commit in the source repository.
-        repo.write("source/file.txt", "content")
+        repo.write("source/file.txt", "Content")
         source_git.index.add(["file.txt"])
         source_git.index.commit("Initial commit")
 

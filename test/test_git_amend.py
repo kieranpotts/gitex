@@ -40,7 +40,7 @@ class TestGitAmend:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "first commit")
+        repo.git.commit("-m", "initial commit")
 
         # Create untracked file.
         repo.write("file2.txt", "New file")
@@ -158,7 +158,7 @@ class TestGitAmend:
         # Create initial commit with specific message.
         repo.write("file1.txt", "Content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "my custom commit message")
+        repo.git.commit("-m", "feature: my shiny new feature")
 
         # Make changes.
         repo.write("file1.txt", "Modified")
@@ -170,7 +170,7 @@ class TestGitAmend:
 
         # Verify commit message is unchanged.
         commit_msg = repo.git.log("-1", "--format=%s")
-        assert commit_msg == "my custom commit message"
+        assert commit_msg == "feature: my shiny new feature"
 
     def test_no_changes_to_amend(self, repo, bin):
         """Test that a message is printed when there are no changes to amend."""

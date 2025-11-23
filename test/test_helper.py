@@ -81,7 +81,7 @@ class TestTestRepo:
         assert not repo.exists("test.txt")
 
         # Create a file.
-        repo.write("test.txt", "content")
+        repo.write("test.txt", "Content")
 
         # File now exists.
         assert repo.exists("test.txt")
@@ -115,7 +115,7 @@ class TestTestRepo:
         assert repo.isdir("subdir")
 
         # Create a file.
-        repo.write("file.txt", "content")
+        repo.write("file.txt", "Content")
 
         # File exists but is not a directory.
         assert not repo.isdir("file.txt")
@@ -161,14 +161,13 @@ class TestTestRepo:
         repo = TestRepo()
 
         # Write a file.
-        content = "Hello, World!"
-        repo.write("test.txt", content)
+        repo.write("test.txt", "Hello, World!")
 
         # Read it back.
         read_content = repo.read("test.txt")
 
         # Verify content matches.
-        assert read_content == content
+        assert read_content == "Hello, World!"
 
     def test_read_nonexistent_file(self):
         """Test reading a file that doesn't exist raises an error."""
@@ -300,8 +299,7 @@ class TestTestRepo:
         repo = TestRepo()
 
         # Write a file.
-        content = "Test content"
-        repo.write("test.txt", content)
+        repo.write("test.txt", "Test content")
 
         # Verify it exists.
         assert repo.exists("test.txt")
@@ -309,7 +307,7 @@ class TestTestRepo:
         # Verify content is correct.
         file_path = repo.path("test.txt")
         with open(file_path, "r") as f:
-            assert f.read() == content
+            assert f.read() == "Test content"
 
     def test_write_nested_file(self):
         """Test writing a file in a subdirectory."""
@@ -320,7 +318,7 @@ class TestTestRepo:
         repo.mkdir("subdir")
 
         # Write a file in the subdirectory.
-        repo.write("subdir/test.txt", "content")
+        repo.write("subdir/test.txt", "Content")
 
         # Verify it exists.
         assert repo.exists("subdir/test.txt")
@@ -331,13 +329,13 @@ class TestTestRepo:
         repo = TestRepo()
 
         # Write a file.
-        repo.write("test.txt", "original")
+        repo.write("test.txt", "Original content")
 
         # Overwrite it.
-        repo.write("test.txt", "updated")
+        repo.write("test.txt", "Updated content")
 
         # Verify new content.
-        assert repo.read("test.txt") == "updated"
+        assert repo.read("test.txt") == "Updated content"
 
     def test_git_integration(self):
         """Test that Git operations work correctly."""
@@ -349,7 +347,7 @@ class TestTestRepo:
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # Create and commit a file.
-        repo.write("file.txt", "content")
+        repo.write("file.txt", "Content")
         repo.git.add("file.txt")
         repo.git.commit("-m", "test commit")
 

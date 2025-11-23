@@ -21,7 +21,7 @@ class TestGitSw:
         # Create a new branch and switch back to main.
         repo.git.branch("feature-branch")
         current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
-        assert current_branch in ["main", "master"]
+        assert current_branch == "main"
 
         # Use git-sw to switch to the feature branch.
         result = repo.run(bin, "feature-branch")
@@ -83,7 +83,7 @@ class TestGitSw:
 
         # Verify we're back on the original branch.
         current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
-        assert current_branch in ["main", "master"]
+        assert current_branch == "main"
 
     def test_switch_with_detach_option(self, repo, bin):
         """Test switching with --detach option."""

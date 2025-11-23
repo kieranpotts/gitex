@@ -40,7 +40,7 @@ class TestGitContrib:
         repo.git.config("--local", "user.email", "john.doe@example.com")
 
         # First commit, made by first contributor.
-        repo.write("file1.txt", "content 1")
+        repo.write("file1.txt", "Content 1")
         repo.git.add("file1.txt")
         repo.git.commit("-m", "first commit")
 
@@ -49,12 +49,12 @@ class TestGitContrib:
         repo.git.config("--local", "user.email", "jane.smith@example.com")
 
         # Second commit, made by second contributor.
-        repo.write("file2.txt", "content 2")
+        repo.write("file2.txt", "Content 2")
         repo.git.add("file2.txt")
         repo.git.commit("-m", "second commit")
 
         # Third commit, made by second contributor.
-        repo.write("file3.txt", "content 3")
+        repo.write("file3.txt", "Content 3")
         repo.git.add("file3.txt")
         repo.git.commit("-m", "third commit")
 
@@ -63,12 +63,12 @@ class TestGitContrib:
         repo.git.config("--local", "user.email", "bob@example.com")
 
         # Fourth commit, made by third contributor.
-        repo.write("file4.txt", "content 4")
+        repo.write("file4.txt", "Content 4")
         repo.git.add("file4.txt")
         repo.git.commit("-m", "fourth commit")
 
         # Fifth commit, made by third contributor.
-        repo.write("file5.txt", "content 5")
+        repo.write("file5.txt", "Content 5")
         repo.git.add("file5.txt")
         repo.git.commit("-m", "fifth commit")
 
@@ -77,7 +77,7 @@ class TestGitContrib:
         repo.git.config("--local", "user.email", "jane.smith@example.com")
 
         # Sixth commit, made by second contributor.
-        repo.write("file6.txt", "content 6")
+        repo.write("file6.txt", "Content 6")
         repo.git.add("file6.txt")
         repo.git.commit("-m", "sixth commit")
 

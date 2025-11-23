@@ -19,7 +19,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         repo.run(bin, "feature-branch")
 
@@ -37,7 +37,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         # Provide branch name via stdin.
         repo.run(bin, input="my-feature\n")
@@ -56,7 +56,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         # Provide empty branch name via stdin.
         result = repo.run(bin, input="\n")
@@ -73,7 +73,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         result = repo.run(bin, "branch1", "branch2")
 
@@ -89,7 +89,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         # Create a branch.
         repo.git.branch("existing-branch")
@@ -109,11 +109,11 @@ class TestGitBr:
         # Create multiple commits.
         repo.write("file1.txt", "Content 1")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Commit 1")
+        repo.git.commit("-m", "commit 1")
 
         repo.write("file2.txt", "Content 2")
         repo.git.add("file2.txt")
-        repo.git.commit("-m", "Commit 2")
+        repo.git.commit("-m", "commit 2")
 
         # Get current commit hash.
         original_commit = repo.git.rev_parse("HEAD")
@@ -131,7 +131,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         # Set custom remote name via environment variable.
         env = os.environ.copy()
@@ -160,7 +160,7 @@ class TestGitBr:
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "Initial commit")
+        repo.git.commit("-m", "initial commit")
 
         # Set empty remote name via environment variable.
         env = os.environ.copy()

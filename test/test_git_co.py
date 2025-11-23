@@ -21,7 +21,7 @@ class TestGitCo:
         # Create a new branch and switch back to main.
         repo.git.branch("feature-branch")
         current_branch = repo.git.rev_parse("--abbrev-ref", "HEAD").strip()
-        assert current_branch in ["main", "master"]
+        assert current_branch == "main"
 
         # Use git-co to checkout the feature branch.
         result = repo.run(bin, "feature-branch")
