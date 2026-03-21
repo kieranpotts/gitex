@@ -29,10 +29,12 @@ main() {
   # Get the names of all local branches except the base branch
   branches=$(git branch --format='%(refname:short)' | grep -v "^${base_branch}$")
 
-  # Rebase each branch on the base branch.
+  # Rebase each branch on the base branch. Set the original author date (which
+  # is preserved by default) as the new committer date (which would otherwise
+  # be reset to the current time).
   for branch in ${branches}; do
     git checkout "${branch}"
-    git rebase "${base_branch}"
+    git rebase --committer-date-is-author-date "${base_branch}"
   done
 
   # Switch back to the base branch.
