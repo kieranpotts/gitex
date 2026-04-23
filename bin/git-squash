@@ -25,9 +25,12 @@ set -eu
 # and included in the squash commit.
 #
 # The solution is to combine the `--squash` flag with the `--ff` flag. This
-# is equivalent to setting `merge.ff` to `true` which disables the check to
-# perform the merge only if a fast-forward is possible. Conflicts will need
-# to be resolved manually.
+# is equivalent to setting `merge.ff` to `true`, which means "fast forward
+# merges wherever possible". It is Git's default merge behavior. In effect, this
+# configuration disables the check for whether a fast-forward merge is possible,
+# and it goes ahead with the squash operation regardless. If theere is divergent
+# work in the target branch, the conflicts can be resolved manually during the
+# squash operation.
 #
 # Note, the StackOverflow answer linked below suggests using the following
 # command. This uses the `-c` option to make a one-time configuration
