@@ -19,7 +19,7 @@ set -eu
 # The `--squash` option also does not always play nicely when `merge.ff` is
 # set to "only". It is possible to combine `--squash` with `--ff-only` and
 # much of the time this works perfectly well. However, with this combination,
-# if both branches have unique commits, the "fast-forward only" test will fail
+# if both branches have unique commits, the "fast-forward-only" test will fail
 # and therefore the subsequent squash operation will not happen. This
 # constraint is rarely useful, because conflicts could be resolved manually
 # and included in the squash commit.
