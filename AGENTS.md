@@ -15,6 +15,7 @@ The project is inspired by (but not compatible with) Git Extras. Some operations
 - **bin/**: Contains ~60 Git extension scripts (eg. `git-whoami`, `git-amend`, `git-sync`). Each script follows POSIX shell compliance and has a standard structure:
   - Shebang: `#!/bin/env sh`.
   - Error handling: `set -eu`.
+  - For debugging, `set -x` can be used temporarily to enable execution tracing.
   - Header comment with description, usage, and dependencies.
   - `main()` function containing implementation.
   - Call to `main` at the end, forwarding all command-line arguments.
