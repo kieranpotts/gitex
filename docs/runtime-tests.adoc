@@ -50,6 +50,6 @@ $ bash check
 Remember to give yourself executable privileges on this file:
 
 ----
-$ chmod u+x fix
+$ chmod u+x check
 ----
 ======
