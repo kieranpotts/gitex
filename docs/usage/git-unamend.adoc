@@ -63,6 +63,6 @@ This safety check prevents accidentally undoing the wrong operation. Use link:./
 
 == See also
 
-* link:./git-amend.adoc[`git amend`] — Amend the last commit with new changes.
-* link:./git-uncommit.adoc[`git uncommit`] — Undo the last commit.
-* link:./git-undo.adoc[`git undo`] — Discard uncommitted changes.
+* link:./git-amend.adoc[`git amend`]: Amend the last commit with new changes.
+* link:./git-uncommit.adoc[`git uncommit`]: Undo the last commit.
+* link:./git-undo.adoc[`git undo`]: Discard uncommitted changes.

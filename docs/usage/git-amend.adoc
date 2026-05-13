@@ -39,8 +39,8 @@ $ git amend
  3 files changed, 52 insertions(+)
 ----
 
-* link:./git-reword.adoc[`git reword`] — Amend the message of the last commit.
-* link:./git-unamend.adoc[`git unamend`] — Undo the last `git amend` operation.
-* link:./git-fixup.adoc[`git fixup`] — Another way of changing prior commits.
-* link:./git-uncommit.adoc[`git uncommit`] — Undo the last commit but keep the changes.
+* link:./git-reword.adoc[`git reword`]: Amend the message of the last commit.
+* link:./git-unamend.adoc[`git unamend`]: Undo the last `git amend` operation.
+* link:./git-fixup.adoc[`git fixup`]: Another way of changing prior commits.
+* link:./git-uncommit.adoc[`git uncommit`]: Undo the last commit but keep the changes.
 

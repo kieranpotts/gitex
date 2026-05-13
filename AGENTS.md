@@ -29,7 +29,7 @@ Inspired by (but not compatible with) Git Extras. Some operations are potentiall
 
 ## Dev tools
 
-There is nothing to build — `bin/` scripts ship as source, installed by putting `bin/` on the user's `PATH`.
+There is nothing to build - `bin/` scripts ship as source, installed by putting `bin/` on the user's `PATH`.
 
 - `./check` – Runs the full verification pipeline: ShellCheck on `bin/` and `lib/`, Ruff lint on `test/`, then pytest. Must pass before pushing.
 
@@ -49,14 +49,14 @@ There is nothing to build — `bin/` scripts ship as source, installed by puttin
 
 ## Skills
 
-- `./skills/testing/SKILL.md` — Instructions for running static and runtime tests (`./check`) and automated fixes (`./fix`).
+- `./skills/testing/SKILL.md`: Instructions for running static and runtime tests (`./check`) and automated fixes (`./fix`).
 
-- `./skills/shell-scripts/SKILL.md` — Coding conventions and design patterns for the shell scripts in `bin/` and `lib/`.
+- `./skills/shell-scripts/SKILL.md`: Coding conventions and design patterns for the shell scripts in `bin/` and `lib/`.
 
-- `./skills/python-tests/SKILL.md` — Coding conventions and design patterns for the pytest suite in `test/`.
+- `./skills/python-tests/SKILL.md`: Coding conventions and design patterns for the pytest suite in `test/`.
 
-- `./skills/documentation/SKILL.md` — Formatting conventions for the AsciiDoc docs in `docs/`.
+- `./skills/documentation/SKILL.md`: Formatting conventions for the AsciiDoc docs in `docs/`.
 
-- `./skills/new-command/SKILL.md` — End-to-end checklist for adding a new `git-<name>` extension (script, test, usage doc, indexes).
+- `./skills/new-command/SKILL.md`: End-to-end checklist for adding a new `git-<name>` extension (script, test, usage doc, indexes).
 
-- `./skills/commits/SKILL.md` — Commit message format enforced by CI, and the semantics of each allowed type.
+- `./skills/commits/SKILL.md`: Commit message format enforced by CI, and the semantics of each allowed type.

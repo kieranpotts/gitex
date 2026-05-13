@@ -40,6 +40,6 @@ See https://git-scm.com/docs/git-switch[git-switch] for further documentation.
 
 == See also
 
-* https://git-scm.com/docs/git-checkout[git-checkout] — Legacy command with broader functionality.
-* https://git-scm.com/docs/git-restore[git-restore] — Modern alternative for restoring files.
-* link:./git-co.adoc[`git co`] — GitEx shortcut for `git checkout`.
+* https://git-scm.com/docs/git-checkout[git-checkout]: Legacy command with broader functionality.
+* https://git-scm.com/docs/git-restore[git-restore]: Modern alternative for restoring files.
+* link:./git-co.adoc[`git co`]: GitEx shortcut for `git checkout`.

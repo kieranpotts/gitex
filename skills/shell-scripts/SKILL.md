@@ -40,12 +40,12 @@ The **Dependencies** line in the header records external CLI tools the script in
 
 ## Shared libraries
 
-- `lib/print.sh` — Helper functions for consistent messaging across commands. Sourced directly from `bin/` scripts.
-- `lib/ansi-codes.sh` — Color variables (`$RED`, `$BOLD`, etc.). Used internally by `print.sh`; not sourced directly from `bin/` scripts.
+- `lib/print.sh`: Helper functions for consistent messaging across commands. Sourced directly from `bin/` scripts.
+- `lib/ansi-codes.sh`: Color variables (`$RED`, `$BOLD`, etc.). Used internally by `print.sh`; not sourced directly from `bin/` scripts.
 
 ## Output conventions
 
-All user-facing output goes through `print_*` helpers from `lib/print.sh`. Do not call `echo` or `printf` directly for messages — raw output bypasses the project's color, stream, and prefix conventions.
+All user-facing output goes through `print_*` helpers from `lib/print.sh`. Do not call `echo` or `printf` directly for messages - raw output bypasses the project's color, stream, and prefix conventions.
 
 | Helper | Stream | Use for |
 | --- | --- | --- |

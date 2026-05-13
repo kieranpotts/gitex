@@ -27,5 +27,5 @@ In this example, Jane Smith is the most active contributor with 3 commits, follo
 
 == See also
 
-* link:./git-author.adoc[`git author`] — Change the author of a commit.
-* link:./git-whoami.adoc[`git whoami`] — Display your currently configured Git user identity.
+* link:./git-author.adoc[`git author`]: Change the author of a commit.
+* link:./git-whoami.adoc[`git whoami`]: Display your currently configured Git user identity.

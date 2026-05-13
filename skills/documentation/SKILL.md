@@ -4,13 +4,13 @@ User and developer documentation is written in AsciiDoc (`.adoc`). General langu
 
 ## Layout
 
-- `docs/requirements.adoc` — Supported platforms.
-- `docs/installation.adoc` — Install instructions for end users.
-- `docs/configuration.adoc` — Environment variables and their effects.
-- `docs/runtime-tests.adoc` — How to run the pytest suite.
-- `docs/static-analysis.adoc` — How to run ShellCheck and Ruff.
-- `docs/usage/README.adoc` — Hand-maintained index of all per-command usage docs.
-- `docs/usage/git-<name>.adoc` — One usage doc per Git extension. Use [`docs/usage/git-whoami.adoc`](../../docs/usage/git-whoami.adoc) as the canonical template.
+- `docs/requirements.adoc`: Supported platforms.
+- `docs/installation.adoc`: Install instructions for end users.
+- `docs/configuration.adoc`: Environment variables and their effects.
+- `docs/runtime-tests.adoc`: How to run the pytest suite.
+- `docs/static-analysis.adoc`: How to run ShellCheck and Ruff.
+- `docs/usage/README.adoc`: Hand-maintained index of all per-command usage docs.
+- `docs/usage/git-<name>.adoc`: One usage doc per Git extension. Use [`docs/usage/git-whoami.adoc`](../../docs/usage/git-whoami.adoc) as the canonical template.
 
 When adding or renaming a script in `bin/`, both `docs/usage/git-<name>.adoc` and the index in `docs/usage/README.adoc` (and the top-level [`README.adoc`](../../README.adoc)) must be updated. See [`../new-command/SKILL.md`](../new-command/SKILL.md).
 
@@ -39,7 +39,7 @@ $ git <name> [args]
 
 == See also
 
-* link:./git-other.adoc[`git other`] — <one-line cross-reference>.
+* link:./git-other.adoc[`git other`]: <one-line cross-reference>.
 ```
 
 For commands that rewrite history or perform other destructive operations, add a `CAUTION:` admonition near the top, as in [`docs/usage/git-amend.adoc`](../../docs/usage/git-amend.adoc).

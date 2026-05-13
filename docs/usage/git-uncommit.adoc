@@ -93,7 +93,7 @@ WARNING: You risk permanently losing changes if you do this.
 
 == See also
 
-* link:./git-amend.adoc[`git amend`] — Amend the last commit with new changes.
-* link:./git-unamend.adoc[`git unamend`] — Undo the last `git amend` operation.
-* link:./git-undo.adoc[`git undo`] — Discard uncommitted changes.
-* link:./git-reword.adoc[`git reword`] — Change the commit message of the last commit.
+* link:./git-amend.adoc[`git amend`]: Amend the last commit with new changes.
+* link:./git-unamend.adoc[`git unamend`]: Undo the last `git amend` operation.
+* link:./git-undo.adoc[`git undo`]: Discard uncommitted changes.
+* link:./git-reword.adoc[`git reword`]: Change the commit message of the last commit.

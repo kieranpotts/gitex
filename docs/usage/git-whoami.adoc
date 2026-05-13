@@ -67,4 +67,4 @@ In this example, the `user.name` configured for the local repository (Bob Jones)
 
 == See also
 
-* link:./git-author.adoc[`git author`] — Show commit authorship information.
+* link:./git-author.adoc[`git author`]: Show commit authorship information.

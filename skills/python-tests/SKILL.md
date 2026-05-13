@@ -4,10 +4,10 @@ Tests use pytest with GitPython to create isolated temporary repositories. Every
 
 ## Layout
 
-- `conftest.py` — pytest configuration with shared fixtures (`repo`, `bin`).
-- `helper.py` — the `TestRepo` class for creating throwaway Git repositories using GitPython.
-- `test_helper.py` — tests for `TestRepo` itself.
-- `test_<command>.py` — one test file per Git extension.
+- `conftest.py`: Pytest configuration with shared fixtures (`repo`, `bin`).
+- `helper.py`: The `TestRepo` class for creating throwaway Git repositories using GitPython.
+- `test_helper.py`: Tests for `TestRepo` itself.
+- `test_<command>.py`: One test file per Git extension.
 
 ## Naming
 
@@ -39,14 +39,14 @@ class TestGitFoo:
 
 Every test takes the `repo` and `bin` fixtures from [`conftest.py`](../../test/conftest.py):
 
-- `repo` — a fresh `TestRepo` for each test function, already `cd`'d into and configured with a local `user.name` / `user.email`.
-- `bin` — the absolute path to the `bin/` script under test, auto-derived from the test filename (see *Naming*).
+- `repo`: A fresh `TestRepo` for each test function, already `cd`'d into and configured with a local `user.name` / `user.email`.
+- `bin`: The absolute path to the `bin/` script under test, auto-derived from the test filename (see *Naming*).
 
 Cover, at minimum: happy path, error paths, argument validation.
 
 ## How scripts are executed
 
-[`TestRepo.run()`](../../test/helper.py) invokes scripts via `subprocess.run(["bash", bin, ...])` — explicitly using `bash`, **not** the script's shebang. This means:
+[`TestRepo.run()`](../../test/helper.py) invokes scripts via `subprocess.run(["bash", bin, ...])`: Explicitly using `bash`, **not** the script's shebang. This means:
 
 - Tests pass even if the shebang is broken or absent.
 - Tests do **not** verify that scripts run correctly when invoked via `PATH` on the user's system.
