@@ -1,0 +1,9 @@
+# `git download`
+
+Improved `git fetch`: download and prune local objects, tags, and branches to match all remotes.
+
+## Usage
+
+```
+$ git download
+```

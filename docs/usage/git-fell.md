@@ -1,0 +1,9 @@
+# `git fell`
+
+Delete any branches that have already been merged into the default branch or the specified branch.
+
+## Usage
+
+```
+$ git fell [<branch>]
+```

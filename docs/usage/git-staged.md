@@ -1,0 +1,9 @@
+# `git staged`
+
+List files with changes staged for committing.
+
+## Usage
+
+```
+$ git staged
+```

@@ -1,0 +1,9 @@
+# `git tags`
+
+List all tags, sorted by commit date.
+
+## Usage
+
+```
+$ git tags
+```

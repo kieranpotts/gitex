@@ -1,0 +1,9 @@
+# `git recent`
+
+Clean `git log`, last 25 entries only.
+
+## Usage
+
+```
+$ git recent
+```

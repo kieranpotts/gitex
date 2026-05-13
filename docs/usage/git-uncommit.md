@@ -1,0 +1,101 @@
+# `git uncommit`
+
+Undo the last commit, returning the changes introduced in the commit to the staging area.
+
+This command is useful when you realize immediately after making a commit that you need to make additional changes, or when you want to reorganize your commits. The commit is removed from the history, but all changes remain staged and ready to be recommitted.
+
+Under the hood, this command uses `git reset HEAD~1 --soft`, which moves the HEAD pointer back one commit while preserving the staging area and working directory.
+
+To completely discard the changes from the last commit (equivalent to `git reset HEAD~1 --hard`), you can combine this command with [`git undo`](./git-undo.md):
+
+```
+$ git uncommit && git undo
+```
+
+> [!CAUTION]
+> This command rewrites commit history. Avoid using it on commits that have already been pushed to a shared repository unless you understand the implications of force pushing.
+
+## Usage
+
+```
+$ git uncommit
+```
+
+This command does not accept any arguments.
+
+## Examples
+
+You made a commit but immediately realized you forgot to include a file:
+
+```
+$ git commit -m "implement login feature"
+[main 1a2b3c4] implement login feature
+ 2 files changed, 50 insertions(+)
+
+$ git uncommit
+
+$ git status --short
+M  login.js
+M  auth.js
+```
+
+The original commit is undone, changes are kept in the staging area, and you can now add the missing file before recommitting.
+
+```
+$ touch login.test.js
+$ git add login.test.js
+$ git commit -m "implement login feature"
+[main 5d6e7f8] implement login feature
+ 3 files changed, 75 insertions(+)
+```
+
+### Decomposing a monolithic commit into atomic ones
+
+Another use case for `git uncommit` is breaking a large commit into smaller, more atomic commits:
+
+```
+$ git commit -m "refactor authentication and add tests"
+[main 9a8b7c6] refactor authentication and add tests
+ 5 files changed, 200 insertions(+)
+
+$ git uncommit
+
+$ git status --short
+M  auth.js
+M  login.js
+A  auth.test.js
+A  login.test.js
+M  README.md
+
+$ git reset
+$ git add auth.js login.js
+$ git commit -m "refactor authentication"
+
+$ git add auth.test.js login.test.js
+$ git commit -m "add authentication tests"
+
+$ git add README.md
+$ git commit -m "update documentation"
+```
+
+Now you have three well-organized commits instead of one monolithic commit.
+
+### Discarding the last commit entirely
+
+To completely remove the last commit and discard all changes:
+
+```
+$ git uncommit && git undo
+```
+
+This is equivalent to `git reset HEAD~1 --hard`.
+
+> [!WARNING]
+> You risk permanently losing changes if you do this.
+
+## See also
+
+- [`git amend`](./git-amend.md): Amend the last commit with new changes.
+- [`git unamend`](./git-unamend.md): Undo the last `git amend` operation.
+- [`git undo`](./git-undo.md): Discard uncommitted changes.
+- [`git reword`](./git-reword.md): Change the commit message of the last commit.

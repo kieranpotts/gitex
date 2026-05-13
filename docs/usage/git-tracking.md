@@ -1,0 +1,9 @@
+# `git tracking`
+
+Same as `git branches` but also shows the names of the tracked upstream branches.
+
+## Usage
+
+```
+$ git tracking
+```

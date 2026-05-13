@@ -1,8 +1,0 @@
-= Documentation
-
-* link:./requirements.adoc[*Requirements*]
-* link:./installation.adoc[*Installation*]
-* link:./configuration.adoc[*Configuration*]
-* link:./usage/README.adoc[*Usage*]
-* link:./runtime-tests.adoc[*Runtime tests*]
-* link:./static-analysis.adoc[*Static analysis*]

@@ -1,0 +1,9 @@
+# `git upstream`
+
+Show the name of the tracked upstream repository.
+
+## Usage
+
+```
+$ git upstream
+```

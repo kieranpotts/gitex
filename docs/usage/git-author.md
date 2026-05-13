@@ -1,0 +1,77 @@
+# `git author`
+
+Change the author name and email address of the last commit or an earlier specified commit.
+
+This command allows you to modify the authorship information of commits in your Git history. You can provide the new author details via command-line flags or through interactive prompts. Both name and email are required.
+
+When modifying the most recent commit (HEAD), the operation is performed directly via `git commit --amend`. When modifying an earlier commit, the command checks out that commit, amends it, then initiates a rebase to integrate the change into your branch history.
+
+> [!CAUTION]
+> This command rewrites commit history. Avoid using it on commits that have already been pushed to a shared repository.
+
+## Usage
+
+```
+$ git author [<ref>] [--name <name>] [--email <email>]
+```
+
+## Examples
+
+```
+$ git author
+$ git author --name "Jane Smith" --email "jane@example.com"
+$ git author --name "Jane Smith"
+$ git author --email "jane@example.com"
+$ git author HEAD~2 --name "Jane Smith" --email "jane@example.com"
+```
+
+### Parameters
+
+`[ref]`::
+Optional. The commit reference to modify. Can be a commit SHA, a symbolic reference like `HEAD~1`, or any valid Git revision. If not provided, defaults to `HEAD` (the most recent commit).
+
+### Options
+
+`--name [name]`::
+The new author name. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty.
+
+`--email [email]`::
+The new author email address. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty.
+
+## Examples
+
+Run the command without arguments and follow the prompts:
+
+```
+$ git author
+
+Author's name:
+> Jane Smith
+
+Author's email address:
+> jane@example.com
+
+New commit hash is a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0.
+```
+
+Provide both name and email directly:
+
+```
+$ git author --name "Jane Smith" --email "jane@example.com"
+New commit hash is a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0.
+```
+
+To modify a commit other than HEAD, specify a ref.
+
+```
+$ git author HEAD~2 --name "Jane Smith" --email "jane@example.com"
+```
+
+The command outputs the new commit SHA after successfully changing the author.
+
+## See also
+
+- [`git whoami`](./git-whoami.md): Display your currently configured Git user identity.
+- [`git reword`](./git-reword.md): Change the commit message without changing the author.
+- [`git amend`](./git-amend.md): Amend the last commit with new changes.
+- [`git fixup`](./git-fixup.md): Fix something in an earlier commit.

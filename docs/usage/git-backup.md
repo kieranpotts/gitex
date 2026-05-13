@@ -1,0 +1,9 @@
+# `git backup`
+
+Create a backup of the current branch or another specified branch.
+
+## Usage
+
+```
+$ git backup [<branch>]
+```

@@ -1,0 +1,9 @@
+# `git rebase-all`
+
+Rebase all local branches on the trunk branch – defaults to "main" unless otherwise specified.
+
+## Usage
+
+```
+$ git rebase-all [<base>]
+```

@@ -1,0 +1,7 @@
+# `git squash`
+
+## Usage
+
+```
+$ git squash [<branch>]
+```

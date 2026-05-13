@@ -1,0 +1,9 @@
+# `git versions`
+
+List tags prefixed with the lower case letter "v", sorted numerically.
+
+## Usage
+
+```
+$ git versions
+```

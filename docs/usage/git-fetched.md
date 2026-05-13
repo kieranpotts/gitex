@@ -1,0 +1,9 @@
+# `git fetched`
+
+List the commits added by the last `git fetch` operation.
+
+## Usage
+
+```
+$ git fetched
+```

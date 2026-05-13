@@ -1,9 +1,0 @@
-= `git ignored`
-
-List all ignored files.
-
-== Usage
-
-----
-$ git ignored
-----

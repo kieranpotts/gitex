@@ -1,0 +1,9 @@
+# `git history`
+
+Clean `git log`, paginated.
+
+## Usage
+
+```
+$ git history
+```

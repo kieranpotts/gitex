@@ -1,0 +1,9 @@
+# `git resume`
+
+Resume work-in-progress committed via the last `git wip` operation.
+
+## Usage
+
+```
+$ git resume
+```

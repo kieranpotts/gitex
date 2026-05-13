@@ -1,0 +1,46 @@
+# `git amend`
+
+Amend the last commit with new changes. This is a convenient shortcut when you've forgotten to include changes in your last commit.
+
+This command is a shortcut for `git commit --amend`, but with slightly differing behavior:
+
+- If you have **staged changes**, only those changes are added to the last commit.
+
+- If you have **no staged changes** but you have working changes (unstaged or untracked files), all working changes (including untracked files) are staged and added to the last commit.
+
+- If your working tree is **clean**, a message is displayed and no changes are made.
+
+The commit message is not changed (`--no-edit`). Only the contents of the previous commit are changed. To amend the previous commit message you can use [`git reword`](./git-reword.md).
+
+See also [`git unamend`](./git-unamend.md), which is capable of undoing this operation and returning the commit to its previous state.
+
+> [!CAUTION]
+> This command rewrites commit history. Avoid using it on commits that have already been pushed to a shared repository.
+
+## Usage
+
+```
+$ git amend
+```
+
+This command does not accept any arguments.
+
+## Examples
+
+You made a commit but forgot to include a new configuration file:
+
+```
+$ git commit -m "add user authentication"
+[main 1a2b3c4] add user authentication
+ 2 files changed, 45 insertions(+)
+
+$ touch config/auth.json
+$ git amend
+[main 5d6e7f8] add user authentication
+ 3 files changed, 52 insertions(+)
+```
+
+- [`git reword`](./git-reword.md): Amend the message of the last commit.
+- [`git unamend`](./git-unamend.md): Undo the last `git amend` operation.
+- [`git fixup`](./git-fixup.md): Another way of changing prior commits.
+- [`git uncommit`](./git-uncommit.md): Undo the last commit but keep the changes.
