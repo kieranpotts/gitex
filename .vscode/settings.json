@@ -28,6 +28,22 @@
     },
   },
 
+  "[markdown]": {
+    /* Wrap Markdown files at 72 characters. */
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 72,
+
+    /* Enable auto-formatting for Markdown files. */
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+
+    /* Enable auto-fixes for Markdown files. */
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+    },
+  },
+
   "[python]": {
     /* Python files should wrap at 88 characters. */
     "editor.rulers": [
