@@ -3,7 +3,7 @@ set -eu
 
 #
 # git-orphan - Create an orphaned branch, with no parents, and switch to it.
-
+#
 # Working changes will be added to the staging index, unless the `--fresh`
 # option is provided, in which case the working directory will be
 # cleared – careful, you may lose work-in-progress.
@@ -27,18 +27,38 @@ set -eu
 # shellcheck source=../lib/print.sh
 . "$(dirname "$0")/../lib/print.sh"
 
+_print_usage() {
+  cat <<EOF
+Usage: git-orphan <branch-name> [--fresh]
+
+Creates a new branch that has no parent commits.
+--fresh: Removes all files from the working directory (keeps .git)
+EOF
+}
+
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-orphan does not accept any options"
-    return 1
-  fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: If there are working/staged changes, prompt the use to keep or
+  # discard them.
 
-  # TODO: Combine this with `git orphan`. If there are working/staged changes,
-  # prompt the use to keep or discard them.
+  # Parse arguments.
+  branch=""
+  fresh=false
 
-  branch="${1}"
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --fresh) fresh=true ;;
+      -h|--help) usage ;;
+      *)
+        if [ -z "${branch}" ]; then
+          branch="$1"
+        else
+          print_error "Unknown argument: $1"
+        fi
+        ;;
+    esac
+    shift
+  done
 
   if [ -z "${branch}" ]; then
     # Bash-compatible code:
@@ -50,34 +70,22 @@ main() {
   fi
 
   if [ -z "${branch}" ]; then
-    echo "Require branch name" >&2
+    print_error "Require branch name"
     exit 1
   fi
 
-  git switch --orphan "${branch}"
+  # Create the orphan branch. `git checkout --orphan` creates a branch with no
+  # history and stages all current files in the index.
+  if ! git checkout --orphan "${branch}"; then
+    error "Failed to create orphan branch '${branch}'"
+  fi
 
-  # ------------------------------------------------------
-
-  # TODO: Combine this with `git orphan`. If there are working/staged changes,
-  # prompt the use to keep or discard them.
-
-  # branch="${1}"
-
-  # if [ -z "${branch}" ]; then
-  #   # Bash-compatible code:
-  #   #read -p "Type a branch name: " branch
-
-  #   # Posix-compatible code:
-  #   printf "Type a branch name: " >&2
-  #   read -r branch
-  # fi
-
-  # if [ -z "${branch}" ]; then
-  #   echo "Require branch name" >&2
-  #   exit 1
-  # fi
-
-  # git checkout --orphan "${branch}"
+  # Handle the `--fresh` flag. If the user wants a totally clean slate, we
+  # clear the index and working tree. We don't use `git clean`, to avoid
+  # deleting untracked files. But the index is now empty.
+  if [ "${fresh}" = true ]; then
+    git rm -rf .
+  fi
 
 }
 

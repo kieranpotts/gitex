@@ -1,6 +1,13 @@
 = `git orphan`
 
-Create an orphaned branch and switch to it. Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working tree will be cleared – careful, you may lose work-in-progress.
+Create an orphaned branch and switch to it.
+
+Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working tree will be cleared.
+
+[WARNING]
+======
+Be careful about using the `--fresh` option. You may lose work-in-progress. Be sure you have committed everything you want to keep before running this command.
+======
 
 == Usage
 
