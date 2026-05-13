@@ -134,7 +134,7 @@ class TestGitBr:
         assert new_branch_commit == original_commit
 
     def test_custom_remote_via_environment_variable(self, repo, bin):
-        """Test using custom remote name via X_GITEX_DEFAULT_REMOTE_NAME."""
+        """Test using custom remote name via GITEX_DEFAULT_REMOTE_NAME."""
 
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
@@ -143,7 +143,7 @@ class TestGitBr:
 
         # Set custom remote name via environment variable.
         env = os.environ.copy()
-        env["X_GITEX_DEFAULT_REMOTE_NAME"] = "upstream"
+        env["GITEX_DEFAULT_REMOTE_NAME"] = "upstream"
 
         # Run 'git-br' inside the test repository.
         # Run with custom environment variables.
@@ -173,7 +173,7 @@ class TestGitBr:
 
         # Set empty remote name via environment variable.
         env = os.environ.copy()
-        env["X_GITEX_DEFAULT_REMOTE_NAME"] = ""
+        env["GITEX_DEFAULT_REMOTE_NAME"] = ""
 
         # Run 'git-br' inside the test repository.
         # Run with custom environment.

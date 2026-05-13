@@ -44,7 +44,7 @@ main() {
   git branch "${branch}" && git checkout "${branch}"
 
   # Determine the remote name to use (customizable via environment variable).
-  remote="${X_GITEX_DEFAULT_REMOTE_NAME:-origin}"
+  remote="${GITEX_DEFAULT_REMOTE_NAME:-origin}"
 
   # Push to remote and set up tracking.
   git push --set-upstream "${remote}" HEAD

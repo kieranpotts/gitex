@@ -26,10 +26,10 @@ By default, when the new local branch is created, `git br` will automatically pu
 $ git push --set-upstream origin HEAD
 ----
 
-If you use a different naming convention for your upstream repositories, you can set an environment variable named `X_GITEX_DEFAULT_REMOTE_NAME` to tell GitEx what it is. For example, if you use the name "upstream" instead, set this in your shell configuration file (~/.bashrc, ~/.zshrc, etc.):
+If you use a different naming convention for your upstream repositories, you can set an environment variable named `GITEX_DEFAULT_REMOTE_NAME` to tell GitEx what it is. For example, if you use the name "upstream" instead, set this in your shell configuration file (~/.bashrc, ~/.zshrc, etc.):
 
 ----
-$ export X_GITEX_DEFAULT_REMOTE_NAME=upstream
+$ export GITEX_DEFAULT_REMOTE_NAME=upstream
 ----
 
 Now, `git br` will push new branches to the remote named "upstream" instead of "origin":
@@ -41,7 +41,7 @@ $ git br my-branch
 All GitEx commands will assume your default remote is named "upstream", across all your local repositories. If yuo need to further override this default on a case-by-case basis, you will need to override the variable for individual `git br` commands:
 
 ----
-$ X_GITEX_DEFAULT_REMOTE_NAME=upstream git br my-feature
+$ GITEX_DEFAULT_REMOTE_NAME=upstream git br my-feature
 ----
 
 Most Git users stick with Git's default name for remote repositories – "origin" – so it is not expected many users will need to adjust this configuration. But it's there if you need it.
