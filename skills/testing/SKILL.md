@@ -14,7 +14,7 @@ A non-zero exit from any stage fails the whole run.
 
 **Always run `./check` before pushing.**
 
-Requires `poetry install` to have been run at least once, and again after any change to `pyproject.toml` or `poetry.lock`.
+Requires `poetry install` to have been run at least once, and again after any change to `pyproject.toml` or `poetry.lock`. The devcontainer runs `poetry install` automatically as its `postCreateCommand`, so no manual setup is needed when working in-container.
 
 To drill into a single failing layer, see [`../shell-scripts/SKILL.md`](../shell-scripts/SKILL.md) for ShellCheck details or [`../python-tests/SKILL.md`](../python-tests/SKILL.md) for pytest and Ruff details.
 
@@ -28,5 +28,6 @@ Run `./fix` before committing Python changes. There are no automated fixers for 
 
 ## Not covered
 
-- Commit message validation — handled separately by the `commit-validation.yaml` CI workflow.
+- Commit message validation — handled separately by the `commit-validation.yaml` CI workflow. See [`../commits/SKILL.md`](../commits/SKILL.md).
+- The `check` and `fix` scripts themselves — they are shell scripts but are not currently scanned by ShellCheck (which only targets `bin/*` and `lib/*`).
 - Anything outside `bin/`, `lib/`, and `test/`.
