@@ -23,7 +23,7 @@ Follow the shape of [`docs/usage/git-whoami.adoc`](../../docs/usage/git-whoami.a
 
 <One-line summary in prose.>
 
-<One or two paragraphs explaining behaviour, edge cases, and any non-obvious mechanics.>
+<One or two paragraphs explaining behavior, edge cases, and any non-obvious mechanics.>
 
 == Usage
 

@@ -51,7 +51,7 @@ Cover, at minimum: happy path, error paths, argument validation.
 - Tests pass even if the shebang is broken or absent.
 - Tests do **not** verify that scripts run correctly when invoked via `PATH` on the user's system.
 
-If you need to test shebang/PATH behaviour, do it manually outside pytest.
+If you need to test shebang/PATH behavior, do it manually outside pytest.
 
 ## Configuration isolation
 

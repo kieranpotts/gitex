@@ -28,8 +28,8 @@ Derived from how the types are actually used in the project's history:
 
 - `feature` — new user-facing capability (new command, new flag, new env var).
 - `fix` — bug fix in an existing capability.
-- `performance` — performance improvement, no behavioural change.
-- `refactor` — internal restructuring with no behavioural change (renames, helper extraction, simplifying interfaces).
+- `performance` — performance improvement, no behavioral change.
+- `refactor` — internal restructuring with no behavioral change (renames, helper extraction, simplifying interfaces).
 - `dev` — development-time artifacts that don't ship to users: tests, roadmap, dev scripts, project-internal tooling.
 - `maintenance` — repo/workspace hygiene: VS Code config, devcontainer, CI workflows, label sync, dependency bumps.
 - `chore` — minor uncategorised work: typo fixes, comment tweaks, formatting.
