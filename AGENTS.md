@@ -1,124 +1,62 @@
-# GitEx: Project information for AI coding agents
-
-The purpose of this document is to provide context on the project for AI coding agents.
+# GitEx
 
 ## Project overview
 
-GitEx is a suite of Git extensions implemented as POSIX-compliant Unix shell scripts. These extensions integrate with Git as aliases and provide convenient shortcuts for common Git operations like `git sync`, `git amend`, `git squash`, etc.
+GitEx is a suite of Git extensions implemented as POSIX-compliant Unix shell scripts. Each script integrates with Git as an alias, providing shortcuts for common operations like `git sync`, `git amend`, and `git squash`.
 
-The project is inspired by (but not compatible with) Git Extras. Some operations are potentially destructive and may rewrite commit history.
+Inspired by (but not compatible with) Git Extras. Some operations are potentially destructive and may rewrite commit history.
 
-## Architecture
+## Tech stack
 
-### Core components
+- POSIX shell scripts (`bin/`, `lib/`).
+- Python 3.12+ with Poetry 2.2+ for the test suite (`test/`).
+- ShellCheck for shell linting; Ruff for Python linting and formatting.
+- AsciiDoc for user and developer documentation (`docs/`).
 
-- **bin/**: Contains ~60 Git extension scripts (eg. `git-whoami`, `git-amend`, `git-sync`). Each script follows POSIX shell compliance and has a standard structure:
-  - Shebang: `#!/bin/env sh`.
-  - Error handling: `set -eu`.
-  - For debugging, `set -x` can be used temporarily to enable execution tracing.
-  - Header comment with description, usage, and dependencies.
-  - `main()` function containing implementation.
-  - Call to `main` at the end, forwarding all command-line arguments.
+## Repository structure
 
-- **lib/**: Shared library code.
-  - `print.sh`: Helper functions for consistent messaging across GitEx commands. Imported directly into `bin` scripts.
-  - `ansi-codes.sh`: ANSI color code definitions for terminal output formatting (exports variables like `$RED`, `$BOLD`, `$RESET`). Used by `print.sh` but not directly sourced from `bin` scripts.
+- `bin/` – The executable `git-<name>` scripts. Any file here that is on the user's `PATH` is auto-discovered by Git as a `git <name>` subcommand. No registration is needed – the user just needs to drop these files into their `PATH` to enable each Git alias.
 
-- **test/**: Python-based test suite using pytest.
-  - `conftest.py`: Pytest configuration with fixtures such as `repo`.
-  - `helper.py`: Contains `TestRepo` class for creating isolated temporary Git repositories using GitPython.
-  - `test_*.py`: Test files, each mapping to one Git extension (eg. `test_git_whoami.py` tests `git whoami`).
+- `lib/` – Shared shell components sourced by `bin/` scripts (`print.sh` for messaging helpers, `ansi-codes.sh` for color variables).
 
-- **docs/**: User and developer documentation written in AsciiDoc.
-  - `requirements.adoc`, `installation.adoc`: Setup instructions.
-  - `usage/*.adoc`: Documentation for individual Git extensions.
-  - `runtime-tests.adoc`, `static-analysis.adoc`: Development process documentation.
+- `docs/` – AsciiDoc documentation, including per-command usage docs (`docs/usage/git-<name>.adoc`) and developer-facing docs for setup, testing, and configuration.
 
-## Development tools
+- `test/` – The pytest suite. Tests invoke `bin/` scripts as subprocesses against throwaway Git repositories, so all tests are effectively integration-level.
 
-### Running tests
+- `skills/` – On-demand context for agents (see the *Skills* section below).
 
-Tests use pytest with GitPython to create isolated temporary repositories. Tests do not modify global or user-level Git configuration, only local (repository-level) configuration.
+- `check`, `fix` – Root-level dev-tool scripts (see *Dev tools* below).
 
-```bash
-# Install dependencies (requires Python >= 3.12, Poetry >= 2.2).
-poetry install
+## Dev tools
 
-# Run all tests.
-poetry run pytest
+There is nothing to build — `bin/` scripts ship as source, installed by putting `bin/` on the user's `PATH`.
 
-# Run tests with verbose output.
-poetry run pytest -v
+- `./check` – Runs the full verification pipeline: ShellCheck on `bin/` and `lib/`, Ruff lint on `test/`, then pytest. Must pass before pushing.
 
-# Run a specific test file.
-poetry run pytest test/test_git_whoami.py
+- `./fix` – Runs automated fixers (currently Ruff format on `test/`). There is no autofixer for shell. ShellCheck findings must be addressed manually.
 
-# Run a specific test function.
-poetry run pytest test/test_git_whoami.py::TestGitWhoami::test_with_name_and_email_set
-```
+- `poetry install` – One-time setup of the Python test dependencies, repeated after any change to `pyproject.toml` or `poetry.lock`. The devcontainer runs this automatically.
 
-### Static analysis
+## House rules
 
-ShellCheck is used for linting shell scripts:
+- The trunk branch is `dev`, not `main`. Open PRs against `dev`.
 
-```bash
-# Install ShellCheck (Debian-based systems).
-sudo apt-get install -y shellcheck
+- All written content (code comments, docs, commit messages) is in American English, with full sentences terminated by periods.
 
-# Lint all shell scripts - lowest level of severity.
-shellcheck --severity=style bin/* lib/*
-```
+- All shell scripts MUST run under Bash, Zsh, and Dash, and also Git-Bash-for-Windows and WSL2.
 
-Ruff is used for linting and formatting Python code:
+- Do not introduce dependencies that would break POSIX compatibility. No Bashisms.
 
-```bash
-# Lint Python code.
-poetry run ruff check test/
+## Skills
 
-# Format Python code (run before committing).
-poetry run ruff format test/
-```
+- `./skills/testing/SKILL.md` — Instructions for running static and runtime tests (`./check`) and automated fixes (`./fix`).
 
-### CI/CD
+- `./skills/shell-scripts/SKILL.md` — Coding conventions and design patterns for the shell scripts in `bin/` and `lib/`.
 
-GitHub Actions workflows (in `.github/workflows/`):
+- `./skills/python-tests/SKILL.md` — Coding conventions and design patterns for the pytest suite in `test/`.
 
-- **integration.yaml**: Runs on push/PR to dev branch.
-  - Lint job: ShellCheck + Ruff.
-  - Test job: Poetry + pytest.
+- `./skills/documentation/SKILL.md` — Formatting conventions for the AsciiDoc docs in `docs/`.
 
-- **commit-validation.yaml**: Validates commit messages.
+- `./skills/new-command/SKILL.md` — End-to-end checklist for adding a new `git-<name>` extension (script, test, usage doc, indexes).
 
-Workflows are run against `dev`, which is the trunk for this repository (not `main` or `master`).
-
-## Development guidelines
-
-### Shell scripts (`bin/` and `lib/`)
-
-- Must be POSIX-compliant (works in Bash, Zsh, Dash, etc.); there must not be any Bashisms.
-- Use `set -eu` for error handling.
-- Follow the standard script structure (see `bin/git-whoami` for reference).
-- Include header comments with description, usage, and dependencies.
-- Wrap implementation in a `main()` function.
-- Must pass ShellCheck with `--severity=style`.
-
-### Python tests (`test/`)
-
-- Use the `repo` fixture from `conftest.py` for test isolation.
-- Import `TestRepo` from `helper.py` if additional repository setup is needed.
-- Follow existing test patterns (see `test/test_git_whoami.py` for a good example).
-- Tests must not modify global or user-level Git configuration. Use `git config --local` only, to keep changes scoped to the test repository.
-- Run Ruff formatter before committing.
-
-### Documentation
-
-- User-facing docs are in AsciiDoc format (`.adoc`).
-- Each Git extension has a corresponding doc in `docs/usage/`.
-- AsciiDoc internal linking syntax: `link:./path/file.adoc[Display Text]`.
-
-### Other constraints
-
-- Shell scripts and Python tests must be well-commented. Use American English and full sentences (terminated with periods) for all comments.
-- Each `git` alias may have dependencies on the `lib` files, but nothing else. One alias must not internally use another alias – the objective being that users should be able to disable some aliases and for the remaining ones to still work.
-- The project structure mirrors Git's extension mechanism: scripts named `git-<command>` in PATH become `git <command>` aliases.
-- Windows compatibility requires Git Bash or WSL2.
+- `./skills/commits/SKILL.md` — Commit message format enforced by CI, and the semantics of each allowed type.
