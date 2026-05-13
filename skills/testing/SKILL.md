@@ -1,33 +1,56 @@
+---
+name: testing
+description: Run the project's verification (./check) and auto-fix (./fix) pipelines, or diagnose a failure in either.
+compatibility: requires poetry, python >= 3.12, shellcheck
+license: MIT
+---
+
 # Testing
 
-Two root-level scripts wrap the project's verification and auto-fix pipelines. Prefer them over invoking the underlying tools directly, so that the full suite is exercised consistently.
+Use this skill when running the gitex test suite, validating a branch before pushing, or diagnosing CI failures. Two root-level scripts wrap the pipelines; prefer them over invoking the underlying tools directly so the full suite stays consistent.
 
-## `./check` - full verification
+Do NOT use this skill for authoring tests or scripts. See the `shell-scripts`, `python-tests`, and `commits` skills for those.
 
-Runs every static and runtime check, in this order:
+## Instructions
 
-1. **ShellCheck** on `bin/*` and `lib/*` (`--severity=style`).
-2. **Ruff lint** on `test/`.
-3. **pytest** on `test/` (verbose).
+1. **Verify.** Run `./check` from the repo root. It executes, in order:
+   1. ShellCheck on `bin/*` and `lib/*` (`--severity=style`).
+   2. Ruff lint on `test/`.
+   3. pytest on `test/` (verbose).
 
-A non-zero exit from any stage fails the whole run.
+   A non-zero exit at any stage fails the run. **Always run `./check` before pushing.**
 
-**Always run `./check` before pushing.**
+2. **Auto-fix.** Run `./fix` before committing Python changes. It currently runs Ruff format on `test/`. There is no autofixer for shell. ShellCheck findings must be addressed by hand.
 
-Requires `poetry install` to have been run at least once, and again after any change to `pyproject.toml` or `poetry.lock`. The devcontainer runs `poetry install` automatically as its `postCreateCommand`, so no manual setup is needed when working in-container.
+3. **Set up.** `poetry install` must have run at least once, and again after any change to `pyproject.toml` or `poetry.lock`. The devcontainer runs this automatically as its `postCreateCommand`.
 
-To drill into a single failing layer, see [`../shell-scripts/SKILL.md`](../shell-scripts/SKILL.md) for ShellCheck details or [`../python-tests/SKILL.md`](../python-tests/SKILL.md) for pytest and Ruff details.
+4. **Diagnose.** If a stage fails, drill into the per-domain skill:
+   - ShellCheck failures: see [`../shell-scripts/SKILL.md`](../shell-scripts/SKILL.md).
+   - Ruff / pytest failures: see [`../python-tests/SKILL.md`](../python-tests/SKILL.md).
 
-## `./fix` - automated fixes
+## Examples
 
-Runs automated fixers:
+Before pushing a branch:
 
-1. **Ruff format** on `test/`.
+```sh
+./check && git push
+```
 
-Run `./fix` before committing Python changes. There are no automated fixers for shell scripts - ShellCheck findings must be addressed manually.
+Lint a single script without running the full pipeline:
 
-## Not covered
+```sh
+shellcheck --severity=style bin/git-foo
+```
 
-- Commit message validation - handled separately by the `commit-validation.yaml` CI workflow. See [`../commits/SKILL.md`](../commits/SKILL.md).
-- The `check` and `fix` scripts themselves - they are shell scripts but are not currently scanned by ShellCheck (which only targets `bin/*` and `lib/*`).
-- Anything outside `bin/`, `lib/`, and `test/`.
+## Edge cases
+
+- The `check` and `fix` scripts themselves are shell scripts but are not scanned by ShellCheck. Scope is `bin/*` and `lib/*` only.
+- Commit message validation is NOT part of `./check`. It runs only in CI via the `commit-validation.yaml` workflow. See [`../commits/SKILL.md`](../commits/SKILL.md).
+- Anything outside `bin/`, `lib/`, and `test/` (e.g., `docs/`, `.devcontainer/`, `.github/`) is not covered.
+
+## References
+
+- [`../shell-scripts/SKILL.md`](../shell-scripts/SKILL.md): ShellCheck scope and shell conventions.
+- [`../python-tests/SKILL.md`](../python-tests/SKILL.md): Ruff and pytest details.
+- [`../commits/SKILL.md`](../commits/SKILL.md): commit-message validation pipeline.
+- [`../../docs/runtime-tests.adoc`](../../docs/runtime-tests.adoc), [`../../docs/static-analysis.adoc`](../../docs/static-analysis.adoc): end-user docs for the same pipelines.
