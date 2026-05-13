@@ -20,6 +20,8 @@ You use these Git extensions at your own risk. Some operations enabled via these
 
 == Documentation
 
+=== Usage
+
 * link:./docs/requirements.adoc[*Requirements*]
 * link:./docs/installation.adoc[*Installation*]
 * link:./docs/usage/README.adoc[*Usage*]
