@@ -3,8 +3,6 @@ name: documentation
 description: Formatting conventions for the Markdown docs in docs/, including per-command usage files.
 compatibility: none required
 license: MIT
-metadata:
-  project: gitex
 ---
 
 # Documentation
