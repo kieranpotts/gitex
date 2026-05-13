@@ -9,7 +9,7 @@ metadata:
 
 # Documentation
 
-Use this skill when authoring or modifying any `.md` file in `docs/` (or the top-level [`README.md`](../../README.md)). General language rules — American English, full sentences, periods — live in [`../../AGENTS.md`](../../AGENTS.md) and apply here too.
+Use this skill when authoring or modifying any `.md` file in `docs/` (or the top-level [`README.md`](../../README.md)). General language rules - American English, full sentences, periods - live in [`../../AGENTS.md`](../../AGENTS.md) and apply here too.
 
 Do NOT use this skill for in-code comments (those follow the shell-scripts or python-tests skill) or for the `TODO.md` checklist.
 
@@ -109,7 +109,7 @@ Valid labels: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`.
 - **Nested code fences inside admonitions** must keep the `> ` blockquote prefix on every line, including the inner triple-backticks. See [`docs/runtime-tests.md`](../../docs/runtime-tests.md) for a working example.
 - **The cross-link list in [`docs/usage/git-amend.md`](../../docs/usage/git-amend.md)** floats below the body without a `## See also` heading. This is inconsistent with `git-whoami.md`; treat `git-whoami.md` as the canonical layout.
 - **The hand-maintained command index appears in two places** ([`README.md`](../../README.md) and [`docs/usage/README.md`](../../docs/usage/README.md)). Both must be updated together.
-- **Stub usage docs often exist before the matching `bin/` script is implemented** — they encode the intended CLI design. When implementing, verify rather than rewrite.
+- **Stub usage docs often exist before the matching `bin/` script is implemented** - they encode the intended CLI design. When implementing, verify rather than rewrite.
 
 ## References
 
