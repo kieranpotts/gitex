@@ -12,22 +12,6 @@
   "editor.wordWrap": "bounded",
   "editor.wordWrapColumn": 120,
 
-  "[asciidoc]": {
-    /* Wrap AsciiDoc files at 72 characters. */
-    "editor.wordWrap": "bounded",
-    "editor.wordWrapColumn": 72,
-
-    /* Enable auto-formatting for Asciidoc files. */
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
-    "editor.formatOnType": true,
-
-    /* Enable auto-fixes for Asciidoc files. */
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "always",
-    },
-  },
-
   "[markdown]": {
     /* Wrap Markdown files at 72 characters. */
     "editor.wordWrap": "bounded",

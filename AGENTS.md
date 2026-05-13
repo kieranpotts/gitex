@@ -11,7 +11,7 @@ Inspired by (but not compatible with) Git Extras. Some operations are potentiall
 - POSIX shell scripts (`bin/`, `lib/`).
 - Python 3.12+ with Poetry 2.2+ for the test suite (`test/`).
 - ShellCheck for shell linting; Ruff for Python linting and formatting.
-- AsciiDoc for user and developer documentation (`docs/`).
+- Markdown for user and developer documentation (`docs/`).
 
 ## Repository structure
 
@@ -19,7 +19,7 @@ Inspired by (but not compatible with) Git Extras. Some operations are potentiall
 
 - `lib/` – Shared shell components sourced by `bin/` scripts (`print.sh` for messaging helpers, `ansi-codes.sh` for color variables).
 
-- `docs/` – AsciiDoc documentation, including per-command usage docs (`docs/usage/git-<name>.adoc`) and developer-facing docs for setup, testing, and configuration.
+- `docs/` – Markdown documentation, including per-command usage docs (`docs/usage/git-<name>.md`) and developer-facing docs for setup, testing, and configuration.
 
 - `test/` – The pytest suite. Tests invoke `bin/` scripts as subprocesses against throwaway Git repositories, so all tests are effectively integration-level.
 
@@ -55,7 +55,7 @@ There is nothing to build - `bin/` scripts ship as source, installed by putting 
 
 - `./skills/python-tests/SKILL.md`: Coding conventions and design patterns for the pytest suite in `test/`.
 
-- `./skills/documentation/SKILL.md`: Formatting conventions for the AsciiDoc docs in `docs/`.
+- `./skills/documentation/SKILL.md`: Formatting conventions for the Markdown docs in `docs/`.
 
 - `./skills/new-command/SKILL.md`: End-to-end checklist for adding a new `git-<name>` extension (script, test, usage doc, indexes).
 

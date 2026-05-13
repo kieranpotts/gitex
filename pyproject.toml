@@ -7,7 +7,7 @@ authors = ["Kieran Potts <kieranpotts@users.noreply.github.com>"]
 description = "Git extensions and utilities"
 name = "gitex"
 package-mode = false
-readme = "README.adoc"
+readme = "README.md"
 version = "0.0.0"
 
 [tool.poetry.dependencies]

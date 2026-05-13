@@ -18,8 +18,6 @@
       // Install these VS Code extensions in the container.
       // Matches recommended VS Code extensions.
       "extensions": [
-        "asciidoctor.asciidoctor-vscode",
-        "travismichette.adoc-snippets",
         "editorconfig.editorconfig",
         "ms-python.python",
         "timonwong.shellcheck"

@@ -1,114 +1,120 @@
 ---
 name: documentation
-description: Formatting conventions for the AsciiDoc docs in docs/, including per-command usage files.
-compatibility: requires asciidoc-compatible tooling (optional, for preview)
+description: Formatting conventions for the Markdown docs in docs/, including per-command usage files.
+compatibility: none required
 license: MIT
+metadata:
+  project: gitex
 ---
 
 # Documentation
 
-Use this skill when authoring or modifying any `.adoc` file in `docs/` (or the top-level [`README.adoc`](../../README.adoc)). General language rules - American English, full sentences, periods - live in [`../../AGENTS.md`](../../AGENTS.md) and apply here too.
+Use this skill when authoring or modifying any `.md` file in `docs/` (or the top-level [`README.md`](../../README.md)). General language rules — American English, full sentences, periods — live in [`../../AGENTS.md`](../../AGENTS.md) and apply here too.
 
-Do NOT use this skill for in-code comments (those follow the shell-scripts or python-tests skill) or for the project's Markdown files.
+Do NOT use this skill for in-code comments (those follow the shell-scripts or python-tests skill) or for the `TODO.md` checklist.
 
 ## Instructions
 
 1. **Place the file correctly.**
-   - `docs/requirements.adoc`: supported platforms.
-   - `docs/installation.adoc`: install instructions for end users.
-   - `docs/configuration.adoc`: environment variables and their effects.
-   - `docs/runtime-tests.adoc`: how to run the pytest suite.
-   - `docs/static-analysis.adoc`: how to run ShellCheck and Ruff.
-   - `docs/usage/README.adoc`: hand-maintained index of all per-command usage docs.
-   - `docs/usage/git-<name>.adoc`: one usage doc per Git extension.
+   - `docs/requirements.md`: supported platforms.
+   - `docs/installation.md`: install instructions for end users.
+   - `docs/configuration.md`: environment variables and their effects.
+   - `docs/runtime-tests.md`: how to run the pytest suite.
+   - `docs/static-analysis.md`: how to run ShellCheck and Ruff.
+   - `docs/usage/README.md`: hand-maintained index of all per-command usage docs.
+   - `docs/usage/git-<name>.md`: one usage doc per Git extension.
 
-   When adding or renaming a script in `bin/`, both the per-command file and the indexes in `docs/usage/README.adoc` and the top-level [`README.adoc`](../../README.adoc) must be updated together. See [`../new-command/SKILL.md`](../new-command/SKILL.md).
+   When adding or renaming a script in `bin/`, both the per-command file and the indexes in `docs/usage/README.md` and the top-level [`README.md`](../../README.md) must be updated together. See [`../new-command/SKILL.md`](../new-command/SKILL.md).
 
-2. **Follow the canonical usage-doc shape** ([`docs/usage/git-whoami.adoc`](../../docs/usage/git-whoami.adoc)):
+2. **Follow the canonical usage-doc shape** ([`docs/usage/git-whoami.md`](../../docs/usage/git-whoami.md)):
 
-   ```adoc
-   = `git <name>`
+   ````
+   # `git <name>`
 
    <One-line summary in prose.>
 
    <One or two paragraphs explaining behavior, edge cases, mechanics.>
 
-   == Usage
+   ## Usage
 
-   ----
+   ```
    $ git <name> [args]
-   ----
+   ```
 
    <Brief notes on arguments, or "This command does not accept any arguments.">
 
-   == Examples
+   ## Examples
 
    <Realistic command + output blocks, with prose framing.>
 
-   == See also
+   ## See also
 
-   * link:./git-other.adoc[`git other`]: <one-line cross-reference>.
-   ```
+   - [`git other`](./git-other.md): <one-line cross-reference>.
+   ````
 
-   For destructive commands, add a `CAUTION:` admonition near the top, as in [`docs/usage/git-amend.adoc`](../../docs/usage/git-amend.adoc).
+   For destructive commands, add a `> [!CAUTION]` admonition near the top, as in [`docs/usage/git-amend.md`](../../docs/usage/git-amend.md).
 
-3. **Use the project's AsciiDoc conventions.**
-   - **Headings.** `=` for the document title (one per file; always `` `git <name>` `` for usage docs), `==` for sections, `===` for sub-sections.
-   - **Listing blocks** (command output, untyped code):
+3. **Use the project's Markdown conventions.**
+   - **Headings.** `#` for the document title (one per file; always `` `git <name>` `` for usage docs), `##` for sections, `###` for sub-sections.
+   - **Bullets.** `-` (not `*` or `+`). Nested bullets indent by two spaces.
+   - **Emphasis.** `**bold**`, `*italic*` (use sparingly).
+   - **Fenced code blocks** for command output and untyped code:
 
-     ```adoc
-     ----
+     ````
+     ```
      $ git whoami
      name:  Kieran Potts
-     ----
      ```
+     ````
 
-   - **Source blocks** (code with a language, for highlighting):
+   - **Language-tagged fences** for syntax-highlighted code:
 
-     ```adoc
-     [source,bash]
-     ----
+     ````
+     ```bash
      if [ -d "$HOME/dev/gitex/bin" ] ; then
        PATH="$PATH:$HOME/dev/gitex/bin"
      fi
-     ----
      ```
+     ````
 
-   - **Internal links.** `link:./path/file.adoc[Display Text]`.
+   - **Internal links.** `[Display Text](./path/file.md)`. Relative paths from the file's own location.
 
-4. **Wrap lines around 72 columns.** The project's VS Code workspace settings enforce this for AsciiDoc to keep diffs readable.
+4. **Wrap lines around 72 columns.** The project's VS Code workspace settings enforce a visual wrap at 72 for `.md` files to keep diffs readable. Long URLs and code lines may exceed; prose should not.
 
 ## Examples
 
-Inline admonition (single paragraph):
+GitHub callout admonitions (render as styled boxes on GitHub, degrade to plain blockquotes elsewhere):
 
-```adoc
-CAUTION: This command rewrites commit history.
+```
+> [!CAUTION]
+> This command rewrites commit history.
 ```
 
-Block admonition (multiple paragraphs, lists, or formatting):
+Block form with multiple paragraphs or nested code:
 
-```adoc
-[WARNING]
-======
-Longer warning text that needs multiple
-paragraphs.
-
-Continues here.
-======
-```
+````
+> [!TIP]
+> All runtime tests can be executed with this shortcut:
+>
+> ```
+> $ ./check
+> ```
+````
 
 Valid labels: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`.
 
 ## Edge cases
 
-- The cross-link list in [`docs/usage/git-amend.adoc`](../../docs/usage/git-amend.adoc) floats below the body without a `== See also` heading. This is inconsistent with `git-whoami.adoc`; treat `git-whoami.adoc` as the canonical layout.
-- The hand-maintained command index appears in two places ([`README.adoc`](../../README.adoc) and [`docs/usage/README.adoc`](../../docs/usage/README.adoc)). Both must be updated together.
-- Stub usage docs often exist before the matching `bin/` script is implemented — they encode the intended CLI design. When implementing, verify rather than rewrite.
+- **GitHub callouts are renderer-specific.** They render as styled admonition boxes on GitHub and a few other renderers. Elsewhere they degrade to a plain blockquote with `[!LABEL]` shown as literal text. Acceptable trade-off; this project is primarily browsed on GitHub.
+- **Nested code fences inside admonitions** must keep the `> ` blockquote prefix on every line, including the inner triple-backticks. See [`docs/runtime-tests.md`](../../docs/runtime-tests.md) for a working example.
+- **The cross-link list in [`docs/usage/git-amend.md`](../../docs/usage/git-amend.md)** floats below the body without a `## See also` heading. This is inconsistent with `git-whoami.md`; treat `git-whoami.md` as the canonical layout.
+- **The hand-maintained command index appears in two places** ([`README.md`](../../README.md) and [`docs/usage/README.md`](../../docs/usage/README.md)). Both must be updated together.
+- **Stub usage docs often exist before the matching `bin/` script is implemented** — they encode the intended CLI design. When implementing, verify rather than rewrite.
 
 ## References
 
-- [`docs/usage/git-whoami.adoc`](../../docs/usage/git-whoami.adoc): canonical usage-doc template.
-- [`docs/usage/git-amend.adoc`](../../docs/usage/git-amend.adoc): example with a `CAUTION:` admonition.
+- [`docs/usage/git-whoami.md`](../../docs/usage/git-whoami.md): canonical usage-doc template.
+- [`docs/usage/git-amend.md`](../../docs/usage/git-amend.md): example with a `> [!CAUTION]` admonition.
+- [`docs/runtime-tests.md`](../../docs/runtime-tests.md): example with a `> [!TIP]` block containing nested code fences.
 - [`../../AGENTS.md`](../../AGENTS.md): global language rules.
 - [`../new-command/SKILL.md`](../new-command/SKILL.md): adding a new command and its docs together.
