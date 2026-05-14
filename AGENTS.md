@@ -59,4 +59,4 @@ There is nothing to build - `bin/` scripts ship as source, installed by putting 
 
 - `./skills/new-command/SKILL.md`: End-to-end checklist for adding a new `git-<name>` extension (script, test, usage doc, indexes).
 
-- `https://github.com/kieranpotts/skills/blob/dev/skills/tools/commits/SKILL.md`: Commit message format enforced by CI, and the semantics of each allowed type.
+- `https://github.com/kieranpotts/skills/blob/dev/skills/tools/git/commits/SKILL.md`: Commit message format enforced by CI, and the semantics of each allowed type.
