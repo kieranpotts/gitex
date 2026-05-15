@@ -57,7 +57,7 @@ Commit message:
 feature: add git foo
 ```
 
-## Edge cases
+## Rules
 
 - **Multi-word commands.** Use kebab-case in the script name (`bin/git-push-all`) and snake_case in the test name (`test/test_git_push_all.py`). Underscores in test filenames map to hyphens in script names - never the reverse.
 - **Stub usage doc already exists.** Don't rewrite from scratch. The stub encodes the intended CLI surface. If implementation diverges, decide which is right and update only what needs to change.

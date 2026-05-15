@@ -101,7 +101,7 @@ Block form with multiple paragraphs or nested code:
 
 Valid labels: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`.
 
-## Edge cases
+## Rules
 
 - **GitHub callouts are renderer-specific.** They render as styled admonition boxes on GitHub and a few other renderers. Elsewhere they degrade to a plain blockquote with `[!LABEL]` shown as literal text. Acceptable trade-off; this project is primarily browsed on GitHub.
 - **Nested code fences inside admonitions** must keep the `> ` blockquote prefix on every line, including the inner triple-backticks. See [`docs/runtime-tests.md`](../../docs/runtime-tests.md) for a working example.

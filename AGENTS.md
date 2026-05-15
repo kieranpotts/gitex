@@ -27,7 +27,7 @@ Inspired by (but not compatible with) Git Extras. Some operations are potentiall
 
 - `check`, `fix` – Root-level dev-tool scripts (see *Dev tools* below).
 
-## Dev tools
+## Tools
 
 There is nothing to build - `bin/` scripts ship as source, installed by putting `bin/` on the user's `PATH`.
 
@@ -37,7 +37,7 @@ There is nothing to build - `bin/` scripts ship as source, installed by putting 
 
 - `poetry install` – One-time setup of the Python test dependencies, repeated after any change to `pyproject.toml` or `poetry.lock`. The devcontainer runs this automatically.
 
-## House rules
+## Rules
 
 - The trunk branch is `dev`, not `main`. Open PRs against `dev`.
 

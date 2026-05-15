@@ -42,7 +42,7 @@ Lint a single script without running the full pipeline:
 shellcheck --severity=style bin/git-foo
 ```
 
-## Edge cases
+## Rules
 
 - The `check` and `fix` scripts themselves are shell scripts but are not scanned by ShellCheck. Scope is `bin/*` and `lib/*` only.
 - Commit message validation is NOT part of `./check`. It runs only in CI via the `commit-validation.yaml` workflow. See [`../commits/SKILL.md`](../commits/SKILL.md).

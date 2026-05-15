@@ -66,7 +66,7 @@ def test_rejects_unknown_flag(self, repo, bin):
     assert "unknown option" in result.stderr
 ```
 
-## Edge cases
+## Rules
 
 - **`TestRepo.run()` uses `bash`, not the script's shebang** ([`test/helper.py`](../../test/helper.py)). Tests pass even if the shebang is broken or absent. To verify shebang/PATH behavior, do it manually outside pytest.
 - **`TestRepo` is a class with a `Test*` name but is not a pytest test class.** A `filterwarnings` rule in [`pyproject.toml`](../../pyproject.toml) suppresses the collection warning.
