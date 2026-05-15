@@ -7,99 +7,103 @@ license: MIT
 
 # Shell scripts
 
-Use this skill when authoring or modifying a script in `bin/` or `lib/`. All scripts must be POSIX-compliant - Bash, Zsh, Dash, Git-Bash-for-Windows, WSL2 - with no Bashisms. Every script must pass `shellcheck --severity=style bin/* lib/*`.
+Use this skill when authoring or modifying a script in `bin/` or `lib/`. This skill extends the [POSIX shell scripting skill](https://github.com/kieranpotts/skills/blob/dev/skills/code/posix/SKILL.md) — all rules there apply here. This document covers GixTex-specific conventions.
 
-Do NOT use this skill for the root-level `check` / `fix` scripts (looser conventions, not ShellCheck-scanned) or for Python tests.
+Do NOT use this skill for the root-level `check` / `fix` scripts, which have looser conventions and are not scanned by ShellCheck, or for Python tests.
 
-## Instructions
+## Rules
 
-1. **Start from the canonical template.** Use [`bin/git-whoami`](../../bin/git-whoami) as the reference. Every `bin/` script has this shape:
+- **Base new scripts on this template:**
 
-   ```sh
-   #!/bin/env sh
-   set -eu
+  ```sh
+  #!/bin/env sh
+  set -eu
 
-   #
-   # <command-name> - <one-line description>.
-   #
-   # <Longer description if needed.>
-   #
-   # Usage:
-   #   $ git <command> [args]
-   #
-   # Dependencies: <list, or "None">
-   #
+  #
+  # <command-name> - <one-line description>.
+  #
+  # <Longer description if needed.>
+  #
+  # Usage:
+  #   $ git <command> [args]
+  #
+  # Dependencies: <list, or "None">
+  #
 
-   # shellcheck source=../lib/print.sh
-   . "$(dirname "$0")/../lib/print.sh"
+  # shellcheck source=../lib/print.sh
+  . "$(dirname "$0")/../lib/print.sh"
 
-   main() {
-     # ...
-   }
+  main() {
+    # ...
+  }
 
-   main "$@"
-   ```
+  main "$@"
+  ```
 
-   The **Dependencies** line records external CLI tools the script invokes beyond Git and the standard POSIX utilities (e.g., `jq`, `curl`). Git, `lib/` files, and POSIX utilities (`grep`, `sed`, `awk`, `printf`, …) are assumed and not listed. Write `None` if there are no extras.
+  The **Dependencies** line records external CLI tools the script invokes beyond Git and the standard POSIX utilities (eg. `jq`, `curl`). Git, `lib/` files, and POSIX utilities (`grep`, `sed`, `awk`, `printf`, …) are assumed and not listed. Write `None` if there are nothing except built-ins are used by the script.
 
-   `set -x` MAY be added temporarily for debugging but MUST NOT be committed.
+- **Each `bin` script MUST be self-contained.**
 
-2. **Use `print_*` helpers for all user-facing output.** Sourcing [`lib/print.sh`](../../lib/print.sh) exposes:
+  Each `bin/` script MAY depend on `lib/` files but MUST NOT depend on another `bin/` script.
 
-   | Helper | Stream | Use for |
-   | --- | --- | --- |
-   | `print_info` | stdout | Neutral informational output (e.g., "nothing to amend"). |
-   | `print_success` | stdout | Successful completion of an action. |
-   | `print_error` | stderr | Errors that caused the script to abort. |
-   | `print_warning` | stderr | Non-fatal warnings the user should see. |
-   | `print_hint` | stderr | A follow-up suggestion after an error (e.g., "Try 'gitex --help'"). |
-   | `print_prompt` | stdout + stderr | Interactive prompt before a `read`. |
+  Users can disable any subset of aliases by deleting those `bin/` files. This means that each `bin` script MUST be treated as a self-container binary (with the exception of dependencies on `lib/*` files).
 
-   Plain `echo` / `printf` is reserved for the command's *data* output (e.g., `git whoami` printing `name: …`). Anything that frames or annotates that data uses the helpers.
+- **Use `print_*` helpers for all user-facing output.**
 
-3. **Pick an argument-handling pattern matching the command's surface.**
+  Sourcing `lib/print.sh` exposes:
 
-   *No-argument commands* ([`bin/git-whoami`](../../bin/git-whoami), [`bin/git-amend`](../../bin/git-amend)) reject all arguments up front:
+  - `print_info`: Streams to stdout neutral informational output (eg. "nothing to amend").
 
-   ```sh
-   if [ $# -gt 0 ]; then
-     print_error "git-<name> does not accept any options"
-     return 1
-   fi
-   ```
+  - `print_success`: Streams to stdout notifications of successful completion of an action.
 
-   *Optioned commands* parse flags. For a fixed, small set of mutually exclusive flags, use a single `case` ([`bin/gitex`](../../bin/gitex)). For mixed positional/named arguments, use `while/case` ([`bin/git-author`](../../bin/git-author)):
+  - `print_error`: Streams to stderr errors that caused the script to abort.
 
-   ```sh
-   while [ $# -gt 0 ]; do
-     case "$1" in
-       --name)  author_name="$2"; shift 2 ;;
-       --email) author_email="$2"; shift 2 ;;
-       -*)      print_error "unknown option '$1'"; return 1 ;;
-       *)       # positional handling
-                shift ;;
-     esac
-   done
-   ```
+  - `print_warning`: Streams to stderr non-fatal warnings the user should see.
 
-   Unknown options emit `print_error "unknown option: …"` followed (where `--help` is implemented) by `print_hint "Try '… --help' for more information."`
+  - `print_hint`. Streams to stderr a follow-up suggestion after an error, eg. "Try 'gitex --help'").
 
-4. **Add defensive checks before destructive operations.** Verify preconditions before rewriting history, deleting refs, or force-pushing. Pattern from [`bin/git-amend`](../../bin/git-amend):
+  - `print_prompt`. Interactive prompt before a `read`.
 
-   ```sh
-   if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-     print_error "no commits exist to amend"
-     return 1
-   fi
-   ```
+  Plain `echo` / `printf` is reserved for the command's *data* output (eg. `git whoami` printing `name: …`). Anything that frames or annotates that data uses the helpers.
 
-   Default patterns:
-   - Verify `HEAD` exists before any history-rewriting command.
-   - Use `git diff --cached --quiet` / `git diff --quiet` to distinguish staged vs. working changes.
-   - Use `git ls-files --others --exclude-standard` to detect untracked files.
-   - Redirect probing commands' stderr to `/dev/null` so the user only sees the script's own error messages.
+- **Do not source `lib/ansi-codes.sh` directly from `bin/` scripts.**
 
-5. **Validate.** Run `shellcheck --severity=style bin/<script>` until clean. The full pipeline is `./check` (see [`../testing/SKILL.md`](../testing/SKILL.md)).
+  `lib/ansi-codes.sh` is an internal dependency of `print.sh`. If you find yourself wanting raw color codes, the right answer is usually a new `print_*` helper.
+
+- **Pick an argument-handling pattern matching the command's surface.**
+
+  Follow the patterns in the [POSIX skill](https://github.com/kieranpotts/skills/blob/dev/skills/code/posix/SKILL.md), but replace `printf … >&2` with `print_error`.
+
+  Where `--help` is implemented, follow unknown-option errors with `print_hint "Try 'git <command> --help' for more information."`.
+
+- **Add defensive checks before destructive Git operations.**
+
+  Verify preconditions before rewriting history, deleting refs, or force-pushing. Pattern from `bin/git-amend`:
+
+  ```sh
+  if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+    print_error "no commits exist to amend"
+    return 1
+  fi
+  ```
+
+  Common Git preconditions:
+
+  - Verify `HEAD` exists before any history-rewriting command.
+
+  - Use `git diff --cached --quiet` / `git diff --quiet` to distinguish staged vs. working changes.
+
+  - Use `git ls-files --others --exclude-standard` to detect untracked files.
+
+  - Redirect probing commands' stderr to `/dev/null` so the user only sees the script's own error messages.
+
+- **Validate.**
+
+  Every script must pass `shellcheck --severity=style bin/* lib/*`.
+
+  Use the `./check` and `./fix` helps.
+
+  While ShellCheck observes a script's shebang line (`#!`), `pytest` invokes `bash <script>` and does scope the shell to the constraints of the shebang. Therefore, a broken shebang will pass tests and fail in real-world `PATH` invocations. Manual verification of the `bin` scripts is therefore REQUIRED.
 
 ## Examples
 
@@ -115,17 +119,6 @@ if [ ! -d ".git" ]; then
 fi
 ```
 
-## Edge cases
-
-- **Cross-alias independence.** Each `bin/` script MAY depend on `lib/` files but MUST NOT depend on another `bin/` script. Users can disable any subset of aliases by deleting those `bin/` files; the rest must keep working.
-- **`lib/ansi-codes.sh` is not sourced directly from `bin/`.** It's an internal dependency of `print.sh`. If you find yourself wanting raw color codes, the right answer is usually a new `print_*` helper.
-- **Tests run scripts via `bash`, not the shebang.** ShellCheck operates on the script's own `#!` line, but pytest invokes `bash <script>` directly. A broken shebang will pass tests and fail in real-world `PATH` invocation. Manual verification needed.
-
 ## References
 
-- [`bin/git-whoami`](../../bin/git-whoami): canonical no-args template.
-- [`bin/gitex`](../../bin/gitex): canonical bounded-options template.
-- [`bin/git-author`](../../bin/git-author): canonical full-option-parsing template.
-- [`lib/print.sh`](../../lib/print.sh): messaging helpers.
-- [`../testing/SKILL.md`](../testing/SKILL.md): running ShellCheck and the full pipeline.
-- [`../new-command/SKILL.md`](../new-command/SKILL.md): end-to-end command-addition workflow.
+- [POSIX shell scripting skill](https://github.com/kieranpotts/skills/blob/dev/skills/code/posix/SKILL.md): the upstream generic skill this one extends.
