@@ -7,7 +7,7 @@ license: MIT
 
 # Shell scripts
 
-Use this skill when authoring or modifying a script in `bin/` or `lib/`. This skill extends the [POSIX shell scripting skill](https://github.com/kieranpotts/skills/blob/dev/skills/code/posix/SKILL.md) — all rules there apply here. This document covers GixTex-specific conventions.
+Use this skill when authoring or modifying a script in `bin/` or `lib/`. This skill extends the [POSIX shell scripting skill](https://github.com/kieranpotts/skills/blob/dev/skills/code/posix/SKILL.md) — all rules there apply here. This document covers GitEx-specific conventions.
 
 Do NOT use this skill for the root-level `check` / `fix` scripts, which have looser conventions and are not scanned by ShellCheck, or for Python tests.
 
@@ -40,13 +40,13 @@ Do NOT use this skill for the root-level `check` / `fix` scripts, which have loo
   main "$@"
   ```
 
-  The **Dependencies** line records external CLI tools the script invokes beyond Git and the standard POSIX utilities (eg. `jq`, `curl`). Git, `lib/` files, and POSIX utilities (`grep`, `sed`, `awk`, `printf`, …) are assumed and not listed. Write `None` if there are nothing except built-ins are used by the script.
+  The **Dependencies** line records external CLI tools the script invokes beyond Git and the standard POSIX utilities (eg. `jq`, `curl`). Git, `lib/` files, and POSIX utilities (`grep`, `sed`, `awk`, `printf`, …) are assumed and not listed. Write `None` if the script uses nothing beyond built-ins.
 
 - **Each `bin` script MUST be self-contained.**
 
   Each `bin/` script MAY depend on `lib/` files but MUST NOT depend on another `bin/` script.
 
-  Users can disable any subset of aliases by deleting those `bin/` files. This means that each `bin` script MUST be treated as a self-container binary (with the exception of dependencies on `lib/*` files).
+  Users can disable any subset of aliases by deleting those `bin/` files. This means that each `bin` script MUST be treated as a self-contained binary (with the exception of dependencies on `lib/*` files).
 
 - **Use `print_*` helpers for all user-facing output.**
 
@@ -60,9 +60,9 @@ Do NOT use this skill for the root-level `check` / `fix` scripts, which have loo
 
   - `print_warning`: Streams to stderr non-fatal warnings the user should see.
 
-  - `print_hint`. Streams to stderr a follow-up suggestion after an error, eg. "Try 'gitex --help'").
+  - `print_hint`: Streams to stderr a follow-up suggestion after an error (eg. "Try 'gitex --help'").
 
-  - `print_prompt`. Interactive prompt before a `read`.
+  - `print_prompt`: Interactive prompt before a `read`.
 
   Plain `echo` / `printf` is reserved for the command's *data* output (eg. `git whoami` printing `name: …`). Anything that frames or annotates that data uses the helpers.
 
@@ -101,9 +101,9 @@ Do NOT use this skill for the root-level `check` / `fix` scripts, which have loo
 
   Every script must pass `shellcheck --severity=style bin/* lib/*`.
 
-  Use the `./check` and `./fix` helps.
+  Use the `./check` and `./fix` helpers.
 
-  While ShellCheck observes a script's shebang line (`#!`), `pytest` invokes `bash <script>` and does scope the shell to the constraints of the shebang. Therefore, a broken shebang will pass tests and fail in real-world `PATH` invocations. Manual verification of the `bin` scripts is therefore REQUIRED.
+  While ShellCheck observes a script's shebang line (`#!`), `pytest` invokes `bash <script>` and does not scope the shell to the constraints of the shebang. Therefore, a broken shebang will pass tests and fail in real-world `PATH` invocations. Manual verification of the `bin` scripts is therefore REQUIRED.
 
 ## Examples
 
