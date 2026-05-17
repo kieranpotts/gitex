@@ -30,7 +30,7 @@ main() {
   fi
 
   git branch "backup/${branch}" "${branch}"
-  print_info "Created branch 'backup/${branch}'"
+  print_info "Created branch 'backup/${branch}'."
 }
 
 main "$@"

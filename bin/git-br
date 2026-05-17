@@ -36,7 +36,7 @@ main() {
 
   # Validate branch name is not empty.
   if [ -z "${branch}" ]; then
-    print_error "Branch name cannot be empty"
+    print_error "branch name cannot be empty"
     return 1
   fi
 

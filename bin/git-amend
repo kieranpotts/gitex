@@ -59,7 +59,7 @@ main() {
   fi
 
   # No changes to amend.
-  print_info "nothing to amend, working tree clean"
+  print_info "There's nothing to amend. The working tree is clean."
   return 0
 }
 

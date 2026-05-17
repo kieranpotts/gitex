@@ -22,9 +22,9 @@ Usage: gitex [--version|-v] [--commands|-c] [--help|-h]
 Get help with using GitEx.
 
 Options:
-  --version, -v   Show installed GitEx version number
-  --commands, -c  List available GitEx aliases
-  --help, -h      Show usage instructions
+  --version, -v   Show installed GitEx version number.
+  --commands, -c  List available GitEx aliases.
+  --help, -h      Show usage instructions.
 
 Examples:
   $ git gitex --version

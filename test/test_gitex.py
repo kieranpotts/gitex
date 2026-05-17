@@ -1,13 +1,13 @@
 """
-Test suite for gitex command.
+Test suite for the `gitex` command.
 """
 
 
-class TestGitex:
-    """Test cases for gitex command."""
+class TestGitEx:
+    """Test cases for the `gitex` command."""
 
     def test_no_arguments_shows_help(self, repo, bin):
-        """Test that running gitex with no arguments shows help."""
+        """Test that running `gitex` with no arguments shows help."""
 
         # Execute the script-under-test witthout options.
         result = repo.run(bin)

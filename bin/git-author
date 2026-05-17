@@ -64,7 +64,7 @@ main() {
 
   # Name is required.
   if [ -z "${author_name}" ]; then
-    print_error "Name is required."
+    print_error "name is required"
     exit 1
   fi
 
@@ -77,7 +77,7 @@ main() {
 
   # Email is required.
   if [ -z "${author_email}" ]; then
-    print_error "Email is required."
+    print_error "email is required"
     exit 1
   fi
 

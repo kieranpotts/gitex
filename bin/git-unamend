@@ -35,7 +35,7 @@ main() {
 
   if ! echo "${last_reflog_msg}" | grep -q "commit (amend)"; then
     print_error "the last operation was not a 'git commit --amend'"
-    print_hint "use 'git uncommit' to undo a regular commit"
+    print_hint "Use 'git uncommit' to undo a regular commit."
     return 1
   fi
 
