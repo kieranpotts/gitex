@@ -15,7 +15,7 @@ set -eu
 # Usage:
 #   $ git cm [<msg>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

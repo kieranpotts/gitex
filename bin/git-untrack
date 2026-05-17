@@ -9,7 +9,7 @@ set -eu
 # Usage:
 #   $ git untrack <path>
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

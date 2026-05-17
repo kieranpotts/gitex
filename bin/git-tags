@@ -10,7 +10,7 @@ set -eu
 # Usage:
 #   $ git tags
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

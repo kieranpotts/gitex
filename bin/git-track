@@ -20,7 +20,7 @@ set -eu
 #   # Add one or more specific files.
 #   $ git track path/to/file.ext
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

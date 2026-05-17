@@ -7,7 +7,7 @@ set -eu
 # Usage:
 #   $ git co [...]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 main() {

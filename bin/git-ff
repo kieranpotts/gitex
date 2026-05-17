@@ -11,7 +11,7 @@ set -eu
 # Usage:
 #   $ git ff [<branch>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

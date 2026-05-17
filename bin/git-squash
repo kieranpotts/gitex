@@ -42,7 +42,7 @@ set -eu
 # Usage:
 #   $ git squash [<branch>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 # Acknowledgments
 #   - https://stackoverflow.com/questions/36486966/

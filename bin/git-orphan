@@ -21,7 +21,7 @@ set -eu
 # Usage:
 #   $ git orphan [<branch>] [--fresh]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

@@ -8,7 +8,7 @@ set -eu
 # Usage:
 #   $ git backup [<branch>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

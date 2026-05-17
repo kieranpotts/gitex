@@ -7,7 +7,7 @@ set -eu
 # Usage:
 #   $ git filelog [<path>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

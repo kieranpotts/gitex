@@ -11,7 +11,7 @@ set -eu
 # Usage:
 #   $ git unignore <path>
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

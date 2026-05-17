@@ -12,7 +12,7 @@ set -eu
 #   -c, --commands  List available GitEx aliases
 #   -h, --help      Show usage instructions
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 _print_help() {

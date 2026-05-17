@@ -12,7 +12,7 @@ set -eu
 # Usage:
 #   $ git upstream
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

@@ -33,7 +33,7 @@ set -eu
 # Usage:
 #   $ git sync
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

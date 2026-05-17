@@ -7,7 +7,7 @@ set -eu
 # Usage:
 #   $ git configure
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

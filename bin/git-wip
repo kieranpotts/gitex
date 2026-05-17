@@ -19,7 +19,7 @@ set -eu
 # Usage:
 #   $ git wip [<msg>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

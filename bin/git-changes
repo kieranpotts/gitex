@@ -17,7 +17,7 @@ set -eu
 # Usage:
 #   $ git changes [<ref>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

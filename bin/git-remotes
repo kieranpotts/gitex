@@ -7,7 +7,7 @@ set -eu
 # Usage:
 #   $ git remotes
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

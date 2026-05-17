@@ -14,7 +14,7 @@ set -eu
 # Usage:
 #   $ git down
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

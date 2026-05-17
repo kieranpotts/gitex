@@ -13,7 +13,7 @@ set -eu
 # Usage:
 #   $ git fetched
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

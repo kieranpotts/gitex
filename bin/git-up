@@ -27,7 +27,7 @@ set -eu
 # Usage:
 #   $ git up [--force]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 # Acknowledgments
 #   - https://pbassiner.github.io/blog/git_aliases_to_the_rescue.html

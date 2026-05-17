@@ -25,7 +25,7 @@ set -eu
 #
 # Note: The outcome of `git fixup (HEAD)` will be identical to `git amend`.
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 # Acknowledgments
 #   - https://gist.github.com/simonwagner/9552064

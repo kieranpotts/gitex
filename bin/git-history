@@ -9,7 +9,7 @@ set -eu
 # Usage:
 #   $ git history
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

@@ -16,7 +16,7 @@ set -eu
 # Usage:
 #   $ git reword [<ref>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

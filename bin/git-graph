@@ -8,7 +8,7 @@ set -eu
 # Usage:
 #   $ git graph
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

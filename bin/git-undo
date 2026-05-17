@@ -24,7 +24,7 @@ set -eu
 # Usage:
 #   $ git undo
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 # Acknowledgments
 #   - https://haacked.com/archive/2014/07/28/github-flow-aliases/

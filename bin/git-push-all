@@ -9,7 +9,7 @@ set -eu
 # Usage:
 #   $ git push-all [<remote>]
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh

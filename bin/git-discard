@@ -17,7 +17,7 @@ set -eu
 # Usage:
 #   $ git discard <path>...
 #
-# Dependencies: None
+# Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh
