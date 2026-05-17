@@ -1,57 +1,87 @@
 ---
 name: python-tests
-description: Conventions and patterns for the pytest suite in test/, including the load-bearing bin fixture.
+description: Conventions and patterns for the pytest suite.
 compatibility: requires poetry, python >= 3.12, pytest
 license: MIT
 ---
 
 # Python tests
 
-Use this skill when authoring or modifying a test in `test/`. Tests use pytest with GitPython to create isolated temporary Git repositories. Every `bin/` script has a matching `test_<command>.py`; [`test/test_git_whoami.py`](../../test/test_git_whoami.py) is the canonical example.
+Use this skill when authoring or modifying a test in `test/`.
 
-Do NOT use this skill for editing shell scripts (see shell-scripts) or for running the test pipeline (see testing).
+Every `bin/` script has a matching `test_<command>.py`.
 
-## Instructions
+Tests use pytest with GitPython to create isolated temporary Git repositories.
 
-1. **Name the file deterministically.** The mapping between test files and `bin/` scripts is **load-bearing**: the `bin` fixture strips `test_` and replaces each `_` with `-`.
+Do NOT use this skill for editing shell scripts (see [shell-scripts](../shell-scripts/SKILL.md)) or for running the test pipeline (see [testing](../testing/SKILL.md)).
 
-   | Test file | Resolved `bin/` script |
-   | --- | --- |
-   | `test_git_whoami.py` | `bin/git-whoami` |
-   | `test_git_push_all.py` | `bin/git-push-all` |
-   | `test_gitex.py` | `bin/gitex` |
+## Rules
 
-   A mismatched filename causes the `bin` fixture to fail with `<script> not found at …`. Test classes use the `Test*` prefix (`python_classes = "Test*"` in [`pyproject.toml`](../../pyproject.toml)).
+-   **Name the file deterministically.**
 
-2. **Use the shared fixtures.** Every test takes `repo` and `bin` from [`test/conftest.py`](../../test/conftest.py):
-   - `repo`: a fresh `TestRepo` for each function, already `cd`'d into and configured with a local `user.name` / `user.email`.
-   - `bin`: the absolute path to the script under test, auto-derived from the test filename.
+    The mapping between test files and `bin/` scripts is _load-bearing_. The `bin` fixture strips `test_` and replaces each `_` with `-`. Examples:
 
-3. **Follow the canonical shape:**
+    - `test_git_whoami.py` resolves to `bin/git-whoami`
+    - `test_git_push_all.py` → `bin/git-push-all`
+    - `test_gitex.py` → `bin/gitex`
 
-   ```python
-   class TestGitFoo:
-       def test_happy_path(self, repo, bin):
-           # Arrange.
-           repo.git.config("--local", "user.name", "John Doe")
+    A mismatched filename causes the `bin` fixture to fail with `<script> not found at …`.
 
-           # Act.
-           result = repo.run(bin, "--flag")
+    Test classes use the `Test*` prefix – see `python_classes = "Test*"` in [`pyproject.toml`](../../pyproject.toml).
 
-           # Assert.
-           assert result.returncode == 0
-           assert "expected" in result.stdout
-   ```
+-   **Use the shared fixtures.**
 
-   Cover at minimum: happy path, one error path, argument validation.
+    Every test takes `repo` and `bin` from [`test/conftest.py`](../../test/conftest.py):
 
-4. **Keep config isolated.** Tests must not modify global or user-level Git configuration. Use `git config --local` only, so all changes stay inside the temporary repo created by the `repo` fixture.
+    - `repo`: A fresh `TestRepo` for each function, already `cd`'d into and configured with a local `user.name` / `user.email`.
 
-5. **Lint and format.** Run `poetry run ruff check test/` and `poetry run ruff format test/` (or `./fix`) before committing.
+    - `bin`: The absolute path to the script under test, auto-derived from the test filename.
+
+-   **Follow the canonical test shape:**
+
+    ```python
+    class TestGitFoo:
+        def test_happy_path(self, repo, bin):
+            # Arrange.
+            repo.git.config("--local", "user.name", "John Doe")
+
+            # Act.
+            result = repo.run(bin, "--flag")
+
+            # Assert.
+            assert result.returncode == 0
+            assert "expected" in result.stdout
+    ```
+
+    Cover at minimum: happy path, one error path, argument validation.
+
+-   **Keep config isolated.**
+
+    Tests MUST NOT modify global or user-level Git configuration. Use `git config --local` only, so all changes stay inside the temporary repo created by the `repo` fixture.
+
+-   **Lint and format.**
+
+    Run `poetry run ruff check test/` and `poetry run ruff format test/` (or `./fix`) before committing.
+
+-   **`TestRepo.run()` uses `bash`, not the script's shebang**
+
+    See [`test/helper.py`](../../test/helper.py).
+
+    A consequence is that tests will pass even if the shebang is broken or absent. To verify shebang/PATH behavior, do it manually outside pytest.
+
+-   **`TestRepo` is NOT a pytest test class.**
+
+    A `filterwarnings` rule in [`pyproject.toml`](../../pyproject.toml) suppresses the collection warning.
+
+-   **The `repo` fixture `cd`'s into the temp directory.**
+
+    No fixture restores `cwd`, because the `repo` fixture is function scoped anyway.
+
+    If a test relies on the parent directory, save and restore explicitly.
 
 ## Examples
 
-Run just the new test:
+Run just a new test:
 
 ```sh
 poetry run pytest test/test_git_foo.py -v
@@ -62,20 +92,7 @@ Assert on stderr for an error path:
 ```python
 def test_rejects_unknown_flag(self, repo, bin):
     result = repo.run(bin, "--bogus")
+
     assert result.returncode == 1
     assert "unknown option" in result.stderr
 ```
-
-## Rules
-
-- **`TestRepo.run()` uses `bash`, not the script's shebang** ([`test/helper.py`](../../test/helper.py)). Tests pass even if the shebang is broken or absent. To verify shebang/PATH behavior, do it manually outside pytest.
-- **`TestRepo` is a class with a `Test*` name but is not a pytest test class.** A `filterwarnings` rule in [`pyproject.toml`](../../pyproject.toml) suppresses the collection warning.
-- **The `repo` fixture is function-scoped and `cd`'s into the temp directory.** No fixture restores `cwd`. If a test relies on the parent directory, save and restore explicitly.
-
-## References
-
-- [`test/test_git_whoami.py`](../../test/test_git_whoami.py): canonical test file.
-- [`test/conftest.py`](../../test/conftest.py): shared fixtures.
-- [`test/helper.py`](../../test/helper.py): `TestRepo` implementation.
-- [`../testing/SKILL.md`](../testing/SKILL.md): running pytest / Ruff via `./check` / `./fix`.
-- [`../new-command/SKILL.md`](../new-command/SKILL.md): adding a new command and its test together.
