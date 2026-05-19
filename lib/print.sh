@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ==============================================================================
+#
 # Print helper functions for consistent messaging across GitEx commands.
 #
 # These functions provide standardized, colored output for different message
@@ -10,7 +10,7 @@
 #   . "$(dirname "$0")/../lib/print.sh"
 #   print_error "something went wrong"
 #   print_hint "try this instead"
-# ==============================================================================
+#
 
 # Source ANSI color codes.
 # shellcheck source=lib/ansi-codes.sh

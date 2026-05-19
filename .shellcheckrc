@@ -1,7 +1,7 @@
-# ==============================================================================
+#
 # ShellCheck directives.
 # https://github.com/koalaman/shellcheck/wiki/Directive
-# ==============================================================================
+#
 
 # Allow ShellCheck to follow sourced files.
 # https://github.com/koalaman/shellcheck/wiki/Directive#external-sources
