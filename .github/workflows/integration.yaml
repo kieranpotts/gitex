@@ -1,3 +1,8 @@
+#
+# Run static and dynamic tests on both merge request and
+# new commits pushed to the trunk.
+#
+
 name: Integration
 
 on:
