@@ -84,6 +84,6 @@ GitEx is inspired by TJ Holowaychuk's [Git Extras](https://github.com/tj/git-ext
 - [**Runtime tests**](./docs/runtime-tests.md)
 - [**Static analysis**](./docs/static-analysis.md)
 
----
+-----
 
 Copyright © 2020-present Kieran Potts, [MIT license](./LICENSE.txt)
