@@ -39,6 +39,8 @@ There is nothing to build - `bin/` scripts ship as source, installed by putting 
 
 ## Rules
 
+The capitalized words REQUIRED, MUST, MUST NOT, RECOMMENDED, SHOULD, SHOULD NOT, OPTIONAL, and MAY, in the context of this document and agent skills/instructions/rules, are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+
 - The trunk branch is `dev`, not `main`. Open PRs against `dev`.
 
 - All written content (code comments, docs, commit messages) is in American English, with full sentences terminated by periods.
