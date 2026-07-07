@@ -7,6 +7,8 @@ license: MIT
 
 # Documentation
 
+<!-- TODO: Review Gitex skills against the latest skills template. -->
+
 Use this skill when authoring or modifying any `.md` file in `docs/` or the top-level `README.md`.
 
 Do NOT use this skill for in-code comments (those follow the shell-scripts or python-tests skills).
