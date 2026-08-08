@@ -163,7 +163,7 @@ class TestGitAmend:
         # Create initial commit with specific message.
         repo.write("file1.txt", "Content")
         repo.git.add("file1.txt")
-        repo.git.commit("-m", "feature: my shiny new feature")
+        repo.git.commit("-m", "behavior: my shiny new feature")
 
         # Make changes.
         repo.write("file1.txt", "Modified")
@@ -176,7 +176,7 @@ class TestGitAmend:
 
         # Verify commit message is unchanged.
         commit_msg = repo.git.log("-1", "--format=%s")
-        assert commit_msg == "feature: my shiny new feature"
+        assert commit_msg == "behavior: my shiny new feature"
 
     def test_no_changes_to_amend(self, repo, bin):
         """Test that a message is printed when there are no changes to amend."""

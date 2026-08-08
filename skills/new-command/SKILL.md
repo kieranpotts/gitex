@@ -61,7 +61,7 @@ Work through these in order for a new command `git <name>` (eg. `git foo`, or `g
 
 6.  **Commit.**
 
-    A new command is conventionally committed as a feature: `feature: …`. See [the commits skill](https://raw.githubusercontent.com/kieranpotts/skills/refs/heads/dev/skills/utils/git/commits/SKILL.md).
+    A new command is conventionally committed as a behavior: `behavior: …`. See [the commits skill](https://raw.githubusercontent.com/kieranpotts/skills/refs/heads/dev/skills/utils/git/commits/SKILL.md).
 
 ## Rules
 
@@ -96,7 +96,7 @@ TODO.md                  - `foo` command marked as implemented.
 Commit message:
 
 ```
-feature: add `git foo`
+behavior: add `git foo`
 ```
 
 ## References
