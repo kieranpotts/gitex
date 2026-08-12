@@ -1,18 +1,5 @@
-# Ultra-lightweight base image.
-FROM alpine:3.20
+FROM kieranpotts/devcontainer:latest
 
-# Install system dependencies.
-RUN apk add --no-cache \
-    sudo \
-    curl \
-    bash \
-    git \
-    python3 \
-    pipx \
-    shellcheck
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Poetry via pipx.
-RUN pipx install poetry
-
-# Add '/root/.local/bin to PATH environment variable - required for Poetry.
-ENV PATH="/root/.local/bin:$PATH"
+USER code
