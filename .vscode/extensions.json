@@ -1,8 +1,16 @@
 {
   "recommendations": [
 
-    /* EditorConfig — .editorconfig file support. */
+    /* NOTE: Keep this list synchronized with `../devcontainer/devcontainer.json`. */
+
+    /* EditorConfig file support. */
     "editorconfig.editorconfig",
+
+    /* Microsoft's official Python extension. */
+    "ms-python.python",
+
+    /* Built-in shellcheck. */
+    "timonwong.shellcheck"
 
   ]
 }
