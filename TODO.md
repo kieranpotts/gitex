@@ -2,15 +2,38 @@
 
 This checklist tracks the implementation status of the GitEx commands as defined in the usage documentation.
 
+## Status
+
+Last reviewed on 2026-10-26.
+
+A command is ticked only when it has all of:
+
+- a working implementation in `bin/`;
+- a real test suite in `test/`;
+- and a usage doc in `docs/usage/`.
+
+Every unticked command is scaffolded but not implemented. Each one has:
+
+- A script in `bin/` with a header comment and a rough draft body, marked `# TODO: Review draft implementation`. The drafts have not been reviewed and some do not run. Some also contain Bashisms that must be removed.
+
+- A placeholder test file in `test/`, with the test body commented out.
+
+- A usage doc in `docs/usage/`, which may describe intended rather than actual behavior.
+
+Use [`skills/new-command/SKILL.md`](skills/new-command/SKILL.md) as the checklist when finishing each command.
+
+## GitEx
+- [x] `gitex`
+
 ## Cloning
 - [x] `git cl`
 
 ## Branching
 - [x] `git br`
-- [ ] `git orphan`
+- [ ] `git orphan` (In progress; see *Work in progress*.)
 - [x] `git co`
 - [x] `git sw`
-- [ ] `git delete`
+- [ ] `git delete` (The draft rejects any argument before reading the branch name, and uses Bash array syntax.)
 - [ ] `git fell`
 - [ ] `git branches`
 - [ ] `git tracking`
