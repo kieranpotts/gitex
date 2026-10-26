@@ -33,10 +33,10 @@ Optional. The commit reference to modify. Can be a commit SHA, a symbolic refere
 ### Options
 
 `--name [name]`::
-The new author name. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty.
+The new author name. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty. Can be given only once.
 
 `--email [email]`::
-The new author email address. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty.
+The new author email address. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty. Can be given only once.
 
 `--no-color`::
 Disable colored output. See [Colored output](../configuration.md#colored-output).

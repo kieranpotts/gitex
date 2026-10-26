@@ -101,6 +101,20 @@ Do NOT use this skill for Python tests.
 
     Where `--help` is implemented, output unknown-option errors with `print_hint "Try 'git <command> --help' for more information."`.
 
+-   **Parse the whole command line before acting on any of it.**
+
+    Per TS-16 (Command Line Interfaces), the order of flags MUST NOT change what a command does, including which messages it prints and whether they are colored. So `git amend bogus --no-color` and `git amend --no-color bogus` print the same uncolored error.
+
+    Inside the parse loop, only record what was given: set variables, and record the first usage error rather than printing it. Do not print, `return`, or `exit` until the loop has finished. Then act in this order:
+
+    1. Presentation flags such as `--no-color`. (`disable_color` only sets a variable, so it is safe to call inside the loop.)
+    2. `--help`, which beats every other option and every usage error.
+    3. `--version`, where implemented.
+    4. Usage errors.
+    5. The command itself.
+
+    Flags that contradict each other, including the same value-taking flag given twice (eg. `--name a --name b`), are a usage error, not "last one wins". See `bin/git-amend` for the simplest form of the pattern, and `bin/git-orphan` and `bin/gitex` for `--help` and `--version` precedence.
+
 -   **Add defensive checks before destructive Git operations.**
 
     Verify preconditions before rewriting history, deleting refs, or force-pushing, eg.:

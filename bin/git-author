@@ -14,27 +14,51 @@ set -eu
 # shellcheck source=../lib/print.sh
 . "$(dirname "$0")/../lib/print.sh"
 
+# Record a usage error, unless an earlier one has already been recorded.
+# Usage: _usage_error "<message>"
+_usage_error() {
+  if [ -z "${usage_error}" ]; then
+    usage_error="$1"
+  fi
+}
+
 main() {
 
-  # Parse options.
+  # Parse options. Report usage errors only once the whole command line has
+  # been read, so the order of options doesn't matter. Because the last of
+  # two --name or --email values would otherwise win, giving either option
+  # twice is an error.
   ref=""
   author_name=""
   author_email=""
+  has_name=false
+  has_email=false
+  usage_error=""
 
   while [ $# -gt 0 ]; do
     case "$1" in
       --name)
+        if [ "${has_name}" = true ]; then
+          _usage_error "--name can only be given once."
+        fi
+        has_name=true
         if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
-          print_error "--name requires a value."
-          return 1
+          _usage_error "--name requires a value."
+          shift
+          continue
         fi
         author_name="$2"
         shift 2
         ;;
       --email)
+        if [ "${has_email}" = true ]; then
+          _usage_error "--email can only be given once."
+        fi
+        has_email=true
         if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
-          print_error "--email requires a value."
-          return 1
+          _usage_error "--email requires a value."
+          shift
+          continue
         fi
         author_email="$2"
         shift 2
@@ -44,20 +68,24 @@ main() {
         shift
         ;;
       -*)
-        print_error "Unknown option '$1'."
-        return 1
+        _usage_error "Unknown option '$1'."
+        shift
         ;;
       *)
         if [ -z "${ref}" ]; then
           ref="$1"
         else
-          print_error "Unexpected option '$1'."
-          return 1
+          _usage_error "Unexpected option '$1'."
         fi
         shift
         ;;
     esac
   done
+
+  if [ -n "${usage_error}" ]; then
+    print_error "${usage_error}"
+    return 1
+  fi
 
   # Prompt for author name if not provided.
   if [ -z "${author_name}" ]; then

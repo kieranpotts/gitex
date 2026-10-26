@@ -59,41 +59,50 @@ EOF
 
 main() {
 
-  # Parse options.
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every usage error.
   branch=""
   fresh=false
+  help=false
+  usage_error=""
 
   while [ $# -gt 0 ]; do
     case "$1" in
       --fresh)
         fresh=true
-        shift
         ;;
       --no-color)
         disable_color
-        shift
         ;;
       -h|--help)
-        _print_help
-        return 0
+        help=true
         ;;
       -*)
-        print_error "Unknown option '$1'."
-        print_hint "Try 'git orphan --help' for more information."
-        return 1
+        if [ -z "${usage_error}" ]; then
+          usage_error="Unknown option '$1'."
+        fi
         ;;
       *)
         if [ -z "${branch}" ]; then
           branch="$1"
-        else
-          print_error "Unexpected argument '$1'."
-          print_hint "Try 'git orphan --help' for more information."
-          return 1
+        elif [ -z "${usage_error}" ]; then
+          usage_error="Unexpected argument '$1'."
         fi
-        shift
         ;;
     esac
+    shift
   done
+
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  if [ -n "${usage_error}" ]; then
+    print_error "${usage_error}"
+    print_hint "Try 'git orphan --help' for more information."
+    return 1
+  fi
 
   # Must be run inside a working tree.
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then

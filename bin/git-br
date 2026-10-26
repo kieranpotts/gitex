@@ -21,28 +21,33 @@ set -eu
 
 main() {
 
-  # Parse options.
+  # Parse options. Report usage errors only once the whole command line has
+  # been read, so the order of options doesn't matter.
   branch=""
   has_branch=false
+  too_many=false
 
   while [ $# -gt 0 ]; do
     case "$1" in
       --no-color)
         disable_color
-        shift
         ;;
       *)
         if [ "${has_branch}" = true ]; then
-          # Too many arguments.
-          print_error "git-br accepts at most one argument, the branch name."
-          return 1
+          too_many=true
+        else
+          branch="$1"
+          has_branch=true
         fi
-        branch="$1"
-        has_branch=true
-        shift
         ;;
     esac
+    shift
   done
+
+  if [ "${too_many}" = true ]; then
+    print_error "git-br accepts at most one argument, the branch name."
+    return 1
+  fi
 
   # No argument provided, prompt for branch name.
   if [ "${has_branch}" = false ]; then

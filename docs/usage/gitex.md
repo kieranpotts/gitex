@@ -26,6 +26,8 @@ $ gitex [--version|-v] [--commands|-c] [--help|-h] [--no-color]
 `--no-color`::
   Disable colored output. See [Colored output](../configuration.md#colored-output).
 
+Options may be given in any order. `--help` takes precedence over every other option, and `--version` over every option other than `--help`.
+
 ## Examples
 
 Display version information:

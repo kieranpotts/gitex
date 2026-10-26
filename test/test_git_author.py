@@ -4,6 +4,8 @@ Test suite for git-author command.
 
 import os
 
+import pytest
+
 
 class TestGitAuthor:
     """Test cases for git-author command."""
@@ -334,6 +336,41 @@ class TestGitAuthor:
         assert result.returncode == 1
         assert "error: Unknown option '--unknown'." in result.stderr
         assert "\033[" not in result.stderr
+
+    def test_no_color_flag_after_usage_error(self, repo, bin):
+        """Test that --no-color applies to an error from an earlier option."""
+
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "--unknown", "--no-color", env=env)
+
+        assert result.returncode == 1
+        assert "error: Unknown option '--unknown'." in result.stderr
+        assert "\033[" not in result.stderr
+
+    def test_no_color_flag_after_missing_value(self, repo, bin):
+        """Test that --no-color is still applied after a flag missing its value."""
+
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "--name", "--no-color", env=env)
+
+        assert result.returncode == 1
+        assert "error: --name requires a value." in result.stderr
+        assert "\033[" not in result.stderr
+
+    @pytest.mark.parametrize("option", ["--name", "--email"])
+    def test_rejects_repeated_option(self, repo, bin, option):
+        """Test that giving --name or --email twice is an error."""
+
+        repo.write("test.txt", "Content")
+        repo.git.add("test.txt")
+        repo.git.commit("-m", "initial commit")
+
+        result = repo.run(bin, option, "a", option, "b")
+
+        # Verify the error, and that the author was not changed.
+        assert result.returncode == 1
+        assert f"{option} can only be given once." in result.stderr
+        assert repo.git.log("-1", "--pretty=format:%an") == "John Doe"
 
     def test_no_color_flag_is_not_an_option_value(self, repo, bin):
         """Test that --no-color is not taken as the value of --name."""

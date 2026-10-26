@@ -17,19 +17,29 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
+  unexpected=""
+  has_unexpected=false
+
   while [ $# -gt 0 ]; do
     case "$1" in
       --no-color)
         disable_color
-        shift
         ;;
       *)
-        print_error "Unexpected argument '$1'."
-        print_hint "git-whoami accepts no arguments other than --no-color."
-        return 1
+        if [ "${has_unexpected}" = false ]; then
+          unexpected="$1"
+          has_unexpected=true
+        fi
         ;;
     esac
+    shift
   done
+
+  if [ "${has_unexpected}" = true ]; then
+    print_error "Unexpected argument '${unexpected}'."
+    print_hint "git-whoami accepts no arguments other than --no-color."
+    return 1
+  fi
 
   name=$(git config --get user.name 2>/dev/null)
   email=$(git config --get user.email 2>/dev/null)

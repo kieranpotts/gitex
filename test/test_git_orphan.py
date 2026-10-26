@@ -240,6 +240,27 @@ class TestGitOrphan:
         assert "Unknown option '--bogus'." in result.stderr
         assert "git orphan --help" in result.stderr
 
+    def test_help_beats_usage_errors(self, repo, bin):
+        """Test that --help beats usage errors, in any position."""
+
+        for args in (["--bogus", "--help"], ["-h", "--bogus"], ["b1", "b2", "-h"]):
+            result = repo.run(bin, *args)
+
+            # Verify help is printed, and no error.
+            assert result.returncode == 0
+            assert result.stderr == ""
+            assert result.stdout != ""
+
+    def test_no_color_flag_after_usage_error(self, repo, bin):
+        """Test that --no-color applies to an error from an earlier option."""
+
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "--bogus", "--no-color", env=env)
+
+        assert result.returncode == 1
+        assert "error: Unknown option '--bogus'." in result.stderr
+        assert "\033[" not in result.stderr
+
     def test_help(self, repo, bin):
         """Test that --help prints usage instructions."""
 

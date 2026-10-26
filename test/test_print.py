@@ -202,18 +202,31 @@ class TestNoColorOption:
         assert result.returncode == 1
         assert ESC in result.stderr
 
+    @pytest.mark.parametrize("args", [("--no-color", "bogus"), ("bogus", "--no-color")])
     @pytest.mark.parametrize("command", commands_without_options())
-    def test_no_color_flag(self, repo, command):
-        """Test that --no-color is accepted, and beats FORCE_COLOR."""
+    def test_no_color_flag(self, repo, command, args):
+        """Test that --no-color is accepted, and beats FORCE_COLOR, in any position."""
 
         # The invalid argument stops the command before it does anything.
         env = {**os.environ, "FORCE_COLOR": "1"}
-        result = repo.run(str(ROOT / "bin" / command), "--no-color", "bogus", env=env)
+        result = repo.run(str(ROOT / "bin" / command), *args, env=env)
 
         # Verify --no-color is not itself rejected, and color is disabled.
         assert result.returncode == 1
         assert result.stderr == (
             "error: Unexpected argument 'bogus'.\n"
+            f"{command} accepts no arguments other than --no-color.\n"
+        )
+
+    @pytest.mark.parametrize("command", commands_without_options())
+    def test_first_unexpected_argument_reported(self, repo, command):
+        """Test that only the first unexpected argument is reported, even if empty."""
+
+        result = repo.run(str(ROOT / "bin" / command), "", "bogus", "--no-color")
+
+        assert result.returncode == 1
+        assert result.stderr == (
+            "error: Unexpected argument ''.\n"
             f"{command} accepts no arguments other than --no-color.\n"
         )
 

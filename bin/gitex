@@ -75,43 +75,62 @@ EOF
 
 main() {
 
-  # Parse options. At most one action is allowed, alongside --no-color.
-  action=""
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every other option,
+  # and --version beats every option other than --help.
+  help=false
+  version=false
+  commands=false
+  unknown=""
+  has_unknown=false
 
   while [ $# -gt 0 ]; do
     case "$1" in
       --no-color)
         disable_color
         ;;
-      -v|--version|-c|--commands|-h|--help)
-        if [ -n "${action}" ]; then
-          print_error "Too many options."
-          print_hint "Try 'gitex --help' for more information."
-          return 1
-        fi
-        action="$1"
+      -h|--help)
+        help=true
+        ;;
+      -v|--version)
+        version=true
+        ;;
+      -c|--commands)
+        commands=true
         ;;
       *)
-        print_error "Unknown option '$1'."
-        print_hint "Try 'gitex --help' for more information."
-        return 1
+        if [ "${has_unknown}" = false ]; then
+          unknown="$1"
+          has_unknown=true
+        fi
         ;;
     esac
     shift
   done
 
-  case "${action}" in
-    -v|--version)
-      _print_version
-      ;;
-    -c|--commands)
-      _print_commands
-      ;;
-    *)
-      # If no action, show help.
-      _print_help
-      ;;
-  esac
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  if [ "${version}" = true ]; then
+    _print_version
+    return 0
+  fi
+
+  if [ "${has_unknown}" = true ]; then
+    print_error "Unknown option '${unknown}'."
+    print_hint "Try 'gitex --help' for more information."
+    return 1
+  fi
+
+  if [ "${commands}" = true ]; then
+    _print_commands
+    return 0
+  fi
+
+  # If no action, show help.
+  _print_help
 }
 
 main "$@"

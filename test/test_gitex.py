@@ -149,18 +149,51 @@ class TestGitEx:
         assert "Unknown option '--unknown'." in result.stderr
         assert "Try 'gitex --help' for more information." in result.stderr
 
-    def test_too_many_arguments(self, repo, bin):
-        """Test that multiple arguments return an error."""
+    def test_version_beats_commands(self, repo, bin):
+        """Test that --version beats --commands, in either order."""
 
-        # Execute the script-under-test with the '--commands' option.
-        result = repo.run(bin, "--version", "--commands")
+        for args in (["--version", "--commands"], ["-c", "-v"]):
+            result = repo.run(bin, *args)
 
-        # Verify error exit code.
-        assert result.returncode == 1
+            # Verify only the version is printed.
+            assert result.returncode == 0
+            assert result.stdout.startswith("GitEx v")
+            assert "GitEx commands:" not in result.stdout
 
-        # Verify stderr.
-        assert "Too many options." in result.stderr
-        assert "Try 'gitex --help' for more information." in result.stderr
+    def test_help_beats_other_options(self, repo, bin):
+        """Test that --help beats every other option, in any position."""
+
+        for args in (
+            ["--version", "--help"],
+            ["--help", "--commands"],
+            ["--unknown", "-h"],
+            ["-h", "--unknown"],
+        ):
+            result = repo.run(bin, *args)
+
+            # Verify help is printed, and no error.
+            assert result.returncode == 0
+            assert "Usage: gitex" in result.stdout
+            assert result.stderr == ""
+
+    def test_version_beats_unknown_option(self, repo, bin):
+        """Test that --version beats an unknown option, in either order."""
+
+        for args in (["--unknown", "--version"], ["--version", "--unknown"]):
+            result = repo.run(bin, *args)
+
+            assert result.returncode == 0
+            assert result.stdout.startswith("GitEx v")
+
+    def test_unknown_option_beats_commands(self, repo, bin):
+        """Test that an unknown option is reported in place of --commands."""
+
+        for args in (["--unknown", "--commands"], ["--commands", "--unknown"]):
+            result = repo.run(bin, *args)
+
+            assert result.returncode == 1
+            assert "Unknown option '--unknown'." in result.stderr
+            assert result.stdout == ""
 
     def test_no_color_flag(self, repo, bin):
         """Test that --no-color disables color, even when FORCE_COLOR is set."""
@@ -213,13 +246,15 @@ class TestGitEx:
         assert result.returncode == 0
         assert "Usage: gitex" in result.stdout
 
-    def test_no_color_flag_with_too_many_options(self, repo, bin):
-        """Test that --no-color does not count towards the single action allowed."""
+    def test_no_color_flag_after_unknown_option(self, repo, bin):
+        """Test that --no-color applies to an error from an earlier option."""
 
-        result = repo.run(bin, "--no-color", "--version", "--commands")
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "--unknown", "--no-color", env=env)
 
         assert result.returncode == 1
-        assert "Too many options." in result.stderr
+        assert "error: Unknown option '--unknown'." in result.stderr
+        assert "\033[" not in result.stderr
 
     def test_help_lists_no_color(self, repo, bin):
         """Test that --help documents --no-color."""
