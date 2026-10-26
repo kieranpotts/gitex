@@ -193,7 +193,7 @@ class TestGitAmend:
         assert result.returncode == 0
 
         # Verify output message.
-        assert "nothing to amend, working tree clean" in result.stdout
+        assert "There's nothing to amend. The working tree is clean." in result.stdout
 
         # Verify the commit hasn't changed.
         log_output = repo.git.log("--oneline")
@@ -214,7 +214,7 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "no commits exist to amend" in result.stderr
+        assert "No commits exist to amend." in result.stderr
 
     def test_rejects_single_argument(self, repo, bin):
         """Test that the command rejects arguments."""
@@ -231,7 +231,7 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-amend does not accept any options" in result.stderr
+        assert "git-amend does not accept any options." in result.stderr
 
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
@@ -248,4 +248,4 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-amend does not accept any options" in result.stderr
+        assert "git-amend does not accept any options." in result.stderr

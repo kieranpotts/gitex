@@ -144,7 +144,7 @@ class TestGitEx:
         assert result.returncode == 1
 
         # Verify stderr.
-        assert "unknown option: --unknown" in result.stderr
+        assert "Unknown option '--unknown'." in result.stderr
         assert "Try 'gitex --help' for more information." in result.stderr
 
     def test_too_many_arguments(self, repo, bin):
@@ -157,5 +157,5 @@ class TestGitEx:
         assert result.returncode == 1
 
         # Verify stderr.
-        assert "too many options" in result.stderr
+        assert "Too many options." in result.stderr
         assert "Try 'gitex --help' for more information." in result.stderr

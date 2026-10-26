@@ -19,7 +19,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-ff does not accept any options"
+    print_error "git-ff does not accept any options."
     return 1
   fi
 
@@ -29,16 +29,12 @@ main() {
   #branch="${1}"
 
   if [ -z "${branch}" ]; then
-    # Bash-compatible code:
-    #read -p "Type a branch name: " branch
-
-    # Posix-compatible code:
-    printf "Type a branch name: " >&2
+    print_prompt "Branch name:"
     read -r branch
   fi
 
   if [ -z "${branch}" ]; then
-    echo "Require branch name" >&2
+    print_error "Branch name cannot be empty."
     exit 1
   fi
 

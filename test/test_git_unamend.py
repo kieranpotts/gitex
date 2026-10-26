@@ -88,8 +88,8 @@ class TestGitUnamend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "the last operation was not a 'git commit --amend'" in result.stderr
-        assert "use 'git uncommit' to undo a regular commit" in result.stderr
+        assert "The last operation was not a 'git commit --amend'." in result.stderr
+        assert "Use 'git uncommit' to undo a regular commit." in result.stderr
 
         # Verify repository state is unchanged.
         commit_msg = repo.git.log("-1", "--format=%s")
@@ -171,7 +171,7 @@ class TestGitUnamend:
         # Unamend again (should fail - last operation was reset, not amend).
         result = repo.run(bin)
         assert result.returncode == 1
-        assert "the last operation was not a 'git commit --amend'" in result.stderr
+        assert "The last operation was not a 'git commit --amend'." in result.stderr
 
     def test_fails_with_no_commits(self, repo, bin):
         """Test that unamend fails when there are no commits in the repository."""
@@ -200,7 +200,7 @@ class TestGitUnamend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-unamend does not accept any options" in result.stderr
+        assert "git-unamend does not accept any options." in result.stderr
 
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
@@ -218,4 +218,4 @@ class TestGitUnamend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-unamend does not accept any options" in result.stderr
+        assert "git-unamend does not accept any options." in result.stderr

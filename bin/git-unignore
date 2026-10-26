@@ -19,7 +19,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-unignore does not accept any options"
+    print_error "git-unignore does not accept any options."
     return 1
   fi
 
@@ -28,7 +28,7 @@ main() {
   file="${1}"
 
   if [ -z "${file}" ]; then
-    echo "Require a file path" >&2
+    print_error "A file path is required."
     exit 1
   fi
 

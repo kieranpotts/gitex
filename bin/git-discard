@@ -25,7 +25,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-discard does not accept any options"
+    print_error "git-discard does not accept any options."
     return 1
   fi
 
@@ -36,7 +36,7 @@ main() {
   # TODO: Use same SAVEPOINT strategy as for `git undo`?
 
   if [ -z "${1}" ]; then
-    echo "Require at least one file" >&2
+    print_error "At least one file path is required."
     exit 1
   fi
 

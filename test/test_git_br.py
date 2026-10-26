@@ -69,7 +69,7 @@ class TestGitBr:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "Branch name cannot be empty" in result.stderr
+        assert "Branch name cannot be empty." in result.stderr
 
     def test_reject_multiple_arguments(self, repo, bin):
         """Test that multiple arguments are rejected."""
@@ -87,7 +87,7 @@ class TestGitBr:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-br accepts at most one argument" in result.stderr
+        assert "git-br accepts at most one argument, the branch name." in result.stderr
 
     def test_fail_on_duplicate_branch_name(self, repo, bin):
         """Test that creating a branch with existing name fails."""

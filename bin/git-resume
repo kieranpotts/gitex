@@ -20,7 +20,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-resume does not accept any options"
+    print_error "git-resume does not accept any options."
     return 1
   fi
 
@@ -36,7 +36,7 @@ main() {
   if [ "${msg}" = "wip" ] || [ "${msg_end}" = " - wip" ]; then
     git reset HEAD~1 --mixed
   else
-    printf "%bLast commit is not work-in-progress%b" "${RED}" "${RESET}" >&2
+    print_error "The last commit is not a work-in-progress commit."
     exit 1
   fi
 }

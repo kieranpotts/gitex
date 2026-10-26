@@ -34,7 +34,7 @@ Start a new orphan branch, keeping the current files staged for its first commit
 
 ```
 $ git orphan gh-pages
-success: new orphan branch: gh-pages
+success: Switched to new orphan branch 'gh-pages'.
 All files in the working tree are staged, ready for the first commit.
 ```
 
@@ -42,14 +42,14 @@ Start a new orphan branch with an empty working tree:
 
 ```
 $ git orphan gh-pages --fresh
-success: new orphan branch: gh-pages
+success: Switched to new orphan branch 'gh-pages'.
 ```
 
 If there are uncommitted changes or untracked files, `--fresh` asks for confirmation first:
 
 ```
 $ git orphan gh-pages --fresh
-warning: --fresh will delete these uncommitted changes and untracked files
+warning: --fresh will delete these uncommitted changes and untracked files.
  M README.md
 ?? notes.txt
 
@@ -64,7 +64,7 @@ Create an orphan branch interactively:
 $ git orphan
 Branch name:
 > gh-pages
-success: new orphan branch: gh-pages
+success: Switched to new orphan branch 'gh-pages'.
 ```
 
 ## See also

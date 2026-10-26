@@ -23,7 +23,7 @@ class TestGitOrphan:
 
         # Verify success exit code and message.
         assert result.returncode == 0
-        assert "new orphan branch: orphan-branch" in result.stdout
+        assert "Switched to new orphan branch 'orphan-branch'." in result.stdout
 
         # Verify we're on the new branch.
         assert repo.git.symbolic_ref("--short", "HEAD") == "orphan-branch"
@@ -187,7 +187,7 @@ class TestGitOrphan:
 
         # Verify error exit code and message.
         assert result.returncode == 1
-        assert "branch name cannot be empty" in result.stderr
+        assert "Branch name cannot be empty." in result.stderr
 
     def test_reject_invalid_branch_name(self, repo, bin):
         """Test that an invalid branch name is rejected."""
@@ -199,7 +199,7 @@ class TestGitOrphan:
 
         # Verify error exit code and message.
         assert result.returncode == 1
-        assert "not a valid branch name" in result.stderr
+        assert "is not a valid branch name." in result.stderr
 
     def test_reject_existing_branch_name(self, repo, bin):
         """Test that creating an orphan branch with an existing name fails."""
@@ -212,7 +212,7 @@ class TestGitOrphan:
 
         # Verify error exit code and message.
         assert result.returncode == 1
-        assert "already exists" in result.stderr
+        assert "already exists." in result.stderr
 
         # Verify we're still on the original branch.
         assert repo.git.symbolic_ref("--short", "HEAD") == "main"
@@ -225,7 +225,7 @@ class TestGitOrphan:
 
         # Verify error exit code and message.
         assert result.returncode == 1
-        assert "unexpected argument 'branch2'" in result.stderr
+        assert "Unexpected argument 'branch2'." in result.stderr
 
     def test_reject_unknown_option(self, repo, bin):
         """Test that unknown options are rejected."""
@@ -235,8 +235,8 @@ class TestGitOrphan:
 
         # Verify error exit code and message.
         assert result.returncode == 1
-        assert "unknown option '--bogus'" in result.stderr
-        assert "git orphan --help" in result.stdout
+        assert "Unknown option '--bogus'." in result.stderr
+        assert "git orphan --help" in result.stderr
 
     def test_help(self, repo, bin):
         """Test that --help prints usage instructions."""

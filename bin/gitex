@@ -87,7 +87,7 @@ main() {
         return 0
         ;;
       *)
-        print_error "unknown option: $1"
+        print_error "Unknown option '$1'."
         print_hint "Try 'gitex --help' for more information."
         return 1
         ;;
@@ -101,7 +101,7 @@ main() {
   fi
 
   # Too many options.
-  print_error "too many options"
+  print_error "Too many options."
   print_hint "Try 'gitex --help' for more information."
   return 1
 }

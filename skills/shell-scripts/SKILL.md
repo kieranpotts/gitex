@@ -57,29 +57,27 @@ Do NOT use this skill for Python tests.
 
     Sourcing `lib/print.sh` exposes:
 
-    - `print_info`: Streams to stdout neutral informational output in prose. Example: "Nothing to amend. The working tree is clean."
+    - `print_info`: Streams to stdout neutral informational output in prose. Example: "There's nothing to amend. The working tree is clean."
 
-    - `print_success`: Streams to stdout notifications of successful completion of an action. Example: "success: new branch: <branch-name>".
+    - `print_success`: Streams to stdout notifications of successful completion of an action. Example: "success: Switched to new orphan branch 'gh-pages'.".
 
-    - `print_error`: Streams to stderr errors that caused the script to abort. Example: "--name is invalid". RECOMMENDED to be followed by `print_hint`.
+    - `print_error`: Streams to stderr errors that caused the script to abort. Example: "error: --name requires a value.". RECOMMENDED to be followed by `print_hint`.
 
-    - `print_warning`: Streams to stderr non-fatal, non-blocking side-effects that the user should be notified of. Example: "warning: your working changes were staged". RECOMMENDED to be followed by `print_hint`.
+    - `print_warning`: Streams to stderr non-fatal, non-blocking side-effects that the user should be notified of. Example: "warning: Your working changes were staged.". RECOMMENDED to be followed by `print_hint`.
 
-    - `print_hint`: Streams to stdout a follow-up suggestion in prose. Example: "Try 'gitex --help'". Same as `print_info` except text color is cyan. RECOMMENDED for use after `print_error` and `print_warning`.
+    - `print_hint`: Streams to stderr a follow-up suggestion in prose. Example: "Try 'gitex --help' for more information.". Text color is cyan. RECOMMENDED for use after `print_error` and `print_warning`.
 
     - `print_prompt`: Interactive prompt before a `read`. Example: "Your email address:".
 
     Plain `echo` / `printf` is reserved for the command's *data* output (eg. `git whoami` printing `name: …`). Anything that frames or annotates that data uses the helpers.
 
--   **Write Go-style messages.**
+-   **Write messages as proper sentences.**
 
-    For errors and warnings, and success messages, write one sentence per error, start lowercase, and do not terminate with a period or other punctuation mark. Prefix with the message type: `error: `, `warning: `, or `success: `. Example:
+    Every message — error, warning, success, info, and hint — is written as one or more proper English sentences, per TS-16 (Command Line Interfaces), section "Error message content". Start each sentence with a capital letter, unless it starts with a literal identifier such as `--name` or `git-amend`, which keeps its own case. End each sentence with a period. Keep the error itself to one short sentence, and put advice on what to do next in a following `print_hint`. The helpers prefix errors, warnings, and success messages with the message type (`error: `, `warning: `, or `success: `). Examples:
 
     ```
-    error: failed to read config
+    error: Failed to read config.
     ```
-
-    But for more general output with extended information, instructions, or hints, write proper English sentences. Example:
 
     ```
     There's nothing to amend. The working tree is clean.
@@ -91,7 +89,7 @@ Do NOT use this skill for Python tests.
     Author's name:
     ```
 
-    Use the `print_error`, `print_warning`, `print_success`, `print_info`, `print_help`, and `print_prompt` utilities consistently.
+    Use the `print_error`, `print_warning`, `print_success`, `print_info`, `print_hint`, and `print_prompt` utilities consistently.
 
 -   **Do not source `lib/ansi-codes.sh` directly from `bin/` scripts.**
 
@@ -109,7 +107,7 @@ Do NOT use this skill for Python tests.
 
     ```sh
     if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
-      print_error "no commits exist to amend"
+      print_error "No commits exist to amend."
       return 1
     fi
     ```
@@ -141,7 +139,7 @@ Sourcing helpers and emitting an error:
 . "$(dirname "$0")/../lib/print.sh"
 
 if [ ! -d ".git" ]; then
-  print_error "not inside a Git repository"
+  print_error "Not inside a Git repository."
   return 1
 fi
 ```

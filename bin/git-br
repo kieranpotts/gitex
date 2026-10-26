@@ -30,13 +30,13 @@ main() {
     branch="$1"
   else
     # Too many arguments.
-    print_error "git-br accepts at most one argument (branch name)"
+    print_error "git-br accepts at most one argument, the branch name."
     return 1
   fi
 
   # Validate branch name is not empty.
   if [ -z "${branch}" ]; then
-    print_error "branch name cannot be empty"
+    print_error "Branch name cannot be empty."
     return 1
   fi
 

@@ -18,7 +18,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-unamend does not accept any options"
+    print_error "git-unamend does not accept any options."
     return 1
   fi
 
@@ -34,7 +34,7 @@ main() {
   last_reflog_msg=$(git reflog -1 --format="%gs")
 
   if ! echo "${last_reflog_msg}" | grep -q "commit (amend)"; then
-    print_error "the last operation was not a 'git commit --amend'"
+    print_error "The last operation was not a 'git commit --amend'."
     print_hint "Use 'git uncommit' to undo a regular commit."
     return 1
   fi

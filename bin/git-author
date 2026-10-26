@@ -25,7 +25,7 @@ main() {
     case "$1" in
       --name)
         if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
-          print_error "--name requires a value"
+          print_error "--name requires a value."
           return 1
         fi
         author_name="$2"
@@ -33,21 +33,21 @@ main() {
         ;;
       --email)
         if [ $# -lt 2 ] || [ -z "${2:-}" ] || [ "${2#--}" != "$2" ]; then
-          print_error "--email requires a value"
+          print_error "--email requires a value."
           return 1
         fi
         author_email="$2"
         shift 2
         ;;
       -*)
-        print_error "unknown option '$1'"
+        print_error "Unknown option '$1'."
         return 1
         ;;
       *)
         if [ -z "${ref}" ]; then
           ref="$1"
         else
-          print_error "unexpected option '$1'"
+          print_error "Unexpected option '$1'."
           return 1
         fi
         shift
@@ -64,7 +64,7 @@ main() {
 
   # Name is required.
   if [ -z "${author_name}" ]; then
-    print_error "name is required"
+    print_error "Name is required."
     exit 1
   fi
 
@@ -77,7 +77,7 @@ main() {
 
   # Email is required.
   if [ -z "${author_email}" ]; then
-    print_error "email is required"
+    print_error "Email is required."
     exit 1
   fi
 

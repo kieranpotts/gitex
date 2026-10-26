@@ -72,7 +72,7 @@ main() {
         return 0
         ;;
       -*)
-        print_error "unknown option '$1'"
+        print_error "Unknown option '$1'."
         print_hint "Try 'git orphan --help' for more information."
         return 1
         ;;
@@ -80,7 +80,7 @@ main() {
         if [ -z "${branch}" ]; then
           branch="$1"
         else
-          print_error "unexpected argument '$1'"
+          print_error "Unexpected argument '$1'."
           print_hint "Try 'git orphan --help' for more information."
           return 1
         fi
@@ -91,7 +91,7 @@ main() {
 
   # Must be run inside a working tree.
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    print_error "not inside a Git working tree"
+    print_error "Not inside a Git working tree."
     return 1
   fi
 
@@ -103,17 +103,17 @@ main() {
 
   # Validate the branch name.
   if [ -z "${branch}" ]; then
-    print_error "branch name cannot be empty"
+    print_error "Branch name cannot be empty."
     return 1
   fi
 
   if ! git check-ref-format --branch "${branch}" >/dev/null 2>&1; then
-    print_error "'${branch}' is not a valid branch name"
+    print_error "'${branch}' is not a valid branch name."
     return 1
   fi
 
   if git show-ref --verify --quiet "refs/heads/${branch}"; then
-    print_error "branch '${branch}' already exists"
+    print_error "Branch '${branch}' already exists."
     return 1
   fi
 
@@ -124,7 +124,7 @@ main() {
   # Before clearing the working tree, ask the user to confirm the deletion of
   # any staged, unstaged, or untracked changes.
   if [ "${fresh}" = true ] && [ -n "$(git status --porcelain --untracked-files=normal)" ]; then
-    print_warning "--fresh will delete these uncommitted changes and untracked files"
+    print_warning "--fresh will delete these uncommitted changes and untracked files."
     git status --short --untracked-files=normal
     print_prompt "Delete them and continue? [y/N]"
     answer=""
@@ -141,7 +141,7 @@ main() {
   # Create the orphan branch. `git checkout --orphan` creates a branch with no
   # history, and keeps all the files of the previous branch staged in the index.
   if ! git checkout --quiet --orphan "${branch}"; then
-    print_error "failed to create orphan branch '${branch}'"
+    print_error "Failed to create orphan branch '${branch}'."
     return 1
   fi
 
@@ -157,7 +157,7 @@ main() {
     git add --all
   fi
 
-  print_success "new orphan branch: ${branch}"
+  print_success "Switched to new orphan branch '${branch}'."
 
   if [ "${fresh}" = false ] && [ -n "$(git ls-files)" ]; then
     print_hint "All files in the working tree are staged, ready for the first commit."

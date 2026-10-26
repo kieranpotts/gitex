@@ -126,7 +126,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "Name is required" in result.stderr
+        assert "Name is required." in result.stderr
 
     def test_rejects_empty_email_from_prompt(self, repo, bin):
         """Test that empty email from prompt is rejected."""
@@ -144,7 +144,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "Email is required" in result.stderr
+        assert "Email is required." in result.stderr
 
     def test_modifying_earlier_commit_with_flags(self, repo, bin):
         """Test changing author of an earlier commit using flags."""
@@ -266,7 +266,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "--name requires a value" in result.stderr
+        assert "--name requires a value." in result.stderr
 
     def test_rejects_email_without_value(self, repo, bin):
         """Test that --email flag requires a value."""
@@ -284,7 +284,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "--email requires a value" in result.stderr
+        assert "--email requires a value." in result.stderr
 
     def test_rejects_unknown_option(self, repo, bin):
         """Test that unknown options are rejected."""
@@ -302,7 +302,7 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "unknown option '--unknown'" in result.stderr
+        assert "Unknown option '--unknown'." in result.stderr
 
     def test_rejects_multiple_ref_arguments(self, repo, bin):
         """Test that multiple positional arguments are rejected."""
@@ -320,4 +320,4 @@ class TestGitAuthor:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "unexpected option" in result.stderr
+        assert "Unexpected option" in result.stderr

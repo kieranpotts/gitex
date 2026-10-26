@@ -153,7 +153,7 @@ class TestGitContrib:
         assert result.returncode == 1
 
         # Verify stderr error message.
-        assert "git-contrib does not accept any options" in result.stderr
+        assert "git-contrib does not accept any options." in result.stderr
 
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
@@ -165,4 +165,4 @@ class TestGitContrib:
         assert result.returncode == 1
 
         # Verify stderr error message.
-        assert "git-contrib does not accept any options" in result.stderr
+        assert "git-contrib does not accept any options." in result.stderr

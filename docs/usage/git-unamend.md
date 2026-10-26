@@ -56,8 +56,8 @@ $ git commit -m "add feature"
  1 file changed, 10 insertions(+)
 
 $ git unamend
-error: the last operation was not a 'git commit --amend'
-hint: use 'git uncommit' to undo a regular commit
+error: The last operation was not a 'git commit --amend'.
+Use 'git uncommit' to undo a regular commit.
 ```
 
 This safety check prevents accidentally undoing the wrong operation. Use [`git uncommit`](./git-uncommit.md) to undo regular commits.

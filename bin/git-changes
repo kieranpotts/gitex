@@ -25,7 +25,7 @@ set -eu
 
 main() {
   if [ $# -gt 0 ]; then
-    print_error "git-changes does not accept any options"
+    print_error "git-changes does not accept any options."
     return 1
   fi
 

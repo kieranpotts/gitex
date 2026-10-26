@@ -22,10 +22,10 @@ print_error() {
   printf "%berror:%b %s\n" "${BOLD}${RED}" "${RESET}" "$1" >&2
 }
 
-# Print a hint message to stdout in cyan.
+# Print a hint message to stderr in cyan.
 # Usage: print_hint "message"
 print_hint() {
-  printf "%s\n" "${BOLD}${CYAN}" "$1" "${RESET}"
+  printf "%b%s%b\n" "${BOLD}${CYAN}" "$1" "${RESET}" >&2
 }
 
 # Print an info message to stdout (no color).
@@ -37,7 +37,7 @@ print_info() {
 # Print a success message to stdout in green.
 # Usage: print_success "message"
 print_success() {
-  printf "%success:%b %s\n" "${BOLD}${GREEN}" "${RESET}" "$1"
+  printf "%bsuccess:%b %s\n" "${BOLD}${GREEN}" "${RESET}" "$1"
 }
 
 # Print a warning message to stderr in yellow.
