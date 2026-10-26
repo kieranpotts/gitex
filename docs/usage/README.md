@@ -12,7 +12,7 @@ GitEx adds the following commands to Git:
 
 - [`git br`](./git-br.md) ✅: Branch from current position, switch to it, and push upstream to setup tracking.
 
-- [`git orphan`](./git-orphan.md): Create an orphaned branch and switch to it. Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working directory will be cleared – careful, you may lose work-in-progress.
+- [`git orphan`](./git-orphan.md) ✅: Create an orphaned branch and switch to it. Working changes will be added to the staging index, unless the `--fresh` option is provided, in which case the working tree will be cleared, except ignored files – careful, you may lose work-in-progress.
 
 - [`git co`](./git-co.md) ✅: Shortcut for `git checkout`. Parameters are forwarded.
 

@@ -56,6 +56,9 @@ GitEx commands:
   git author [<ref>] [--name <name>] [--email <email>]
     Change the author of the last commit, or an earlier specified commit.
 
+  git orphan [<branch>] [--fresh]
+    Create a branch with no parent commits, and switch to it.
+
   git unamend
     Undo the prior 'git amend' operation.
 

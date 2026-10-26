@@ -30,7 +30,7 @@ Use [`skills/new-command/SKILL.md`](skills/new-command/SKILL.md) as the checklis
 
 ## Branching
 - [x] `git br`
-- [ ] `git orphan` (In progress; see *Work in progress*.)
+- [x] `git orphan`
 - [x] `git co`
 - [x] `git sw`
 - [ ] `git delete` (The draft rejects any argument before reading the branch name, and uses Bash array syntax.)
