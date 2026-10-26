@@ -3,10 +3,16 @@ set -eu
 
 #
 # git-orphan - Create an orphaned branch, with no parents, and switch to it.
-
-# Working changes will be added to the staging index, unless the `--fresh`
-# option is provided, in which case the working directory will be
-# cleared – careful, you may lose work-in-progress.
+#
+# If the new branch name is not inputted, the user will be prompted for it.
+#
+# By default, the files of the previously checked-out branch, plus any working
+# changes, including untracked files, are carried over to the new branch and
+# staged, ready for its first commit. If the `--fresh` option is provided, the
+# index and working tree are cleared instead, including untracked files. Ignored
+# files are kept. If there are uncommitted changes or untracked files, the user
+# is prompted to confirm before they are deleted – careful, you may lose
+# unsaved work-in-progress.
 #
 # This is useful to start a fresh trunk that is not based on any previous
 # work. You might use this, for example, to create a `gh-pages` branch as
@@ -21,64 +27,141 @@ set -eu
 # Usage:
 #   $ git orphan [<branch>] [--fresh]
 #
+# Options:
+#   --fresh     Clear the index and working tree, except ignored files
+#   -h, --help  Show usage instructions
+#
 # Dependencies: (none)
 #
 
 # shellcheck source=../lib/print.sh
 . "$(dirname "$0")/../lib/print.sh"
 
+_print_help() {
+  cat <<EOF
+Usage: git orphan [<branch>] [--fresh]
+
+Create a new branch with no parent commits, and switch to it.
+
+Options:
+  --fresh     Clear the index and working tree, except ignored files.
+              Prompts for confirmation if there are uncommitted changes
+              or untracked files.
+  --help, -h  Show usage instructions.
+
+Examples:
+  $ git orphan gh-pages
+  $ git orphan gh-pages --fresh
+EOF
+}
+
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-orphan does not accept any options"
+
+  # Parse options.
+  branch=""
+  fresh=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --fresh)
+        fresh=true
+        shift
+        ;;
+      -h|--help)
+        _print_help
+        return 0
+        ;;
+      -*)
+        print_error "unknown option '$1'"
+        print_hint "Try 'git orphan --help' for more information."
+        return 1
+        ;;
+      *)
+        if [ -z "${branch}" ]; then
+          branch="$1"
+        else
+          print_error "unexpected argument '$1'"
+          print_hint "Try 'git orphan --help' for more information."
+          return 1
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  # Must be run inside a working tree.
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    print_error "not inside a Git working tree"
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
-
-  # TODO: Combine this with `git orphan`. If there are working/staged changes,
-  # prompt the use to keep or discard them.
-
-  branch="${1}"
-
+  # Prompt for branch name if not provided.
   if [ -z "${branch}" ]; then
-    # Bash-compatible code:
-    #read -p "Type a branch name: " branch
-
-    # Posix-compatible code:
-    printf "Type a branch name: " >&2
-    read -r branch
+    print_prompt "Branch name:"
+    read -r branch || true
   fi
 
+  # Validate the branch name.
   if [ -z "${branch}" ]; then
-    echo "Require branch name" >&2
-    exit 1
+    print_error "branch name cannot be empty"
+    return 1
   fi
 
-  git switch --orphan "${branch}"
+  if ! git check-ref-format --branch "${branch}" >/dev/null 2>&1; then
+    print_error "'${branch}' is not a valid branch name"
+    return 1
+  fi
 
-  # ------------------------------------------------------
+  if git show-ref --verify --quiet "refs/heads/${branch}"; then
+    print_error "branch '${branch}' already exists"
+    return 1
+  fi
 
-  # TODO: Combine this with `git orphan`. If there are working/staged changes,
-  # prompt the use to keep or discard them.
+  # Work from the root of the working tree, so that `--fresh` clears all of
+  # it, not just the current subdirectory.
+  cd "$(git rev-parse --show-toplevel)"
 
-  # branch="${1}"
+  # Before clearing the working tree, ask the user to confirm the deletion of
+  # any staged, unstaged, or untracked changes.
+  if [ "${fresh}" = true ] && [ -n "$(git status --porcelain --untracked-files=normal)" ]; then
+    print_warning "--fresh will delete these uncommitted changes and untracked files"
+    git status --short --untracked-files=normal
+    print_prompt "Delete them and continue? [y/N]"
+    answer=""
+    read -r answer || true
+    case "${answer}" in
+      y|Y|yes|Yes|YES) ;;
+      *)
+        print_info "Aborted. Nothing was changed."
+        return 1
+        ;;
+    esac
+  fi
 
-  # if [ -z "${branch}" ]; then
-  #   # Bash-compatible code:
-  #   #read -p "Type a branch name: " branch
+  # Create the orphan branch. `git checkout --orphan` creates a branch with no
+  # history, and keeps all the files of the previous branch staged in the index.
+  if ! git checkout --quiet --orphan "${branch}"; then
+    print_error "failed to create orphan branch '${branch}'"
+    return 1
+  fi
 
-  #   # Posix-compatible code:
-  #   printf "Type a branch name: " >&2
-  #   read -r branch
-  # fi
+  # If the user wants a totally clean slate, clear the index and working tree.
+  # Ignored files are kept. Untracked files are cleaned first, while the
+  # `.gitignore` files that protect ignored files are still in place.
+  # Otherwise, stage all working changes, so that the index holds everything in
+  # the working tree, ready for the first commit.
+  if [ "${fresh}" = true ]; then
+    git clean -f -d -q
+    git rm -r -f -q --ignore-unmatch .
+  else
+    git add --all
+  fi
 
-  # if [ -z "${branch}" ]; then
-  #   echo "Require branch name" >&2
-  #   exit 1
-  # fi
+  print_success "new orphan branch: ${branch}"
 
-  # git checkout --orphan "${branch}"
-
+  if [ "${fresh}" = false ] && [ -n "$(git ls-files)" ]; then
+    print_hint "All files in the working tree are staged, ready for the first commit."
+  fi
 }
 
 main "$@"

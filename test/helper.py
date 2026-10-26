@@ -152,7 +152,7 @@ class TestRepo:
         file_path = os.path.join(self._dir, filename)
         os.remove(file_path)
 
-    def run(self, bin, *args, input=None, env=None):
+    def run(self, bin, *args, input=None, env=None, cwd=None):
         """
         Run a git extension script in the context of the rest repository,
         and return the result.
@@ -162,6 +162,8 @@ class TestRepo:
             *args: Optional arguments to pass to the script.
             input: Optional input to pass to the script via stdin.
             env: Optional environment variables to pass to the script.
+            cwd: Optional directory to run the script from. Defaults to the
+                repository's root directory.
 
         Returns:
             subprocess.CompletedProcess with returncode, stdout, and stderr.
@@ -172,7 +174,7 @@ class TestRepo:
         # interpretation issues in other dev environments, too.
         return subprocess.run(
             ["bash", bin, *args],
-            cwd=self._dir,
+            cwd=cwd or self._dir,
             capture_output=True,
             text=True,
             input=input,
