@@ -12,7 +12,7 @@ When modifying the most recent commit (HEAD), the operation is performed directl
 ## Usage
 
 ```
-$ git author [<ref>] [--name <name>] [--email <email>]
+$ git author [<ref>] [--name <name>] [--email <email>] [--no-color]
 ```
 
 ## Examples
@@ -37,6 +37,9 @@ The new author name. If not provided, you will be prompted to enter it interacti
 
 `--email [email]`::
 The new author email address. If not provided, you will be prompted to enter it interactively. This field is required and cannot be left empty.
+
+`--no-color`::
+Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 

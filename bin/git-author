@@ -6,7 +6,7 @@ set -eu
 # an earlier specified commit in the checked-out branch's history.
 #
 # Usage:
-#   $ git author [<ref>] [--name <name>] [--email <email>]
+#   $ git author [<ref>] [--name <name>] [--email <email>] [--no-color]
 #
 # Dependencies: (none)
 #
@@ -38,6 +38,10 @@ main() {
         fi
         author_email="$2"
         shift 2
+        ;;
+      --no-color)
+        disable_color
+        shift
         ;;
       -*)
         print_error "Unknown option '$1'."

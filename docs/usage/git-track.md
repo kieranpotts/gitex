@@ -5,5 +5,9 @@ Start tracking a new file. This is an alias for `git add` and the opposite of th
 ## Usage
 
 ```
-$ git track [<path>] [--all|-A]
+$ git track [<path>] [--all|-A] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

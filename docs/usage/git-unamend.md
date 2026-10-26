@@ -14,10 +14,12 @@ Under the hood, this command checks the reflog to verify the last operation was 
 ## Usage
 
 ```
-$ git unamend
+$ git unamend [--no-color]
 ```
 
-This command does not accept any arguments.
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 

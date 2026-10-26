@@ -4,6 +4,8 @@ GitEx adds the following commands to Git:
 
 - [`gitex`](./gitex.md): Get help with GitEx commands.
 
+All commands except `git cl`, `git co`, and `git sw` accept the `--no-color` option, and respect the `NO_COLOR`, `GITEX_NO_COLOR`, and `FORCE_COLOR` environment variables. See [Colored output](../configuration.md#colored-output).
+
 ## Cloning
 
 - [`git cl`](./git-cl.md) ✅: Shortcut for `git clone`. Parameters are forwarded.

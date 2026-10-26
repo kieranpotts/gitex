@@ -7,5 +7,9 @@ If a message is provided, it is used as the commit message; otherwise, the user 
 ## Usage
 
 ```
-$ git cm [<msg>]
+$ git cm [<msg>] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

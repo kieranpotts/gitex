@@ -5,5 +5,9 @@ Show a detailed graphical representation of the commit history; alternative to `
 ## Usage
 
 ```
-$ git graph
+$ git graph [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

@@ -8,7 +8,7 @@ set -eu
 # This command will fail if the previous operation was not an amend.
 #
 # Usage:
-#   $ git unamend
+#   $ git unamend [--no-color]
 #
 # Dependencies: (none)
 #
@@ -17,10 +17,19 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-unamend does not accept any options."
-    return 1
-  fi
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        shift
+        ;;
+      *)
+        print_error "Unexpected argument '$1'."
+        print_hint "git-unamend accepts no arguments other than --no-color."
+        return 1
+        ;;
+    esac
+  done
 
   # `HEAD@{1}` refers to the previous state in the reflog. So, when you run
   # `git reset "HEAD@{1}"` twice, the second time `HEAD@{1}` will refer to

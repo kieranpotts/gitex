@@ -9,5 +9,9 @@ Continue where you left off tomorrow with `git resume`.
 ## Usage
 
 ```
-$ git wip [<msg>]
+$ git wip [<msg>] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

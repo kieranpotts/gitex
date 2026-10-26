@@ -5,5 +5,9 @@ Change the message of the most recent commit or an earlier specified commit. Any
 ## Usage
 
 ```
-$ git reword [<ref>]
+$ git reword [<ref>] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

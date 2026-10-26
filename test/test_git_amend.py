@@ -2,6 +2,8 @@
 Test suite for git-amend command.
 """
 
+import os
+
 
 class TestGitAmend:
     """Test cases for git-amend command."""
@@ -231,7 +233,7 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-amend does not accept any options." in result.stderr
+        assert "git-amend accepts no arguments other than --no-color." in result.stderr
 
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
@@ -248,4 +250,16 @@ class TestGitAmend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-amend does not accept any options." in result.stderr
+        assert "git-amend accepts no arguments other than --no-color." in result.stderr
+
+    def test_no_color_flag(self, repo, bin):
+        """Test that --no-color disables color, even when FORCE_COLOR is set."""
+
+        # Run 'git-amend' in a repository with no commits, to trigger an error.
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "--no-color", env=env)
+
+        # Verify the error message is printed without ANSI codes.
+        assert result.returncode == 1
+        assert "error: No commits exist to amend." in result.stderr
+        assert "\033[" not in result.stderr

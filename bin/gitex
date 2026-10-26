@@ -5,19 +5,20 @@ set -eu
 # gitex - Get help with using GitEx.
 #
 # Usage:
-#   $ gitex [--version|-v] [--commands|-c] [--help|-h]
+#   $ gitex [--version|-v] [--commands|-c] [--help|-h] [--no-color]
 #
 # Options:
 #   -v, --version   Show installed GitEx version number
 #   -c, --commands  List available GitEx aliases
 #   -h, --help      Show usage instructions
+#   --no-color      Disable colored output
 #
 # Dependencies: (none)
 #
 
 _print_help() {
   cat <<EOF
-Usage: gitex [--version|-v] [--commands|-c] [--help|-h]
+Usage: gitex [--version|-v] [--commands|-c] [--help|-h] [--no-color]
 
 Get help with using GitEx.
 
@@ -25,6 +26,7 @@ Options:
   --version, -v   Show installed GitEx version number.
   --commands, -c  List available GitEx aliases.
   --help, -h      Show usage instructions.
+  --no-color      Disable colored output.
 
 Examples:
   $ git gitex --version
@@ -50,41 +52,44 @@ _print_commands() {
 
 GitEx commands:
 
-  git amend
+  git amend [--no-color]
     Add staged or working changes to last commit.
 
-  git author [<ref>] [--name <name>] [--email <email>]
+  git author [<ref>] [--name <name>] [--email <email>] [--no-color]
     Change the author of the last commit, or an earlier specified commit.
 
-  git orphan [<branch>] [--fresh]
+  git orphan [<branch>] [--fresh] [--no-color]
     Create a branch with no parent commits, and switch to it.
 
-  git unamend
+  git unamend [--no-color]
     Undo the prior 'git amend' operation.
 
-  git uncommit
+  git uncommit [--no-color]
     Undo the last commit, return the changes to the staging index.
 
-  git whoami
+  git whoami [--no-color]
     Show the currently configured Git user.
 
 EOF
 }
 
 main() {
-  if [ $# -eq 1 ]; then
+
+  # Parse options. At most one action is allowed, alongside --no-color.
+  action=""
+
+  while [ $# -gt 0 ]; do
     case "$1" in
-      -v|--version)
-        _print_version
-        return 0
+      --no-color)
+        disable_color
         ;;
-      -c|--commands)
-        _print_commands
-        return 0
-        ;;
-      -h|--help)
-        _print_help
-        return 0
+      -v|--version|-c|--commands|-h|--help)
+        if [ -n "${action}" ]; then
+          print_error "Too many options."
+          print_hint "Try 'gitex --help' for more information."
+          return 1
+        fi
+        action="$1"
         ;;
       *)
         print_error "Unknown option '$1'."
@@ -92,18 +97,21 @@ main() {
         return 1
         ;;
     esac
-  fi
+    shift
+  done
 
-  # If no options, show help.
-  if [ $# -eq 0 ]; then
-    _print_help
-    return 0
-  fi
-
-  # Too many options.
-  print_error "Too many options."
-  print_hint "Try 'gitex --help' for more information."
-  return 1
+  case "${action}" in
+    -v|--version)
+      _print_version
+      ;;
+    -c|--commands)
+      _print_commands
+      ;;
+    *)
+      # If no action, show help.
+      _print_help
+      ;;
+  esac
 }
 
 main "$@"

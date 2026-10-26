@@ -11,7 +11,7 @@ set -eu
 # exclude merge commits from the log.
 #
 # Usage:
-#   $ git fetched
+#   $ git fetched [--no-color]
 #
 # Dependencies: (none)
 #
@@ -20,10 +20,19 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-fetched does not accept any options."
-    return 1
-  fi
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        shift
+        ;;
+      *)
+        print_error "Unexpected argument '$1'."
+        print_hint "git-fetched accepts no arguments other than --no-color."
+        return 1
+        ;;
+    esac
+  done
 
   # TODO: Review draft implementation, below.
 

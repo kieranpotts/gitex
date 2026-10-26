@@ -5,5 +5,9 @@ Alias for `git reset`, this removes everything from the staging index, returning
 ## Usage
 
 ```
-$ git unstage
+$ git unstage [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

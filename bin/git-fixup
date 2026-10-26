@@ -14,7 +14,7 @@ set -eu
 # Additional options will be forwarded to the `commit` command.
 #
 # Usage:
-#  $ git fixup [<ref>]
+#  $ git fixup [<ref>] [--no-color]
 #
 # Examples:
 #   $ git fixup         # Fix the last commit.
@@ -46,10 +46,19 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-fixup does not accept any options."
-    return 1
-  fi
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        shift
+        ;;
+      *)
+        print_error "Unexpected argument '$1'."
+        print_hint "git-fixup accepts no arguments other than --no-color."
+        return 1
+        ;;
+    esac
+  done
 
   # TODO: Review draft implementation, below.
 

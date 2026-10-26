@@ -5,5 +5,9 @@ Clean `git log`, paginated.
 ## Usage
 
 ```
-$ git history
+$ git history [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

@@ -9,10 +9,12 @@ The command analyzes the entire commit history accessible from HEAD. If the repo
 ## Usage
 
 ```
-$ git contrib
+$ git contrib [--no-color]
 ```
 
-This command does not accept any arguments.
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 

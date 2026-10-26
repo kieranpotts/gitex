@@ -9,10 +9,12 @@ If either the name or email is not configured, `[not set]` is displayed for that
 ## Usage
 
 ```
-$ git whoami
+$ git whoami [--no-color]
 ```
 
-This command does not accept any arguments.
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 

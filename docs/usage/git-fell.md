@@ -5,5 +5,9 @@ Delete any branches that have already been merged into the default branch or the
 ## Usage
 
 ```
-$ git fell [<branch>]
+$ git fell [<branch>] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

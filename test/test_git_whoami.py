@@ -117,7 +117,7 @@ class TestGitWhoami:
         assert result.returncode == 1
 
         # Verify stderr.
-        assert "git-whoami does not accept any options." in result.stderr
+        assert "git-whoami accepts no arguments other than --no-color." in result.stderr
 
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
@@ -129,4 +129,4 @@ class TestGitWhoami:
         assert result.returncode == 1
 
         # Verify stderr.
-        assert "git-whoami does not accept any options." in result.stderr
+        assert "git-whoami accepts no arguments other than --no-color." in result.stderr

@@ -200,7 +200,9 @@ class TestGitUnamend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-unamend does not accept any options." in result.stderr
+        assert (
+            "git-unamend accepts no arguments other than --no-color." in result.stderr
+        )
 
     def test_rejects_multiple_arguments(self, repo, bin):
         """Test that the command rejects multiple arguments."""
@@ -218,4 +220,6 @@ class TestGitUnamend:
         assert result.returncode == 1
 
         # Verify error message.
-        assert "git-unamend does not accept any options." in result.stderr
+        assert (
+            "git-unamend accepts no arguments other than --no-color." in result.stderr
+        )

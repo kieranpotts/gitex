@@ -2,6 +2,8 @@
 Test suite for git-orphan command.
 """
 
+import os
+
 
 class TestGitOrphan:
     """Test cases for git-orphan command."""
@@ -246,4 +248,50 @@ class TestGitOrphan:
 
         # Verify success exit code and usage output.
         assert result.returncode == 0
-        assert "Usage: git orphan [<branch>] [--fresh]" in result.stdout
+        assert "Usage: git orphan [<branch>] [--fresh] [--no-color]" in result.stdout
+        assert "--no-color  Disable colored output." in result.stdout
+
+    def test_force_color(self, repo, bin):
+        """Test that FORCE_COLOR enables color when output is not a TTY."""
+
+        repo.write("file1.txt", "Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "gh-pages", env=env)
+
+        # Verify the success message is colored.
+        assert result.returncode == 0
+        assert "\033[" in result.stdout
+
+    def test_no_color_flag(self, repo, bin):
+        """Test that --no-color disables color, even when FORCE_COLOR is set."""
+
+        repo.write("file1.txt", "Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "gh-pages", "--no-color", env=env)
+
+        # Verify the branch is created and the output has no ANSI codes.
+        assert result.returncode == 0
+        assert "success: Switched to new orphan branch 'gh-pages'." in result.stdout
+        assert "\033[" not in result.stdout
+        assert "\033[" not in result.stderr
+
+    def test_no_color_variable(self, repo, bin):
+        """Test that NO_COLOR disables color, even when FORCE_COLOR is set."""
+
+        repo.write("file1.txt", "Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        env = {**os.environ, "FORCE_COLOR": "1", "NO_COLOR": "1"}
+        result = repo.run(bin, "gh-pages", env=env)
+
+        assert result.returncode == 0
+        assert "success: Switched to new orphan branch 'gh-pages'." in result.stdout
+        assert "\033[" not in result.stdout
+        assert "\033[" not in result.stderr

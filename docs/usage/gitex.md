@@ -9,7 +9,7 @@ This command does not require a Git repository to run. You can use `gitex --vers
 ## Usage
 
 ```
-$ gitex [--version|-v] [--commands|-c] [--help|-h]
+$ gitex [--version|-v] [--commands|-c] [--help|-h] [--no-color]
 ```
 
 ### Options
@@ -22,6 +22,9 @@ $ gitex [--version|-v] [--commands|-c] [--help|-h]
 
 `--help, -h`::
   Show usage instructions for the `gitex` command.
+
+`--no-color`::
+  Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 
@@ -39,11 +42,11 @@ $ gitex --commands
 
 GitEx commands:
 
-  git amend
-    Add all working changes to last commit, including new (untracked) files.
+  git amend [--no-color]
+    Add staged or working changes to last commit.
 
-  git author [<ref>]
-    Change the author of the last commit or an earlier specified commit.
+  git author [<ref>] [--name <name>] [--email <email>] [--no-color]
+    Change the author of the last commit, or an earlier specified commit.
 
   ...
 ```
@@ -60,6 +63,7 @@ Options:
   --version, -v   Show installed GitEx version number
   --commands, -c  List available GitEx aliases
   --help, -h      Show usage instructions
+  --no-color      Disable colored output
 
 Examples:
   $ git gitex --version

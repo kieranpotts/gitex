@@ -11,12 +11,16 @@ This command combines three operations into one:
 ## Usage
 
 ```
-$ git br [<branch>]
+$ git br [<branch>] [--no-color]
 ```
 
 If no branch name is provided, you will be prompted to enter one interactively.
 
 The operation will fail if the specified branch name already exists.
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Configuration
 

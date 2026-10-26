@@ -8,6 +8,17 @@ import pytest
 from helper import TestRepo
 
 
+@pytest.fixture(autouse=True)
+def no_color_env(monkeypatch):
+    """
+    Clear the color-control environment variables, so that the developer's
+    own shell settings do not leak into the scripts under test.
+    """
+
+    for name in ("NO_COLOR", "GITEX_NO_COLOR", "FORCE_COLOR"):
+        monkeypatch.delenv(name, raising=False)
+
+
 @pytest.fixture(scope="function")
 def repo():
     """

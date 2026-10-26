@@ -9,7 +9,7 @@ set -eu
 # changes (including new untracked files) and add those to the last commit.
 #
 # Usage:
-#   $ git amend
+#   $ git amend [--no-color]
 #
 # Dependencies: (none)
 #
@@ -18,10 +18,19 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-amend does not accept any options."
-    return 1
-  fi
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        shift
+        ;;
+      *)
+        print_error "Unexpected argument '$1'."
+        print_hint "git-amend accepts no arguments other than --no-color."
+        return 1
+        ;;
+    esac
+  done
 
   # Check if there's a previous commit to amend.
   if ! git rev-parse --verify HEAD >/dev/null 2>&1; then

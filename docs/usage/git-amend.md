@@ -20,10 +20,12 @@ See also [`git unamend`](./git-unamend.md), which is capable of undoing this ope
 ## Usage
 
 ```
-$ git amend
+$ git amend [--no-color]
 ```
 
-This command does not accept any arguments.
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 

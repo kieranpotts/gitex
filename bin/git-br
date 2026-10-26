@@ -11,7 +11,7 @@ set -eu
 # This operation fails with an error if the branch name is already taken.
 #
 # Usage:
-#   $ git br [<branch>]
+#   $ git br [<branch>] [--no-color]
 #
 # Dependencies: (none)
 #
@@ -20,18 +20,34 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  # Get branch name from argument, else prompt for it.
-  if [ $# -eq 0 ]; then
-    # No argument provided, prompt for branch name.
+
+  # Parse options.
+  branch=""
+  has_branch=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        shift
+        ;;
+      *)
+        if [ "${has_branch}" = true ]; then
+          # Too many arguments.
+          print_error "git-br accepts at most one argument, the branch name."
+          return 1
+        fi
+        branch="$1"
+        has_branch=true
+        shift
+        ;;
+    esac
+  done
+
+  # No argument provided, prompt for branch name.
+  if [ "${has_branch}" = false ]; then
     print_prompt "Enter branch name:"
     read -r branch
-  elif [ $# -eq 1 ]; then
-    # Branch name provided as argument.
-    branch="$1"
-  else
-    # Too many arguments.
-    print_error "git-br accepts at most one argument, the branch name."
-    return 1
   fi
 
   # Validate branch name is not empty.

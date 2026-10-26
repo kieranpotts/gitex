@@ -16,7 +16,7 @@ Unlike [`git br`](./git-br.md), the new branch is not pushed upstream. Until the
 ## Usage
 
 ```
-$ git orphan [<branch>] [--fresh]
+$ git orphan [<branch>] [--fresh] [--no-color]
 ```
 
 If no branch name is provided, you will be prompted to enter one interactively.
@@ -26,6 +26,7 @@ The operation will fail if the branch name is invalid or already exists.
 Options:
 
 - `--fresh`: Clear the index and working tree, except ignored files.
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 - `--help`, `-h`: Show usage instructions.
 
 ## Examples

@@ -185,3 +185,48 @@ class TestGitBr:
 
         # Verify the error message mentions 'origin' (the default).
         assert "origin" in result.stderr
+
+    def test_no_color_flag(self, repo, bin):
+        """Test that --no-color is not mistaken for the branch name."""
+
+        repo.write("file1.txt", "Initial content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        # Supply two branch names, either side of the --no-color flag.
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "branch1", "--no-color", "branch2", env=env)
+
+        # Verify the error message is printed without ANSI codes.
+        assert result.returncode == 1
+        assert "git-br accepts at most one argument, the branch name." in result.stderr
+        assert "\033[" not in result.stderr
+
+    def test_no_color_flag_alone_prompts(self, repo, bin):
+        """Test that --no-color alone is not taken as the branch name."""
+
+        repo.write("file1.txt", "Initial content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        # Provide an empty branch name via stdin.
+        result = repo.run(bin, "--no-color", input="\n")
+
+        # Verify the user was prompted, then the empty name was rejected.
+        assert result.returncode == 1
+        assert "Enter branch name:" in result.stdout
+        assert "Branch name cannot be empty." in result.stderr
+
+    def test_reject_empty_branch_name_argument(self, repo, bin):
+        """Test that an empty branch name argument is rejected without a prompt."""
+
+        repo.write("file1.txt", "Initial content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        result = repo.run(bin, "", "--no-color")
+
+        # Verify the empty name was rejected, and the user was not prompted.
+        assert result.returncode == 1
+        assert "Branch name cannot be empty." in result.stderr
+        assert "Enter branch name:" not in result.stdout

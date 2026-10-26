@@ -18,10 +18,12 @@ $ git uncommit && git undo
 ## Usage
 
 ```
-$ git uncommit
+$ git uncommit [--no-color]
 ```
 
-This command does not accept any arguments.
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).
 
 ## Examples
 

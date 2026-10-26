@@ -5,5 +5,9 @@ Push changes in all local branches to their tracked branches in the remote repos
 ## Usage
 
 ```
-$ git push-all [<remote>]
+$ git push-all [<remote>] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

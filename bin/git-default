@@ -6,7 +6,7 @@ set -eu
 # the upstream "origin" repo.
 #
 # Usage:
-#   $ git default
+#   $ git default [--no-color]
 #
 # This alias parses the local `origin/HEAD` reference, which points to the
 # name of the default branch in the upstream "origin" repository.
@@ -46,10 +46,19 @@ set -eu
 . "$(dirname "$0")/../lib/print.sh"
 
 main() {
-  if [ $# -gt 0 ]; then
-    print_error "git-default does not accept any options."
-    return 1
-  fi
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        shift
+        ;;
+      *)
+        print_error "Unexpected argument '$1'."
+        print_hint "git-default accepts no arguments other than --no-color."
+        return 1
+        ;;
+    esac
+  done
 
   # TODO: Review draft implementation, below.
 

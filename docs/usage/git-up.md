@@ -9,5 +9,9 @@ Add the `--force` option to remove commits from the upstream branch that do not 
 ## Usage
 
 ```
-$ git up [--force]
+$ git up [--force] [--no-color]
 ```
+
+Options:
+
+- `--no-color`: Disable colored output. See [Colored output](../configuration.md#colored-output).

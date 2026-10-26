@@ -25,10 +25,11 @@ set -eu
 # reference.
 #
 # Usage:
-#   $ git orphan [<branch>] [--fresh]
+#   $ git orphan [<branch>] [--fresh] [--no-color]
 #
 # Options:
 #   --fresh     Clear the index and working tree, except ignored files
+#   --no-color  Disable colored output
 #   -h, --help  Show usage instructions
 #
 # Dependencies: (none)
@@ -39,7 +40,7 @@ set -eu
 
 _print_help() {
   cat <<EOF
-Usage: git orphan [<branch>] [--fresh]
+Usage: git orphan [<branch>] [--fresh] [--no-color]
 
 Create a new branch with no parent commits, and switch to it.
 
@@ -47,6 +48,7 @@ Options:
   --fresh     Clear the index and working tree, except ignored files.
               Prompts for confirmation if there are uncommitted changes
               or untracked files.
+  --no-color  Disable colored output.
   --help, -h  Show usage instructions.
 
 Examples:
@@ -65,6 +67,10 @@ main() {
     case "$1" in
       --fresh)
         fresh=true
+        shift
+        ;;
+      --no-color)
+        disable_color
         shift
         ;;
       -h|--help)

@@ -2,6 +2,8 @@
 Test suite for git-author command.
 """
 
+import os
+
 
 class TestGitAuthor:
     """Test cases for git-author command."""
@@ -321,3 +323,38 @@ class TestGitAuthor:
 
         # Verify error message.
         assert "Unexpected option" in result.stderr
+
+    def test_no_color_flag(self, repo, bin):
+        """Test that --no-color disables color, even when FORCE_COLOR is set."""
+
+        env = {**os.environ, "FORCE_COLOR": "1"}
+        result = repo.run(bin, "--no-color", "--unknown", env=env)
+
+        # Verify the error message is printed without ANSI codes.
+        assert result.returncode == 1
+        assert "error: Unknown option '--unknown'." in result.stderr
+        assert "\033[" not in result.stderr
+
+    def test_no_color_flag_is_not_an_option_value(self, repo, bin):
+        """Test that --no-color is not taken as the value of --name."""
+
+        result = repo.run(bin, "--name", "--no-color")
+
+        assert result.returncode == 1
+        assert "--name requires a value." in result.stderr
+
+    def test_no_color_flag_with_other_options(self, repo, bin):
+        """Test that --no-color can be combined with the other options."""
+
+        repo.write("file1.txt", "Content")
+        repo.git.add("file1.txt")
+        repo.git.commit("-m", "initial commit")
+
+        result = repo.run(
+            bin, "--name", "Jane Smith", "--no-color", "--email", "jane@example.com"
+        )
+
+        # Verify the author was changed.
+        assert result.returncode == 0
+        author = repo.git.log("-1", "--pretty=format:%an <%ae>").strip()
+        assert author == "Jane Smith <jane@example.com>"

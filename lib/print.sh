@@ -6,9 +6,14 @@
 # These functions provide standardized, colored output for different message
 # types. All functions use ANSI color codes defined in ./ansi-codes.sh.
 #
-# Per TS-16, color is disabled when the `NO_COLOR` environment variable exists,
-# or when the stream a message is written to is not a terminal (TTY). The check
-# is made per stream, so piping stdout does not strip color from stderr.
+# Per TS-16, color is decided in this order of precedence:
+#
+#   1. Disabled if the `GITEX_NO_COLOR` or `NO_COLOR` environment variable
+#      exists. Commands set `GITEX_NO_COLOR` when given the `--no-color` flag.
+#   2. Enabled if the `FORCE_COLOR` environment variable exists.
+#   3. Otherwise, enabled only if the stream a message is written to is a
+#      terminal (TTY). The check is made per stream, so piping stdout does not
+#      strip color from stderr.
 #
 # Usage:
 #   . "$(dirname "$0")/../lib/print.sh"
@@ -23,7 +28,19 @@
 # Succeed if color output is enabled for the given file descriptor.
 # Usage: if color_enabled 1; then ...; fi
 color_enabled() {
-  [ -z "${NO_COLOR+x}" ] && [ -t "$1" ]
+  if [ -n "${GITEX_NO_COLOR+x}" ] || [ -n "${NO_COLOR+x}" ]; then
+    return 1
+  fi
+  if [ -n "${FORCE_COLOR+x}" ]; then
+    return 0
+  fi
+  [ -t "$1" ]
+}
+
+# Disable color output for the rest of the command, as for `--no-color`.
+# Usage: disable_color
+disable_color() {
+  GITEX_NO_COLOR=1
 }
 
 # Print an error message to stderr in red.
