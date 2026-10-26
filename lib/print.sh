@@ -6,6 +6,10 @@
 # These functions provide standardized, colored output for different message
 # types. All functions use ANSI color codes defined in ./ansi-codes.sh.
 #
+# Per TS-16, color is disabled when the `NO_COLOR` environment variable exists,
+# or when the stream a message is written to is not a terminal (TTY). The check
+# is made per stream, so piping stdout does not strip color from stderr.
+#
 # Usage:
 #   . "$(dirname "$0")/../lib/print.sh"
 #   print_error "something went wrong"
@@ -16,16 +20,30 @@
 # shellcheck source=lib/ansi-codes.sh
 . "$(dirname "$0")/../lib/ansi-codes.sh"
 
+# Succeed if color output is enabled for the given file descriptor.
+# Usage: if color_enabled 1; then ...; fi
+color_enabled() {
+  [ -z "${NO_COLOR+x}" ] && [ -t "$1" ]
+}
+
 # Print an error message to stderr in red.
 # Usage: print_error "message"
 print_error() {
-  printf "%berror:%b %s\n" "${BOLD}${RED}" "${RESET}" "$1" >&2
+  if color_enabled 2; then
+    printf "%berror:%b %s\n" "${BOLD}${RED}" "${RESET}" "$1" >&2
+  else
+    printf "error: %s\n" "$1" >&2
+  fi
 }
 
 # Print a hint message to stderr in cyan.
 # Usage: print_hint "message"
 print_hint() {
-  printf "%b%s%b\n" "${BOLD}${CYAN}" "$1" "${RESET}" >&2
+  if color_enabled 2; then
+    printf "%b%s%b\n" "${BOLD}${CYAN}" "$1" "${RESET}" >&2
+  else
+    printf "%s\n" "$1" >&2
+  fi
 }
 
 # Print an info message to stdout (no color).
@@ -37,18 +55,30 @@ print_info() {
 # Print a success message to stdout in green.
 # Usage: print_success "message"
 print_success() {
-  printf "%bsuccess:%b %s\n" "${BOLD}${GREEN}" "${RESET}" "$1"
+  if color_enabled 1; then
+    printf "%bsuccess:%b %s\n" "${BOLD}${GREEN}" "${RESET}" "$1"
+  else
+    printf "success: %s\n" "$1"
+  fi
 }
 
 # Print a warning message to stderr in yellow.
 # Usage: print_warning "message"
 print_warning() {
-  printf "%bwarning:%b %s\n" "${BOLD}${YELLOW}" "${RESET}" "$1" >&2
+  if color_enabled 2; then
+    printf "%bwarning:%b %s\n" "${BOLD}${YELLOW}" "${RESET}" "$1" >&2
+  else
+    printf "warning: %s\n" "$1" >&2
+  fi
 }
 
 # Print a user input prompt in blue.
 # Usage: print_prompt "prompt message"
 print_prompt() {
-  printf "\n%b%s%b\n" "${BLUE}" "$1" "${RESET}"
+  if color_enabled 1; then
+    printf "\n%b%s%b\n" "${BLUE}" "$1" "${RESET}"
+  else
+    printf "\n%s\n" "$1"
+  fi
   printf "> " >&2
 }

@@ -40,11 +40,19 @@ main() {
 
     staged=$(git diff --stat --cached)
     if [ -z "${staged}" ]; then
-      printf "%bgit add --all%b\n" "${DIM}" "${RESET}"
+      if color_enabled 1; then
+        printf "%bgit add --all%b\n" "${DIM}" "${RESET}"
+      else
+        printf "git add --all\n"
+      fi
       git add --all
     fi
 
-    printf "%bgit commit --quiet --message \"${msg}\"%b\n" "${DIM}" "${RESET}"
+    if color_enabled 1; then
+      printf "%bgit commit --quiet --message \"%s\"%b\n" "${DIM}" "${msg}" "${RESET}"
+    else
+      printf "git commit --quiet --message \"%s\"\n" "${msg}"
+    fi
     git commit --quiet --message "${msg}"
 
     exit 0
