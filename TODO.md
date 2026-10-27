@@ -20,7 +20,7 @@ Every unticked command is scaffolded but not implemented. Each one has:
 
 - A usage doc in `docs/usage/`, which may describe intended rather than actual behavior.
 
-Use [`skills/new-command/SKILL.md`](skills/new-command/SKILL.md) as the checklist when finishing each command.
+Use [`.agents/skills/new-command/SKILL.md`](.agents/skills/new-command/SKILL.md) as the checklist when finishing each command.
 
 ## GitEx
 - [x] `gitex`

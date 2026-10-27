@@ -42,7 +42,7 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
   The pytest suite. Tests invoke `bin/` scripts as subprocesses against
   throwaway Git repositories, so all tests are effectively integration-level.
 
-- `skills/`. \
+- `.agents/skills/`. \
   On-demand context for agents (see the *Skills* section below).
 
 - `check`, `fix`. \
@@ -81,21 +81,28 @@ putting `bin/` on the user's `PATH`.
 
 ## Skills
 
-- `./skills/testing/SKILL.md`. \
+The [`.agents/skills/`](./.agents/skills/) directory provides on-demand skills
+for managing this repository. See the [`README`](./.agents/skills/README.md) in
+that directory for the full index.
+
+`.claude/skills` is a symlink to `.agents/skills` for auto-discovery by Claude
+Code.
+
+- `./.agents/skills/testing/SKILL.md`. \
   Instructions for running static and runtime tests (`./check`) and
   automated fixes (`./fix`).
 
-- `./skills/shell-scripts/SKILL.md`. \
+- `./.agents/skills/shell-scripts/SKILL.md`. \
   Coding conventions and design patterns for the shell scripts
   in `bin/` and `lib/`.
 
-- `./skills/python-tests/SKILL.md`. \
+- `./.agents/skills/python-tests/SKILL.md`. \
   Coding conventions and design patterns for the pytest suite in `test/`.
 
-- `./skills/documentation/SKILL.md`. \
+- `./.agents/skills/documentation/SKILL.md`. \
   Formatting conventions for the Markdown docs in `docs/`.
 
-- `./skills/new-command/SKILL.md`. \
+- `./.agents/skills/new-command/SKILL.md`. \
   End-to-end checklist for adding a new `git-<name>` extension
   (script, test, usage doc, indexes).
 
