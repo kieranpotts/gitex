@@ -7,3 +7,4 @@
 - [**Runtime tests**](./runtime-tests.md)
 - [**Static analysis**](./static-analysis.md)
 - [**Repository settings**](./development/repository-settings.md)
+- [**Architecture decision records**](./decisions/README.md)
