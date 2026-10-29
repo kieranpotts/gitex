@@ -1,7 +1,7 @@
 {
   "recommendations": [
 
-    /* NOTE: Keep this list synchronized with `../devcontainer/devcontainer.json`. */
+    /* Keep this list synchronized with `../devcontainer/devcontainer.json`. */
 
     /* EditorConfig file support. */
     "editorconfig.editorconfig",
