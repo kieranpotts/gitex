@@ -17,9 +17,10 @@ jobs:
     steps:
 
       # Checkout the repository and fetch its full log history.
+      # The action is pinned to a commit SHA, for security.
       # https://github.com/actions/checkout?tab=readme-ov-file#fetch-all-history-for-all-tags-and-branches
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 

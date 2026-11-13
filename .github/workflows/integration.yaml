@@ -8,49 +8,48 @@ name: Integration
 on:
   push:
     branches:
-      - dev
+      - latest/dev
   pull_request:
     branches:
-      - dev
+      - latest/dev
 
 jobs:
   lint:
     name: Run static analysis checks
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository and fetch its full log history.
-      # https://github.com/actions/checkout?tab=readme-ov-file#fetch-all-history-for-all-tags-and-branches
+      # Actions are pinned to commit SHAs, for security.
+      # https://github.com/actions/checkout
       - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       # Install the toolchain pinned in `mise.toml`, so that CI runs the same
-      # tool versions as the host and the devcontainer. The action is pinned to
-      # a commit SHA, for security. https://github.com/jdx/mise-action
+      # tool versions as the host and the devcontainer.
+      # https://github.com/jdx/mise-action
       - name: Install toolchain
         uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
         with:
           version: 2026.10.21
-      - name: Shellcheck
-        run: shellcheck --severity=style bin/* lib/*
-      # https://github.com/astral-sh/ruff-action
+      # The same install script as on the host and in the devcontainer. It
+      # installs Ruff at the version locked in `poetry.lock`.
+      - name: Install dependencies
+        run: ./run/install
+      # The same checks as `./run/check`.
+      - name: Lint shell scripts with ShellCheck
+        run: mise exec -- shellcheck --severity=style bin/* lib/*
       - name: Lint Python with Ruff
-        uses: astral-sh/ruff-action@v3
-        with:
-          src: "./run/test"
-          # version: "latest" # Defined in pyproject.toml
+        run: mise exec -- poetry run ruff check test/
 
   test:
     name: Run dynamic tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       # See the `lint` job.
+      - name: Check out code
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Install toolchain
         uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
         with:
           version: 2026.10.21
-      # The same install script as on the host and in the devcontainer.
       - name: Install dependencies
         run: ./run/install
       - name: Run unit tests
