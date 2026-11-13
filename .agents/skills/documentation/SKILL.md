@@ -129,7 +129,7 @@ Block form with multiple paragraphs or nested code:
 > All runtime tests can be executed with this shortcut:
 >
 > ```
-> $ ./check
+> $ ./run/check
 > ```
 ````
 

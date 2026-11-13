@@ -8,7 +8,7 @@ this directory — elsewhere in the repository, or in another repository
 altogether — SHOULD still be listed, so that this file is a complete index.
 
 - **[testing/SKILL.md](./testing/SKILL.md)** \
-  Instructions for running static and runtime tests (`./check`) and automated
+  Instructions for running static and runtime tests (`./run/check`) and automated
   fixes (`./fix`).
 
 - **[shell-scripts/SKILL.md](./shell-scripts/SKILL.md)** \

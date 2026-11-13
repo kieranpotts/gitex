@@ -13,13 +13,16 @@ set -euo pipefail
 # from.
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 
+# Each tool runs via `mise exec`, so that the versions pinned in `mise.toml`
+# are used on both the host and in the dev container.
+
 echo "Running ShellCheck..."
-shellcheck --severity=style bin/* lib/*
+mise exec -- shellcheck --severity=style bin/* lib/*
 
 echo ""
 echo "Running Ruff linter..."
-poetry run ruff check test/
+mise exec -- poetry run ruff check test/
 
 echo ""
 echo "Running pytest..."
-poetry run pytest -v
+mise exec -- poetry run pytest -v

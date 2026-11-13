@@ -33,7 +33,7 @@ Work through these in order for a new command `git <name>` (eg. `git foo`, or `g
 
     Create `test/test_git_<name>.py`.
 
-    Follow the [python-tests skill](../python-tests/SKILL.md), using [`test/test_git_whoami.py`](../../test/test_git_whoami.py) as the canonical example.
+    Follow the [python-tests skill](../python-tests/SKILL.md), using `test/test_git_whoami.py` as the canonical example.
 
     Cover at minimum: happy path, one error path, argument validation.
 
@@ -47,7 +47,7 @@ Work through these in order for a new command `git <name>` (eg. `git foo`, or `g
 
 4.  **Validate.**
 
-    Run [`./check`](../../check) – see the [testing skill](../testing/SKILL.md)). All three stages - ShellCheck, Ruff, pytest - MUST pass before commit.
+    Run `./run/check` – see the [testing skill](../testing/SKILL.md)). All three stages - ShellCheck, Ruff, pytest - MUST pass before commit.
 
 5.  **Sync the command indexes:**
 

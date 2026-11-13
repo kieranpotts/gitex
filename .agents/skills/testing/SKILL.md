@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Run the project's verification (`./check`) and auto-fix (`./fix`) pipelines, and diagnose verification failures.
+description: Run the project's verification (`./run/check`) and auto-fix (`./run/fix`) pipelines, and diagnose verification failures.
 compatibility: requires poetry, python >= 3.12, shellcheck
 license: MIT
 ---
@@ -9,7 +9,7 @@ license: MIT
 
 Use this skill when running the GitEx test suite, validating new changes before committing, or diagnosing CI failures.
 
-Two root-level scripts wrap the verification pipelines: `./check` for running the full suite of static and runtime tests, and `./fix` for auto-fixing what can be reliable auto-fixed. Prefer calling these scripts over invoking the underlying tools directly.
+Two root-level scripts wrap the verification pipelines: `./run/check` for running the full suite of static and runtime tests, and `./fix` for auto-fixing what can be reliable auto-fixed. Prefer calling these scripts over invoking the underlying tools directly.
 
 Do NOT use this skill for authoring tests or scripts. See the [shell-scripts](../shell-scripts/SKILL.md) and [python-tests](../python-tests/SKILL.md) skills for those.
 
@@ -17,7 +17,7 @@ Do NOT use this skill for authoring tests or scripts. See the [shell-scripts](..
 
 -   **Verify.**
 
-    Run `./check` from the repo root. It executes, in order:
+    Run `./run/check` from the repo root. It executes, in order:
 
     1. ShellCheck on `bin/*` and `lib/*` (`--severity=style`).
     2. Ruff lint on `test/`.
@@ -25,7 +25,7 @@ Do NOT use this skill for authoring tests or scripts. See the [shell-scripts](..
 
     A non-zero exit at any stage fails the run.
 
-    _*Always run `./check` before pushing.*
+    _*Always run `./run/check` before pushing.*
 
 -   **Auto-fix.**
 
@@ -37,7 +37,7 @@ Do NOT use this skill for authoring tests or scripts. See the [shell-scripts](..
 
     `poetry install` MUST have run at least once, and again after any change to `pyproject.toml` or `poetry.lock`.
 
-    The devcontainer runs this automatically as its `postCreateCommand`.
+    `./run/install` runs it. Nothing runs it automatically, so run it by hand.
 
 -   **Diagnose.**
 
@@ -58,7 +58,7 @@ Do NOT use this skill for authoring tests or scripts. See the [shell-scripts](..
 Before pushing a branch:
 
 ```sh
-./check && git push
+./run/check && git push
 ```
 
 Lint a single script without running the full pipeline:

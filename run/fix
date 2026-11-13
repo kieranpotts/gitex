@@ -13,5 +13,8 @@ set -euo pipefail
 # from.
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 
+# Poetry runs via `mise exec`, so that the versions pinned in `mise.toml` are
+# used on both the host and in the dev container.
+
 echo "Running Ruff formatter..."
-poetry run ruff format test/
+mise exec -- poetry run ruff format test/

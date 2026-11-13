@@ -43,4 +43,10 @@
     },
   },
 
+
+  /* Point the Python extension at the interpreter that mise installs from
+  `mise.toml` — not the system Python. Keep the version number here synchronized
+  with `mise.toml`. */
+  "python.defaultInterpreterPath": "${env:HOME}/.local/share/mise/installs/python/3.12/bin/python3"
+
 }

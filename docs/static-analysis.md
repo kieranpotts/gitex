@@ -1,12 +1,6 @@
 # Static analysis
 
-[ShellCheck](https://github.com/koalaman/shellcheck) is used for static analysis of the shell scripts. To install ShellCheck on a Debian-based system, run:
-
-```
-sudo apt-get install -y shellcheck
-```
-
-Shellcheck is already pre-installed in the [dev container](https://containers.dev/), if you're using that.
+[ShellCheck](https://github.com/koalaman/shellcheck) is used for static analysis of the shell scripts. Its version is pinned in [`mise.toml`](../mise.toml), because different ShellCheck versions report different findings. `./run/install` installs it, along with the rest of the toolchain — see [Runtime tests](./runtime-tests.md).
 
 To run the linter on all the shell scripts in the `bin` directory, run the following command from the root directory of this repository:
 
@@ -31,17 +25,5 @@ The formatter should be run before committing any changes to the Python test fil
 > Automated formatting can be applied using this shortcut:
 >
 > ```
-> $ ./fix
-> ```
->
-> In the dev container, you will need to use the following command instead:
->
-> ```
-> $ bash fix
-> ```
->
-> Remember to give yourself executable privileges on this file:
->
-> ```
-> $ chmod u+x fix
+> $ ./run/fix
 > ```

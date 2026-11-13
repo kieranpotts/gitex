@@ -41,3 +41,5 @@ To revisit a past decision, write a new record. Do not edit an old one.
 ## Index
 
 - [0001 `#!/bin/sh` shebang for the GitEx scripts](./0001-bin-sh-shebang/README.md)
+- [0002 mise to pin the development toolchain](./0002-mise-toolchain/README.md)
+- [0003 Checksum-verified mise binary in the dev container](./0003-devcontainer-mise-binary/README.md)

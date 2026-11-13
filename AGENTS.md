@@ -15,9 +15,12 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 
 - POSIX shell scripts (`bin/`, `lib/`).
 
-- Python 3.12+ with Poetry 2.2+ for the test suite (`test/`).
+- Python 3.12 with Poetry 2.5 for the test suite (`test/`).
 
 - ShellCheck for shell linting. Ruff for Python linting and formatting.
+
+- mise to pin the versions of Python, Poetry, and ShellCheck, for the host,
+  the dev container, and CI (`mise.toml`).
 
 - Markdown for user and developer documentation (`docs/`).
 
@@ -53,7 +56,7 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 There is nothing to build - `bin/` scripts ship as source, installed by
 putting `bin/` on the user's `PATH`.
 
-- `./check`. \
+- `./run/check`. \
   Runs the full verification pipeline: ShellCheck on `bin/` and `lib/`, Ruff
   lint on `test/`, then pytest. Must pass before pushing.
 
@@ -61,10 +64,11 @@ putting `bin/` on the user's `PATH`.
   Runs automated fixers (currently Ruff format on `test/`). There is no
   autofixer for shell. ShellCheck findings must be addressed manually.
 
-- `poetry install`. \
-  One-time setup of the Python test dependencies, repeated after any
-  change to `pyproject.toml` or `poetry.lock`. The devcontainer runs
-  this automatically.
+- `./run/install`. \
+  One-time setup of the pinned toolchain (`mise trust`, `mise install`) and
+  the Python test dependencies (`poetry install`), repeated after any change to
+  `mise.toml`, `pyproject.toml`, or `poetry.lock`. Run it by hand, in the
+  workspace devcontainer too, which installs no repository's dependencies.
 
 ## Rules
 
@@ -89,7 +93,7 @@ that directory for the full index.
 Code.
 
 - `./.agents/skills/testing/SKILL.md`. \
-  Instructions for running static and runtime tests (`./check`) and
+  Instructions for running static and runtime tests (`./run/check`) and
   automated fixes (`./fix`).
 
 - `./.agents/skills/shell-scripts/SKILL.md`. \

@@ -138,3 +138,7 @@ Proposal for a throwaway repository in which to try the GitEx commands by hand, 
 - [ ] Support `--shell <sh|bash|zsh>`. The interactive shell does not determine which shell runs the scripts, because each script's shebang does. So the launcher must generate a shim directory, prepended to `PATH`, in which each `git-<name>` runs `exec <shell> /abs/path/bin/git-<name> "$@"`.
 
 - [ ] Apply the same approach to the pytest suite, parametrizing the `bin` fixture over `sh`, `bash`, and `zsh`.
+
+### Continuous integration
+
+- [ ] Run the test suite on Alpine Linux in CI, at a later date. Alpine's `/bin/sh` is BusyBox ash, and it has no `/bin/env`, so it catches portability problems that the Debian-based dev container and the Ubuntu-based CI runners cannot. It is not suitable as the dev container base, because of its musl libc, so it belongs in CI only.

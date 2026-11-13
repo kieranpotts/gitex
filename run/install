@@ -13,4 +13,20 @@ set -euo pipefail
 # from.
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 
-poetry install
+# Install the pinned toolchain from `mise.toml` first, then run Poetry from
+# that toolchain via `mise exec`, so that it runs under the pinned Python. This
+# is the same on the host and in the dev container, whether or not mise is
+# activated in the calling shell.
+if ! command -v mise >/dev/null 2>&1; then
+  echo "mise is required to install this project's toolchain." >&2
+  echo "Install it from https://mise.jdx.dev, then re-run this script." >&2
+  exit 1
+fi
+
+# mise refuses to read a project's `mise.toml` until it has been trusted.
+# Running this script is already a decision to trust this repository, so trust
+# its `mise.toml` here, rather than as a separate manual step. This is
+# idempotent.
+mise trust
+mise install
+mise exec -- poetry install

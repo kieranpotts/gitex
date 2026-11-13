@@ -1,0 +1,12 @@
+#
+# The project's development toolchain, pinned for both the host and the
+# devcontainer. Run `mise install` (or `./run/install`) to install it.
+# https://mise.jdx.dev/configuration.html
+#
+# Python is listed before Poetry, because Poetry is installed with it.
+#
+
+[tools]
+python = "3.12"
+poetry = "2.5"
+shellcheck = "0.11.0"

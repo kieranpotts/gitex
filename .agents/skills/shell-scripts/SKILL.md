@@ -11,7 +11,7 @@ Use this skill when authoring or modifying a script in `bin/` or `lib/`.
 
 This skill extends the [POSIX shell scripting skill](https://raw.githubusercontent.com/kieranpotts/skills/refs/heads/dev/skills/code/posix/SKILL.md) – all rules there apply here. This skill covers GitEx-specific conventions.
 
-Do NOT use this skill for the root-level `./check` and `./fix` scripts, which have looser conventions and are not scanned by ShellCheck.
+Do NOT use this skill for the root-level `./run/check` and `./run/fix` scripts, which have looser conventions and are not scanned by ShellCheck.
 
 Do NOT use this skill for Python tests.
 
@@ -140,7 +140,7 @@ Do NOT use this skill for Python tests.
 
     Every script must pass `shellcheck --severity=style bin/* lib/*`.
 
-    Use the `./check` and `./fix` helpers.
+    Use the `./run/check` and `./run/fix` helpers.
 
     While ShellCheck observes a script's shebang line (`#!`), `pytest` invokes `bash <script>` and does not scope the shell to the constraints of the shebang. Therefore, a broken shebang will pass tests and fail in real-world `PATH` invocations. Manual verification of the `bin` scripts is therefore REQUIRED.
 
