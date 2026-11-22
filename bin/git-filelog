@@ -38,7 +38,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   file="${1}"
 

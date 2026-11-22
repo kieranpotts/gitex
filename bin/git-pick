@@ -38,7 +38,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Bash-compatible code, with string indexing that allows additional options
   # to be passed on to the `git cherry-pick` command.

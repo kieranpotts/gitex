@@ -50,7 +50,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   git add --all
   git commit --quiet --message "${1:-WIP}${1+ - WIP}"

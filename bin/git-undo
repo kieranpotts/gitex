@@ -58,7 +58,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # TODO: Prompt the user with a warning
 

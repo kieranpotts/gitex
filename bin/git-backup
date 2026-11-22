@@ -39,7 +39,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   branch="${1}"
 

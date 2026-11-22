@@ -61,7 +61,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Get tracked upstream branch.
   upstreamBranch=$(git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}")

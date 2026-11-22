@@ -40,7 +40,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Get the name of the base branch, default to main.
   base_branch=${1:-main}

@@ -70,7 +70,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   REV=$(git rev-parse "${1:-HEAD}")
   git add --all

@@ -42,7 +42,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Sort by last commit date, newest first.
   git for-each-ref --sort='-authordate:iso8601' --format='  %(color:green)%(authordate:relative)%09%(color:white)%(refname:short) %(color:cyan)➔ %(upstream:short)' refs/heads

@@ -43,7 +43,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Get message of last commit.
   msg=$(git show -s --format=%B HEAD)

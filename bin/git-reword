@@ -47,7 +47,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Stash all work-in-progress.
   initialStashCount=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null)

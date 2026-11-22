@@ -70,7 +70,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   git rev-parse --abbrev-ref --symbolic-full-name origin/HEAD | sed 's@^origin/@@'
 

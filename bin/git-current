@@ -41,7 +41,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Git < 2.22
   git rev-parse --abbrev-ref HEAD

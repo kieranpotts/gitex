@@ -46,7 +46,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Capture optional message from the command line.
   msg="${1}"

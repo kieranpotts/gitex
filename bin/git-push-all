@@ -40,7 +40,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # Get the name of the remote repository, default to origin.
   remote=${1:-origin}

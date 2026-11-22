@@ -44,7 +44,7 @@ main() {
     return 1
   fi
 
-  # TODO: Review draft implementation, below.
+  # TODO: DRAFT IMPLEMENTATION
 
   # git log --oneline --no-decorate --no-merges @{upstream}..HEAD
 
