@@ -48,7 +48,9 @@ This has the following consequences.
 
 - `lib/` scripts keep their existing `#!/bin/sh` shebang.
 
-- The script template in the `shell-scripts` skill changes, too.
+- The script template in the `new-gitex-command` skill's
+  [shell scripts reference](../../../.agents/skills/new-gitex-command/references/shell-scripts.md)
+  changes, too.
 
 - `run/` scripts are Bash-only development tools, and so keep their existing
   `#!/usr/bin/env bash`. This shebang is RECOMMENDED for Bash because Bash's

@@ -92,23 +92,8 @@ that directory for the full index.
 `.claude/skills` is a symlink to `.agents/skills` for auto-discovery by Claude
 Code.
 
-- `./.agents/skills/testing/SKILL.md`. \
-  Instructions for running static and runtime tests (`./run/check`) and
-  automated fixes (`./fix`).
-
-- `./.agents/skills/shell-scripts/SKILL.md`. \
-  Coding conventions and design patterns for the shell scripts
-  in `bin/` and `lib/`.
-
-- `./.agents/skills/python-tests/SKILL.md`. \
-  Coding conventions and design patterns for the pytest suite in `test/`.
-
-- `./.agents/skills/documentation/SKILL.md`. \
-  Formatting conventions for the Markdown docs in `docs/`.
-
-- `./.agents/skills/new-command/SKILL.md`. \
+- `./.agents/skills/new-gitex-command/SKILL.md`. \
   End-to-end checklist for adding a new `git-<name>` extension
-  (script, test, usage doc, indexes).
-
-- <https://github.com/kieranpotts/skills/blob/dev/skills/utils/git/commits/SKILL.md>. \
-  Commit message format enforced by CI, and the semantics of each allowed type.
+  (script, test, usage doc, indexes). Its `references/` directory holds the
+  conventions for the shell scripts, the pytest suite, running checks, and the
+  user documentation.
