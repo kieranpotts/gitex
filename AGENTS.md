@@ -81,7 +81,7 @@ putting `bin/` on the user's `PATH`.
   Git-Bash-for-Windows and WSL2.
 
 - Do not introduce dependencies that would break POSIX compatibility.
-  No Bashisms.
+  No bashisms.
 
 ## Skills
 

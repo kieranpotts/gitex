@@ -50,7 +50,7 @@ class TestGitSw:
         assert current_branch == "new-feature"
 
     def test_switch_to_previous_branch(self, repo, bin):
-        """Test switching to the previous branch with dash."""
+        """Test switching to the previous branch with Dash."""
 
         # Create initial commit.
         repo.write("file1.txt", "Initial content")
@@ -66,7 +66,7 @@ class TestGitSw:
         assert current_branch == "feature-branch"
 
         # Run 'git-sw' inside the test repository.
-        # Switch back to the previous branch using the dash syntax.
+        # Switch back to the previous branch using the Dash syntax.
         result = repo.run(bin, "-")
 
         # Verify success exit code.

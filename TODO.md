@@ -14,7 +14,7 @@ A command is ticked only when it has all of:
 
 Every unticked command is scaffolded but not implemented. Each one has:
 
-- A script in `bin/` with a header comment and a rough draft body, marked `# TODO: Review draft implementation`. The drafts have not been reviewed and some do not run. Some also contain Bashisms that must be removed.
+- A script in `bin/` with a header comment and a rough draft body, marked `# TODO: DRAFT IMPLEMENTATION`. The drafts have not been reviewed and some do not run. Some also contain bashisms that must be removed.
 
 - A placeholder test file in `test/`, with the test body commented out.
 
