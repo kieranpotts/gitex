@@ -9,9 +9,8 @@
 
   "languages": {
 
-    /* Wrap documentation files at the viewport width. Most AsciiDoc and
-    Markdown lines should be hard-wrapped at 80, anyway. Exceptions allowed
-    for tables and long URLs.  */
+    /* Wrap documentation files at the viewport width. Hard-wrapping should
+    be applied at 80 characters, except for tables and long URLs. */
     "Markdown": {
       "soft_wrap": "editor_width"
     }
