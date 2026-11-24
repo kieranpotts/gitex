@@ -18,13 +18,27 @@ These settings control the messages that GitEx prints itself. Output from the Gi
 
 ## Environment variables
 
+### `GITEX_CHANGELOG`
+
+Specifies the path of the changelog that [`git bump`](./usage/git-bump.md) promotes, relative to the root of the repository. The changelog must use the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) heading format.
+
+**Default value:** `CHANGELOG.md`
+
+**Used by:** `git-bump`
+
+**Example:**
+
+```
+GITEX_CHANGELOG=docs/CHANGELOG.md git bump
+```
+
 ### `GITEX_DEFAULT_REMOTE_NAME`
 
 Specifies the name of the default remote repository for operations that push to or fetch from a remote.
 
 **Default value:** `origin`
 
-**Used by:** `git-br`
+**Used by:** `git-br`, `git-bump`, `git-epic`, `git-integrate`, `git-release`, `git-temp`
 
 **Example:**
 
@@ -37,6 +51,20 @@ GITEX_DEFAULT_REMOTE_NAME=upstream git br my-feature
 ```
 
 This is useful when working with repositories that use a different remote naming convention, such as "upstream" instead of "origin", for the default remote repository.
+
+### `GITEX_INITIAL_VERSION`
+
+Specifies the version of a delivery pipeline's first release, for [`git bump`](./usage/git-bump.md) to use when the pipeline has no release tags yet. It must be a semantic version, with no `v` prefix.
+
+**Default value:** `1.0.0`
+
+**Used by:** `git-bump`
+
+**Example:**
+
+```
+GITEX_INITIAL_VERSION=0.1.0 git bump
+```
 
 ### `GITEX_NO_COLOR`
 

@@ -1,0 +1,192 @@
+#!/bin/sh
+set -eu
+
+#
+# git-integrate - Integrate the checked-out branch into another branch of the
+# same delivery pipeline, using the strategy the pair of branches calls for.
+#
+# A temp branch is rebased onto the development trunk, then the trunk is
+# fast-forwarded. An epic branch has the trunk merged into it, then it is
+# squash-merged into the trunk. The trunk is merged into an epic with a merge
+# commit. One trunk is promoted to the next by fast-forward only. Each step
+# runs in the worktree of the branch it changes, and only where that worktree
+# is clean. Conflicts are never resolved: the operation is aborted, and the
+# conflicted paths are listed. Nothing is pushed.
+#
+# Works only in a bare clone in `<project>/.bare`, with sibling worktrees, and
+# with the trunk-based branch model described in docs/usage/git-integrate.md.
+#
+# Usage:
+#   $ git integrate [<target>] [-m <description>] [--no-color]
+#
+# Options:
+#   -m <description>  The epic's outcome, for the squash commit
+#   --no-color        Disable colored output
+#   -h, --help        Show usage instructions
+#
+# Exit status:
+#   0  The source was integrated into the target
+#   1  An error, a refusal, or a conflict
+#   2  Nothing to do: the source is already integrated
+#
+# Dependencies: (none)
+#
+
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
+_print_help() {
+  cat <<EOF
+Usage: git integrate [<target>] [-m <description>] [--no-color]
+
+Integrate the checked-out branch into another branch of the same delivery
+pipeline, using the strategy the pair of branches calls for.
+
+Options:
+  -m <description>  The epic's outcome, for the squash commit. Required when
+                    integrating an epic into the development trunk.
+  --no-color        Disable colored output.
+  --help, -h        Show usage instructions.
+
+Examples:
+  $ git integrate
+  $ git integrate -m "rewrite billing engine"
+  $ git integrate test
+EOF
+}
+
+main() {
+
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every other option.
+  help=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        ;;
+      -h|--help)
+        help=true
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  # TODO: DRAFT IMPLEMENTATION
+  #
+  # The spec is docs/usage/git-integrate.md. The skipped tests in
+  # test/test_git_integrate.py list the cases to cover.
+  #
+  # Notes for the implementation:
+  #
+  # - Shared code. Take the layout check, pipeline mapping, remote handling,
+  #   worktree lookup, clean-worktree check, and fast-forward from the remote
+  #   from lib/pipeline.sh. bin/git-temp describes each of them.
+  #
+  # - Option parsing. Copy bin/git-author. Accept at most one positional
+  #   argument, the target. `-m` takes a value, and giving it twice is a
+  #   usage error.
+  #
+  # - Source. The source is `git symbolic-ref --quiet --short HEAD`. Refuse
+  #   if it fails (detached `HEAD`). The pipeline comes from the source, never
+  #   from the `default` worktree.
+  #
+  # - Target. Where no target is given, use "${prefix}dev" for a temp or epic
+  #   source, and refuse for a trunk source. Where one is given, use it as it
+  #   is if `refs/heads/<target>` or `refs/remotes/<remote>/<target>` exists,
+  #   or else prefix it with "${prefix}". That way `test` and `latest/test`
+  #   both work, and `v2/dev` from a `latest/*` source still resolves to
+  #   `v2/dev`, so that the backport check can catch it.
+  #
+  # - Strategy. Classify each branch as temp, epic, dev, test, ready, or
+  #   release, with a helper such as `branch_kind <branch> <prefix>`. Refuse
+  #   if the target's pipeline differs from the source's. Then choose the
+  #   strategy with one `case "${source_kind}:${target_kind}"`:
+  #     temp:dev       ->  rebase-and-fast-forward
+  #     epic:dev       ->  merge-down-and-squash
+  #     dev:epic       ->  merge-commit
+  #     dev:test|test:ready|ready:release  ->  fast-forward
+  #     dev:ready      ->  fast-forward, only where "${prefix}test" exists
+  #                        neither locally nor on the remote
+  #     *              ->  refuse
+  #
+  # - Order of checks. Make every check that changes nothing first: usage,
+  #   layout, a clean current worktree, the strategy, the pipeline, `-m`, the
+  #   squash subject's length, and `WIP` or `TEMPORARY` flags. Only then
+  #   create a missing target worktree, with
+  #   `git worktree add --quiet <path> <target>`, so that a refusal never
+  #   leaves a new worktree behind. Fast-forward a target that has no
+  #   worktree yet with `git fetch "${remote}" "${target}:${target}"` before
+  #   creating its worktree. Never fast-forward a temp branch from the
+  #   remote, because its local copy is authoritative.
+  #
+  # - WIP check. For a temp source, refuse if any subject from
+  #   `git log --no-merges --format=%s "${target}..${source}"` matches
+  #   `*" - WIP"` or `*" - TEMPORARY"`.
+  #
+  # - Already integrated. Exit 2 if
+  #   `git merge-base --is-ancestor "${source}" "${target}"` succeeds. An
+  #   epic that has been squashed is never an ancestor of the trunk, though.
+  #   Treat it as integrated when the trunk is an ancestor of the epic and
+  #   `git diff --quiet "${target}" "${source}"` succeeds. Otherwise a second
+  #   run would reach `git commit` with nothing staged, and fail.
+  #
+  # - Squash message. Take the epic's subjects, oldest first, from
+  #   `git log --no-merges --reverse --format=%s "${target}..${source}"`.
+  #   Before the merge-down, this gives the same list as afterwards, so
+  #   compute and check the message before changing anything. Get each type
+  #   with "${subject%%:*}", and rank it with a `case` that maps behavior=8,
+  #   fix=7, quality=6, maintenance=5, step=4, refactor=3, style=2, chore=1,
+  #   and anything else to 0. Refuse if the highest rank is 0. Set the flag
+  #   with `case` on `*" - BREAKING"` and `*" - INCOMPAT"`. Build the body
+  #   with `printf -- '- %s\n'`. Write the message to a `mktemp` file, remove
+  #   it in a `trap` on EXIT, and commit with
+  #   `git -C "${target_worktree}" commit --quiet -F "${message_file}"`.
+  #
+  # - Commands, per strategy. Run each in the worktree named, and never pass
+  #   `--no-verify`, `--allow-empty`, `-X ours`, or `-X theirs`.
+  #     rebase-and-fast-forward:
+  #       git rebase --quiet "${target}"
+  #       git -C "${target_worktree}" merge --ff-only --quiet "${source}"
+  #     merge-down-and-squash:
+  #       git merge --no-ff --no-edit -m "merge: sync with ${target}" "${target}"
+  #       git -C "${target_worktree}" merge --squash --quiet "${source}"
+  #       git -C "${target_worktree}" commit --quiet -F "${message_file}"
+  #     merge-commit:
+  #       git -C "${target_worktree}" merge --no-ff --no-edit \
+  #         -m "merge: sync with ${source}" "${source}"
+  #     fast-forward:
+  #       git -C "${target_worktree}" merge --ff-only --quiet "${source}"
+  #
+  # - Conflicts. When a rebase or merge exits non-zero, print the output of
+  #   `git -C <path> diff --name-only --diff-filter=U` to stdout, then abort
+  #   in the same worktree: `git rebase --abort` after a rebase,
+  #   `git merge --abort` after a merge, or `git reset --merge` after a squash
+  #   merge. Then print the error to stderr, and return 1. A failing
+  #   fast-forward is not a conflict. Report that the target carries a commit
+  #   the source does not.
+  #
+  # - Hook rejection. If the squash commit fails, eg. because a commit-msg
+  #   hook rejects it, run `git -C "${target_worktree}" reset --merge`, and
+  #   return 1. The epic keeps its merge-down commit.
+  #
+  # - Output. Print the data lines with plain printf. Line 1 is
+  #   "<target> $(git rev-parse --short <target>)", line 2 is the target
+  #   worktree, line 3 is the strategy token, and the last line is
+  #   `To publish: git push <remote> <refs>`. The refs are the target, plus
+  #   the source after a merge-down, because the epic gained a commit. After
+  #   rebasing a temp branch that has an upstream, consider a warning that its
+  #   remote copy is now out of date.
+
+  print_error "git-integrate is not implemented yet."
+  print_hint "See docs/usage/git-integrate.md for the planned behavior."
+  return 1
+}
+
+main "$@"

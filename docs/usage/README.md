@@ -147,3 +147,17 @@ All commands except `git cl`, `git co`, and `git sw` accept the `--no-color` opt
 - [`git configure`](./git-configure.md): Open `~/.gitconfig` in your default text editor.
 
 - [`git whoami`](./git-whoami.md) ✅: Show information about the configured Git user.
+
+## Pipeline workflow
+
+Unlike the rest of GitEx, these commands assume a particular way of working: a bare clone in a `.bare` directory, with each worktree checked out beside it, and a trunk-based branch model, in which each delivery pipeline has `dev`, `test`, `ready`, and `release` trunks, plus short-lived `temp/*` and long-lived `epic/*` branches. Each command's usage doc gives the details. The commands never push. Each one prints the command to publish its work.
+
+- [`git temp`](./git-temp.md): Start a short-lived temp branch, cut from the pipeline's development trunk, in a new worktree of its own.
+
+- [`git epic`](./git-epic.md): Start a long-lived epic branch, cut from the pipeline's development trunk, in a new worktree of its own.
+
+- [`git integrate`](./git-integrate.md): Integrate the checked-out branch into another branch of the same pipeline, using the strategy that the pair of branches calls for.
+
+- [`git bump`](./git-bump.md): Work out the next semantic version from the commits since the last release, promote the changelog, update the version manifests, and commit the lot.
+
+- [`git release`](./git-release.md): Tag a version commit, and fast-forward the `ready` and `release` trunks to it.

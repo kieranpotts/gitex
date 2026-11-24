@@ -1,0 +1,202 @@
+#!/bin/sh
+set -eu
+
+#
+# git-bump - Work out the next semantic version from the commits made since
+# the last release, promote the changelog, update the version manifests, and
+# commit the lot as `version: <version>`.
+#
+# The bump comes from the type and flag in each commit's subject, eg.
+# `fix: ...` calls for a minor bump, and `... - BREAKING` for a major one. The
+# changelog must use Keep a Changelog headings. The manifests are
+# `package.json`, `pyproject.toml`, and `Cargo.toml`, at the repository root.
+# No tag is created, and nothing is pushed.
+#
+# Works only in a bare clone in `<project>/.bare`, with sibling worktrees, and
+# with the trunk-based branch model described in docs/usage/git-bump.md.
+#
+# Usage:
+#   $ git bump [--pre <stage>] [--dry-run] [--no-color]
+#
+# Options:
+#   --pre <stage>  Make a pre-release, eg. `--pre rc` gives `1.5.0-rc.0`
+#   --dry-run      Print the next version, but change nothing
+#   --no-color     Disable colored output
+#   -h, --help     Show usage instructions
+#
+# Environment:
+#   GITEX_CHANGELOG        The changelog's path, if not `CHANGELOG.md`
+#   GITEX_INITIAL_VERSION  The first release's version, if not `1.0.0`
+#
+# Exit status:
+#   0  The version commit was made, or the next version was printed
+#   1  An error or a refusal
+#   2  Nothing to do: no commit since the last release calls for a bump
+#
+# Dependencies: (none)
+#
+
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
+_print_help() {
+  cat <<EOF
+Usage: git bump [--pre <stage>] [--dry-run] [--no-color]
+
+Work out the next semantic version from the commits made since the last
+release, promote the changelog, update the version manifests, and commit the
+lot as 'version: <version>'.
+
+Options:
+  --pre <stage>  Make a pre-release, eg. '--pre rc' gives '1.5.0-rc.0'.
+  --dry-run      Print the next version, but change nothing.
+  --no-color     Disable colored output.
+  --help, -h     Show usage instructions.
+
+Examples:
+  $ git bump
+  $ git bump --dry-run
+  $ git bump --pre rc
+EOF
+}
+
+main() {
+
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every other option.
+  help=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        ;;
+      -h|--help)
+        help=true
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  # TODO: DRAFT IMPLEMENTATION
+  #
+  # The spec is docs/usage/git-bump.md. The skipped tests in
+  # test/test_git_bump.py list the cases to cover.
+  #
+  # Notes for the implementation:
+  #
+  # - Shared code. Take the layout check, pipeline mapping, remote handling,
+  #   and clean-worktree check from lib/pipeline.sh. bin/git-temp describes
+  #   each of them. Put `semver_parse` and `semver_bump` there too, because
+  #   git-release validates versions the same way.
+  #
+  # - Option parsing. Copy bin/git-author. `--pre` takes a value, which must
+  #   match `[a-z]*` and not be empty. Giving `--pre` twice is a usage error.
+  #
+  # - Preconditions. Refuse on a detached `HEAD`, or where the current branch
+  #   is a test, ready, or release trunk, or is not a pipeline branch at all.
+  #   Besides the usual clean check, refuse while an operation is in
+  #   progress: `rev-parse -q --verify` CHERRY_PICK_HEAD or REVERT_HEAD
+  #   succeeds, or a `rebase-merge` or `rebase-apply` directory exists at
+  #   `rev-parse --git-path`. Then fetch tags from the remote.
+  #
+  # - Series. Where the pipeline's name matches `v<digits>[.<digits>]`,
+  #   optionally followed by `-<suffix>`, the series is that number: `v1`
+  #   gives `1`, and `v2.4-LTS` gives `2.4`. The tag pattern is then
+  #   "v${series}.*". Otherwise it is `v[0-9]*`.
+  #
+  # - Baseline. Run
+  #   `git describe --tags --abbrev=0 --match "${pattern}" --exclude '*-*' HEAD`.
+  #   If it fails, there is no baseline, and this is a first release. Check
+  #   the baseline is strictly `v<n>.<n>.<n>`. If `git tag -l 'v*'` lists tags
+  #   but none of them is a semantic version, refuse: the project uses some
+  #   other scheme, eg. calendar versioning.
+  #
+  # - Commits. List them with
+  #   `git log --no-merges --format=%H "${baseline}..HEAD" -- . ":(exclude)${changelog}"`,
+  #   dropping `${baseline}..` for a first release, and the pathspec where
+  #   there is no changelog. Read each subject with `git log -1 --format=%s`.
+  #   Read a revert's footer from `git log -1 --format=%b`, matching
+  #   `^Reverts: `. Expand the footer's hash with `git rev-parse`, and drop
+  #   both commits of a pair where both are in the range. Commits made by
+  #   plain `git revert` say "This reverts commit <hash>." instead. Decide
+  #   whether to recognize that form too.
+  #
+  # - Classification. Use `case` on "${subject%%:*}", and on the subject's
+  #   suffix for `*" - BREAKING"`. Rank the bumps none=0, patch=1, minor=2,
+  #   major=3, and keep the highest, plus the commits that reached it, for
+  #   the report. Warn on stderr about each untyped commit, which counts as
+  #   minor. While the baseline's major version is 0, demote major to minor,
+  #   with a warning.
+  #
+  # - Nothing to do. Where the highest bump is none, print the baseline
+  #   version without its `v`, or nothing for a first release, and return 2.
+  #
+  # - Arithmetic. Split the version with parameter expansion, eg.
+  #   major="${v%%.*}", then rest="${v#*.}", minor="${rest%%.*}", and
+  #   patch="${rest#*.}". Compute with `$(( ))`. Refuse leading zeros, which
+  #   semantic versioning forbids.
+  #
+  # - Series check. In a `v1` series, refuse a major bump. In a `v2.4`
+  #   series, refuse a major or minor bump.
+  #
+  # - Pre-release counter. List `git tag -l "v${version}-${stage}.*"`, strip
+  #   everything up to the last `.`, and take the highest number with
+  #   `sort -n | tail -n 1`. The counter is one more than that, or 0 where
+  #   there is none.
+  #
+  # - First release. The version is "${GITEX_INITIAL_VERSION:-1.0.0}", which
+  #   must itself be a semantic version. Refuse if the changelog has a
+  #   released heading, ie. a line matching `^## \[[0-9]`.
+  #
+  # - Changelog. The path is "${GITEX_CHANGELOG:-CHANGELOG.md}", relative to
+  #   `git rev-parse --show-toplevel`. Skip it if the file does not exist.
+  #   Find the "unreleased" section with awk, from `## [Unreleased]` to the
+  #   next line starting `## `. Refuse if the heading is missing, or if the
+  #   section holds only blank lines. To promote, write the awk output to a
+  #   `mktemp` file, then copy it back with `cat "${tmp}" > "${changelog}"`,
+  #   which keeps the file's mode. `sed -i` is not portable. Get the date
+  #   with `date +%Y-%m-%d`. If the file has CRLF line endings, keep them on
+  #   the new lines too, eg. by matching an optional trailing `\r` and reusing
+  #   it.
+  #
+  # - Manifests. Check every manifest before writing any of them. For each
+  #   one, count the matching lines with awk, and refuse unless the count is
+  #   exactly 1. Then replace only the quoted value on that line.
+  #     package.json:   ^[[:space:]]*"version"[[:space:]]*:[[:space:]]*"[^"]*"
+  #     pyproject.toml: ^version[[:space:]]*=[[:space:]]*"[^"]*", only while
+  #                     the last table header was [project] or [tool.poetry]
+  #     Cargo.toml:     the same pattern, only while the last table header
+  #                     was [package]
+  #   Track the table with a rule such as `/^[[:space:]]*\[/ { table = $0 }`,
+  #   trimming whitespace. Pass the version to awk with `-v`. It holds only
+  #   digits, dots, letters, and hyphens, so it is safe in `sub()`.
+  #
+  # - Pre-releases. Leave the changelog alone, but still require a non-empty
+  #   "unreleased" section. Refuse if no manifest exists, because there would
+  #   be nothing to commit.
+  #
+  # - Dry run. Run every check, print the report, and stop before the first
+  #   write.
+  #
+  # - Commit. Collect the edited files in the positional parameters with
+  #   `set --`, then run `git commit --quiet -m "version: ${version}" -- "$@"`,
+  #   with hooks enabled. If it fails, leave the edits in place, and hint at
+  #   `git restore`. Where there was nothing to edit, make no commit.
+  #
+  # - Output. Print the data lines with plain printf. Line 1 is the bare
+  #   version, then `Baseline: <tag>`, `Bump: <level>`, `Decided by:` with
+  #   one indented `<short-hash> <subject>` line per deciding commit, and
+  #   finally `Committed <short-hash> (version: <version>), changing <files>.`
+
+  print_error "git-bump is not implemented yet."
+  print_hint "See docs/usage/git-bump.md for the planned behavior."
+  return 1
+}
+
+main "$@"

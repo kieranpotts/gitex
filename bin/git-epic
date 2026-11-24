@@ -1,0 +1,109 @@
+#!/bin/sh
+set -eu
+
+#
+# git-epic - Start a long-lived epic branch, cut from the tip of the delivery
+# pipeline's development trunk, in a new worktree of its own.
+#
+# The branch is named `[<pipeline>/]epic/[<id>-]<slug>`. Its worktree is
+# created beside the others, named after the branch with each `/` replaced by
+# `-`. The development trunk is fast-forwarded from the remote first, but only
+# in a clean worktree. The current worktree is never touched, and nothing is
+# committed or pushed.
+#
+# Works only in a bare clone in `<project>/.bare`, with sibling worktrees, and
+# with the trunk-based branch model described in docs/usage/git-epic.md.
+#
+# Usage:
+#   $ git epic <slug> [--id <id>] [--pipeline <name>] [--no-color]
+#
+# Options:
+#   --id <id>          Prefix the slug with a tracking identifier
+#   --pipeline <name>  Cut the branch in the named delivery pipeline
+#   --no-color         Disable colored output
+#   -h, --help         Show usage instructions
+#
+# Exit status:
+#   0  The branch and its worktree were created
+#   1  An error or a refusal
+#
+# Dependencies: (none)
+#
+
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
+_print_help() {
+  cat <<EOF
+Usage: git epic <slug> [--id <id>] [--pipeline <name>] [--no-color]
+
+Start a long-lived epic branch, cut from the tip of the delivery pipeline's
+development trunk, in a new worktree of its own.
+
+Options:
+  --id <id>          Prefix the slug with a tracking identifier.
+  --pipeline <name>  Cut the branch in the named delivery pipeline.
+  --no-color         Disable colored output.
+  --help, -h         Show usage instructions.
+
+Examples:
+  $ git epic billing-v2-rewrite
+  $ git epic auth-overhaul --id PRD-187 --pipeline v1
+EOF
+}
+
+main() {
+
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every other option.
+  help=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        ;;
+      -h|--help)
+        help=true
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  # TODO: DRAFT IMPLEMENTATION
+  #
+  # The spec is docs/usage/git-epic.md. The skipped tests in
+  # test/test_git_epic.py list the cases to cover.
+  #
+  # Notes for the implementation:
+  #
+  # - git-epic behaves exactly like git-temp, except that the branch name's
+  #   type component is `epic`, not `temp`. Implement the logic once, in
+  #   lib/pipeline.sh, eg. as `start_branch <type> <slug> <id> <pipeline>`,
+  #   and call it from both scripts with `epic` or `temp`. The notes in
+  #   bin/git-temp describe each step: option parsing, slug validation, the
+  #   layout check, the pipeline, the remote, the trunk fast-forward, the
+  #   free-name check, creating the worktree, and the output.
+  #
+  # - Keep the option parsing in each script, not in the library, so that
+  #   each script's `--help` and usage errors name the right command.
+  #
+  # - An epic is shared, so the push hint on the last line of the output
+  #   matters more here than for a temp branch. Do not push, though. The
+  #   caller decides when to publish.
+  #
+  # - Test the shared behavior in full in one of the two test files, and
+  #   cover only the differences, ie. the type in the branch name and the
+  #   worktree path, in the other.
+
+  print_error "git-epic is not implemented yet."
+  print_hint "See docs/usage/git-epic.md for the planned behavior."
+  return 1
+}
+
+main "$@"

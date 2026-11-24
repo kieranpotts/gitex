@@ -1,0 +1,173 @@
+#!/bin/sh
+set -eu
+
+#
+# git-temp - Start a short-lived temp branch, cut from the tip of the delivery
+# pipeline's development trunk, in a new worktree of its own.
+#
+# The branch is named `[<pipeline>/]temp/[<id>-]<slug>`. Its worktree is
+# created beside the others, named after the branch with each `/` replaced by
+# `-`. The development trunk is fast-forwarded from the remote first, but only
+# in a clean worktree. The current worktree is never touched, and nothing is
+# committed or pushed.
+#
+# Works only in a bare clone in `<project>/.bare`, with sibling worktrees, and
+# with the trunk-based branch model described in docs/usage/git-temp.md.
+#
+# Usage:
+#   $ git temp <slug> [--id <id>] [--pipeline <name>] [--no-color]
+#
+# Options:
+#   --id <id>          Prefix the slug with a tracking identifier
+#   --pipeline <name>  Cut the branch in the named delivery pipeline
+#   --no-color         Disable colored output
+#   -h, --help         Show usage instructions
+#
+# Exit status:
+#   0  The branch and its worktree were created
+#   1  An error or a refusal
+#
+# Dependencies: (none)
+#
+
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
+_print_help() {
+  cat <<EOF
+Usage: git temp <slug> [--id <id>] [--pipeline <name>] [--no-color]
+
+Start a short-lived temp branch, cut from the tip of the delivery pipeline's
+development trunk, in a new worktree of its own.
+
+Options:
+  --id <id>          Prefix the slug with a tracking identifier.
+  --pipeline <name>  Cut the branch in the named delivery pipeline.
+  --no-color         Disable colored output.
+  --help, -h         Show usage instructions.
+
+Examples:
+  $ git temp fix-auth-timeout --id 42
+  $ git temp backport-csv-escaping --pipeline v1
+EOF
+}
+
+main() {
+
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every other option.
+  help=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        ;;
+      -h|--help)
+        help=true
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  # TODO: DRAFT IMPLEMENTATION
+  #
+  # The spec is docs/usage/git-temp.md. The skipped tests in
+  # test/test_git_temp.py list the cases to cover.
+  #
+  # Notes for the implementation:
+  #
+  # - Shared code. git-temp and git-epic differ only in the `temp` or `epic`
+  #   component of the branch name. Put the logic they share in a new
+  #   lib/pipeline.sh, eg. as `start_branch <type> <slug> <id> <pipeline>`, so
+  #   each script just parses its options and calls it. git-integrate,
+  #   git-bump, and git-release need most of the same helpers. Without
+  #   `local`, prefix each helper's variables with its own name, so that they
+  #   cannot clash.
+  #
+  # - Option parsing. Copy the pattern in bin/git-author, which handles
+  #   value-taking options. Record the first usage error for a missing slug, a
+  #   second positional argument, an unknown option, and `--id` or
+  #   `--pipeline` given twice or without a value.
+  #
+  # - Slug validation. Use `case`, not a regex. The pattern
+  #   `*[!a-z0-9-]*|-*|*-` catches every invalid slug. `${#slug}` gives its
+  #   length, which is POSIX. Warn above 50 characters, and refuse above 72.
+  #   Then check the whole branch name with
+  #   `git check-ref-format --branch "${branch}"`, which also catches a bad
+  #   `--id`.
+  #
+  # - Layout check, eg. `require_bare_layout` in lib/pipeline.sh. Refuse
+  #   unless `git rev-parse --path-format=absolute --git-common-dir` ends in
+  #   `/.bare`, and the parent of `git rev-parse --show-toplevel` is the same
+  #   directory as the parent of the common dir. That directory is
+  #   `<project>`. `--path-format` needs Git 2.31 or later, which
+  #   docs/requirements.md does not yet state. Run from `<project>` itself,
+  #   Git treats the repository as bare and `--show-toplevel` fails. Decide
+  #   whether to refuse there, or to fall back to the `default` worktree.
+  #
+  # - Pipeline, eg. `pipeline_of` and `pipeline_from_context`. Take
+  #   `--pipeline` verbatim where given. Otherwise read the current branch
+  #   with `git symbolic-ref --quiet --short HEAD`, or where that fails
+  #   (detached `HEAD`), run it with `-C "<project>/default"`. Map the branch
+  #   with `case`:
+  #     dev|test|ready|release|temp/*|epic/*  ->  unnamed pipeline
+  #     */dev|*/test|*/ready|*/release        ->  "${branch%/*}"
+  #     */temp/*|*/epic/*                     ->  "${branch%%/*}"
+  #     *                                     ->  refuse: not a pipeline branch
+  #   The branch prefix is then "${pipeline}/", or empty.
+  #
+  # - Remote. Use "${GITEX_DEFAULT_REMOTE_NAME:-origin}". Where
+  #   `git remote get-url "${remote}"` fails, warn, skip every fetch, and work
+  #   from local refs. Otherwise run `git fetch --quiet --tags "${remote}"`.
+  #
+  # - Trunk. The trunk is "${prefix}dev". Refuse unless
+  #   `refs/heads/${trunk}` or `refs/remotes/${remote}/${trunk}` exists, with
+  #   `git rev-parse -q --verify`.
+  #
+  # - Fast-forwarding the trunk, eg. `worktree_of`, `require_clean`, and
+  #   `ff_from_remote`. Find the trunk's worktree with awk, which copes with
+  #   spaces in paths:
+  #     git worktree list --porcelain | awk -v ref="refs/heads/${trunk}" '
+  #       /^worktree / { path = substr($0, 10) }
+  #       $0 == "branch " ref { print path; exit }'
+  #   Where a worktree has the trunk, require it clean, then run
+  #   `git -C "${path}" merge --ff-only --quiet "${remote}/${trunk}"`. Where
+  #   none has it, run `git fetch --quiet "${remote}" "${trunk}:${trunk}"`,
+  #   which refuses anything but a fast-forward because the refspec has no
+  #   `+`. Skip both where the remote has no copy of the trunk.
+  #
+  # - Clean worktree. A worktree is clean when `git -C "${path}" status
+  #   --porcelain` prints nothing, `rev-parse -q --verify MERGE_HEAD` fails,
+  #   and no file exists at `rev-parse --path-format=absolute --git-path
+  #   SQUASH_MSG`. `git status` does not report a pending squash merge, which
+  #   is why SQUASH_MSG needs its own check.
+  #
+  # - Free name. Refuse if `refs/heads/${branch}` or
+  #   `refs/remotes/${remote}/${branch}` exists. The remote-tracking ref can
+  #   be stale or pruned, so consider `git ls-remote --exit-code --heads
+  #   "${remote}" "${branch}"` for an exact answer. Build the worktree path
+  #   with `printf '%s' "${branch}" | tr '/' '-'`, and refuse if anything
+  #   exists there, with `[ -e "${path}" ]`.
+  #
+  # - Creating the branch. Run
+  #   `git worktree add --quiet --no-track -b "${branch}" "${path}" "${trunk}"`.
+  #   Never run `git worktree remove`, `move`, or `prune`.
+  #
+  # - Output. Print the data lines with plain printf, never the print_*
+  #   helpers, so that `--no-color` cannot change them. Line 1 is the branch,
+  #   line 2 the absolute worktree path, then `Cut from <trunk> at <hash>.`,
+  #   with `git rev-parse --short`, then
+  #   `To publish: git push --set-upstream <remote> <branch>`.
+
+  print_error "git-temp is not implemented yet."
+  print_hint "See docs/usage/git-temp.md for the planned behavior."
+  return 1
+}
+
+main "$@"

@@ -1,0 +1,165 @@
+#!/bin/sh
+set -eu
+
+#
+# git-release - Release a version, by tagging its version commit,
+# fast-forwarding the release-ready trunk to the tag, and fast-forwarding the
+# release trunk to match, each in its own worktree.
+#
+# The version commit is the one commit on the source trunk (`test`, else
+# `dev`) whose subject is `version: <version>`. A pre-release is tagged, but
+# the trunks are left where they are. Tags are never moved or deleted, trunks
+# are only ever fast-forwarded, and nothing is pushed.
+#
+# Works only in a bare clone in `<project>/.bare`, with sibling worktrees, and
+# with the trunk-based branch model described in docs/usage/git-release.md.
+#
+# Usage:
+#   $ git release <version> [--pipeline <name>] [--no-color]
+#
+# Options:
+#   --pipeline <name>  Release from the named delivery pipeline
+#   --no-color         Disable colored output
+#   -h, --help         Show usage instructions
+#
+# Exit status:
+#   0  The release was cut, or an interrupted release was finished
+#   1  An error or a refusal
+#   2  Nothing to do: the release is already in place
+#
+# Dependencies: (none)
+#
+
+# shellcheck source=../lib/print.sh
+. "$(dirname "$0")/../lib/print.sh"
+
+_print_help() {
+  cat <<EOF
+Usage: git release <version> [--pipeline <name>] [--no-color]
+
+Release a version, by tagging its version commit, fast-forwarding the
+release-ready trunk to the tag, and fast-forwarding the release trunk to
+match, each in its own worktree.
+
+Options:
+  --pipeline <name>  Release from the named delivery pipeline.
+  --no-color         Disable colored output.
+  --help, -h         Show usage instructions.
+
+Examples:
+  $ git release 1.2.0
+  $ git release 2.0.0 --pipeline v2
+  $ git release 1.3.0-rc.0
+EOF
+}
+
+main() {
+
+  # Parse options. Act on them only once the whole command line has been
+  # read, so their order doesn't matter. --help beats every other option.
+  help=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --no-color)
+        disable_color
+        ;;
+      -h|--help)
+        help=true
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${help}" = true ]; then
+    _print_help
+    return 0
+  fi
+
+  # TODO: DRAFT IMPLEMENTATION
+  #
+  # The spec is docs/usage/git-release.md. The skipped tests in
+  # test/test_git_release.py list the cases to cover.
+  #
+  # Notes for the implementation:
+  #
+  # - Shared code. Take the layout check, pipeline mapping, remote handling,
+  #   worktree lookup, clean-worktree check, and fast-forward from the remote
+  #   from lib/pipeline.sh. bin/git-temp describes each of them. Validate the
+  #   version with the same `semver_parse` that git-bump uses.
+  #
+  # - Option parsing. Copy bin/git-author. Exactly one positional argument,
+  #   the version, is required. `--pipeline` takes a value, and giving it
+  #   twice is a usage error.
+  #
+  # - Version. Strip one leading `v` with "${version#v}". Accept only
+  #   `<n>.<n>.<n>`, with an optional `-<stage>.<n>` suffix, and no leading
+  #   zeros. A version with the suffix is a pre-release.
+  #
+  # - Pipeline. Take `--pipeline` verbatim, or else read it from the current
+  #   branch, falling back to the `default` worktree's branch where `HEAD` is
+  #   detached, as in git-temp.
+  #
+  # - Trunks. The source trunk is "${prefix}test" where it exists, locally or
+  #   on the remote, or else "${prefix}dev". Refuse unless "${prefix}ready"
+  #   exists, locally or on the remote. "${prefix}release" may be missing,
+  #   which means this is the pipeline's first release.
+  #
+  # - Order of checks. Make every check that changes nothing before creating
+  #   a worktree or a tag: usage, layout, pipeline, trunks, the clean check
+  #   on the worktrees that already exist, the fetch, the fast-forwards, the
+  #   version commit, ancestry, and the tag. Fast-forward a branch that has
+  #   no worktree with `git fetch "${remote}" "<branch>:<branch>"`, so that
+  #   validation sees the up-to-date refs before any worktree is created. For
+  #   a pre-release, skip everything to do with ready and release, except
+  #   fetching.
+  #
+  # - Version commit. `--grep` also matches commit bodies, so list the
+  #   candidates, then keep the exact subjects only:
+  #     git log --format='%H %s' -F --grep="version: ${version}" "${source}" |
+  #       awk -v s="version: ${version}" 'substr($0, index($0, " ") + 1) == s'
+  #   Refuse unless exactly one line remains.
+  #
+  # - Ancestry. Refuse unless
+  #   `git merge-base --is-ancestor "${ready}" "${commit}"` succeeds, and the
+  #   same for release, where it exists.
+  #
+  # - Tag. If `refs/tags/v${version}` exists, compare
+  #   `git rev-parse "v${version}^{commit}"` with the commit, and refuse if
+  #   they differ. Also refuse if `git cat-file -t "v${version}"` is not
+  #   `tag`, ie. an existing lightweight tag, because tags are never
+  #   recreated. Otherwise create it with
+  #   `git tag -a "v${version}" -m "Release ${version}" "${commit}"`, using
+  #   `-s` in place of `-a` where
+  #   `git config --type=bool --get tag.gpgSign` or `commit.gpgSign` prints
+  #   `true`.
+  #
+  # - Worktrees. Where ready or release has no worktree, create one with
+  #   `git worktree add --quiet <path> <branch>`, after the local branch
+  #   exists. For a first release, check early that nothing exists at the
+  #   release worktree's path, then create the trunk with
+  #   `git worktree add --quiet --no-track -b "${release}" "${path}" "${ready}"`.
+  #   Never remove, move, or prune a worktree.
+  #
+  # - Fast-forwards. Run
+  #   `git -C "${ready_worktree}" merge --ff-only --quiet "${commit}"`, then
+  #   `git -C "${release_worktree}" merge --ff-only --quiet "${ready}"`. Merge
+  #   the commit's hash, not the tag. Git may make a merge commit for an
+  #   annotated tag outside `refs/tags/`, and the hash sidesteps that
+  #   question.
+  #
+  # - Nothing to do. Return 2 when the tag already points at the commit, and,
+  #   for a full release, ready and release do too. When only the tag is in
+  #   place, finish the job, and return 0.
+  #
+  # - Output. Print the data lines with plain printf. Line 1 is the tag. Then
+  #   print `Tagged <short-hash> (version: <version>).`, one `Moved` or
+  #   `Created` line per trunk, and
+  #   `To publish: git push <remote> <tag> [<ready> <release>]`.
+
+  print_error "git-release is not implemented yet."
+  print_hint "See docs/usage/git-release.md for the planned behavior."
+  return 1
+}
+
+main "$@"

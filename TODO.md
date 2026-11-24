@@ -109,6 +109,18 @@ Use [`.agents/skills/new-command/SKILL.md`](.agents/skills/new-command/SKILL.md)
 - [ ] `git configure`
 - [x] `git whoami`
 
+## Pipeline workflow
+
+These commands are scaffolded differently from the others. Each script handles `--help` and otherwise refuses to run, with developer notes in place of a draft body. Each test file holds live tests for the scaffold, plus the planned test cases as skipped stubs. The usage docs describe the intended behavior in full.
+
+- [ ] Shared `lib/pipeline.sh`, and a pytest fixture for a `.bare` project with an `origin` remote (needed by all five commands).
+- [ ] `git release`
+- [ ] `git temp`
+- [ ] `git epic`
+- [ ] `git integrate`
+- [ ] `git bump`
+- [ ] State the minimum Git version in `docs/requirements.md`. The notes in the scripts rely on `rev-parse --path-format`, which needs Git 2.31.
+
 ## Dev tooling
 
 ### Scratch repository for manual testing
